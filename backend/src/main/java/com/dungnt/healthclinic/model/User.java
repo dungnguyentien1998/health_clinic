@@ -1,6 +1,7 @@
 package com.dungnt.healthclinic.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -35,14 +36,14 @@ public class User {
             cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY
     )
-    private Set<Appointment> clientAppointments;
+    private Set<Appointment> clientAppointments = new HashSet<>();
 
     @OneToMany(
             mappedBy = "medicalStaff",
             cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY
     )
-    private Set<Appointment> medicalStaffAppointments;
+    private Set<Appointment> medicalStaffAppointments = new HashSet<>();
 
     public User() {
     }
@@ -125,5 +126,21 @@ public class User {
 
     public void setPrivilege(Integer privilege) {
         this.privilege = privilege;
+    }
+
+    public Set<Appointment> getClientAppointments() {
+        return clientAppointments;
+    }
+
+    public void setClientAppointments(Set<Appointment> clientAppointments) {
+        this.clientAppointments = clientAppointments;
+    }
+
+    public Set<Appointment> getMedicalStaffAppointments() {
+        return medicalStaffAppointments;
+    }
+
+    public void setMedicalStaffAppointments(Set<Appointment> medicalStaffAppointments) {
+        this.medicalStaffAppointments = medicalStaffAppointments;
     }
 }

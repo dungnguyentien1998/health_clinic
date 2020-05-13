@@ -18,5 +18,5 @@ public interface CalendarService {
 
     Page<Calendar> findAllCalendarsByClinicServiceId(Integer clinicServiceId, Pageable pageable);
 
-    Optional<Calendar> findCalendarByIdAndClinicServiceId(Integer calendarId, Integer clinicServiceId);
+//    Optional<Calendar> findCalendarByIdAndClinicServiceId(Integer calendarId, Integer clinicServiceId);
 }

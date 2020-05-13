@@ -48,8 +48,8 @@ public class CalendarServiceImpl implements CalendarService {
         return calendarRepository.findByClinicServiceId(clinicServiceId, pageable);
     }
 
-    @Override
-    public Optional<Calendar> findCalendarByIdAndClinicServiceId(Integer calendarId, Integer clinicServiceId) {
-        return calendarRepository.findByIdAndClinicServiceId(calendarId, clinicServiceId);
-    }
+//    @Override
+//    public Optional<Calendar> findCalendarByIdAndClinicServiceId(Integer calendarId, Integer clinicServiceId) {
+//        return calendarRepository.findByIdAndClinicServiceId(calendarId, clinicServiceId);
+//    }
 }

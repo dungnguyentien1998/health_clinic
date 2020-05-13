@@ -12,8 +12,8 @@ import java.util.Optional;
 @Repository
 public interface CalendarRepository extends JpaRepository<Calendar, Integer> {
     Page<Calendar> findByClinicServiceId(Integer clinicServiceId, Pageable pageable);
-    Optional<Calendar> findByIdAndClinicServiceId(Integer id, Integer clinicServiceId);
+//    Optional<Calendar> findByIdAndClinicServiceId(Integer id, Integer clinicServiceId);
 
-    @Query(value = "Select ca.* from calendars ca, clinic_services cl where ca.service_id = cl.id", nativeQuery = true)
-    Calendar findAllWithClinicServiceId();
+//    @Query(value = "Select ca.* from calendars ca, clinic_services cl where ca.service_id = cl.id", nativeQuery = true)
+//    Calendar findAllWithClinicServiceId();
 }

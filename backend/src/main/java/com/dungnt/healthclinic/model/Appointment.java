@@ -28,6 +28,8 @@ public class Appointment {
     public Appointment() {
     }
 
+
+
     public Integer getId() {
         return id;
     }
@@ -35,4 +37,30 @@ public class Appointment {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public Calendar getCalendar() {
+        return calendar;
+    }
+
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
+    }
+
+    public User getClient() {
+        return client;
+    }
+
+    public void setClient(User client) {
+        this.client = client;
+    }
+
+    public User getMedicalStaff() {
+        return medicalStaff;
+    }
+
+    public void setMedicalStaff(User medicalStaff) {
+        this.medicalStaff = medicalStaff;
+    }
+
+
 }

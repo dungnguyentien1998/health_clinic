@@ -29,11 +29,10 @@ public class Calendar {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", referencedColumnName = "id")
-    @JsonIgnore
     private ClinicService clinicService;
 
-//    @OneToOne(mappedBy = "calendar")
-//    private Appointment appointment;
+    @OneToOne(mappedBy = "calendar")
+    private Appointment appointment;
 
     public Calendar() {
     }
@@ -78,10 +77,24 @@ public class Calendar {
         this.room = room;
     }
 
+    public Integer getClinicServiceId() {
+        return clinicService.getId();
+    }
+
+    public String getClinicServiceName() {
+        return clinicService.getName();
+    }
+
+    public String getClinicServiceDescription() {
+        return clinicService.getDescription();
+    }
+
+    @JsonIgnore
     public ClinicService getClinicService() {
         return clinicService;
     }
 
+    @JsonIgnore
     public void setClinicService(ClinicService clinicService) {
         this.clinicService = clinicService;
 //        clinicService.getCalendars().add(this);
@@ -94,4 +107,12 @@ public class Calendar {
 //    public void setAppointment(Appointment appointment) {
 //        this.appointment = appointment;
 //    }
+
+    public Appointment getAppointment() {
+        return appointment;
+    }
+
+    public void setAppointment(Appointment appointment) {
+        this.appointment = appointment;
+    }
 }

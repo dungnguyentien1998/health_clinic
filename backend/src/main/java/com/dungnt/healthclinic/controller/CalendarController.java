@@ -27,6 +27,8 @@ public class CalendarController {
     @RequestMapping(value = "/calendars", method = RequestMethod.GET)
     public ResponseEntity<List<Calendar>> findAllCalendars() {
         List<Calendar> calendars = calendarService.findAll();
+        if (calendars.get(0).getClinicService() == null) System.out.println("Service null");
+        if (calendars.get(0).getClinicService().getName() == null) System.out.println("Tên service null");
         if (calendars.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

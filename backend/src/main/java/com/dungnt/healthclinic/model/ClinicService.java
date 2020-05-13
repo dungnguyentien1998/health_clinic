@@ -1,8 +1,10 @@
 package com.dungnt.healthclinic.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,8 +21,8 @@ public class ClinicService {
     @Column(name = "description")
     private String description;
 
-//    @OneToMany(mappedBy = "clinicService")
-//    private Set<Calendar> calendars;
+    @OneToMany(mappedBy = "clinicService")
+    private Set<Calendar> calendars = new HashSet<>();
 
     public ClinicService() {
     }
@@ -49,14 +51,16 @@ public class ClinicService {
         this.description = description;
     }
 
-//    public Set<Calendar> getCalendars() {
-//        return calendars;
-//    }
-//
-//    public void setCalendars(Set<Calendar> calendars) {
-//        this.calendars = calendars;
+    public Set<Calendar> getCalendars() {
+        return calendars;
+    }
+
+    public void setCalendars(Set<Calendar> calendars) {
+        this.calendars = calendars;
 //        for (Calendar calendar: calendars) {
 //            calendar.setClinicService(this);
 //        }
-//    }
+    }
+
+
 }
