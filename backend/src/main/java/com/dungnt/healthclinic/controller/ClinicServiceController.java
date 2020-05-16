@@ -41,11 +41,10 @@ public class ClinicServiceController {
     }
 
     @RequestMapping(value = "/clinicservices", method = RequestMethod.POST)
-    public ResponseEntity<ClinicService> createClinicService(@RequestBody ClinicService clinicService,
-                                                             UriComponentsBuilder builder) {
+    public ResponseEntity<ClinicService> createClinicService(@RequestBody ClinicService clinicService) {
         clinicSerService.save(clinicService);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(builder.path("/clinicservices/{id}").buildAndExpand(clinicService.getId()).toUri());
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setLocation(builder.path("/clinicservices/{id}").buildAndExpand(clinicService.getId()).toUri());
         return new ResponseEntity<>(clinicService, HttpStatus.CREATED);
     }
 

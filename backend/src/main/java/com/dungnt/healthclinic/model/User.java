@@ -1,5 +1,7 @@
 package com.dungnt.healthclinic.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +11,7 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "first_name")
@@ -33,16 +35,18 @@ public class User {
 
     @OneToMany(
             mappedBy = "client",
-            cascade = CascadeType.PERSIST,
+//            cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY
     )
+//    @JsonManagedReference
     private Set<Appointment> clientAppointments = new HashSet<>();
 
     @OneToMany(
             mappedBy = "medicalStaff",
-            cascade = CascadeType.PERSIST,
+//            cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY
     )
+//    @JsonManagedReference
     private Set<Appointment> medicalStaffAppointments = new HashSet<>();
 
     public User() {
