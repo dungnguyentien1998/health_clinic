@@ -1,5 +1,6 @@
 package com.dungnt.healthclinic.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -11,7 +12,7 @@ import java.util.Date;
 @Table(name = "calendars")
 public class Calendar {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -29,9 +30,11 @@ public class Calendar {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", referencedColumnName = "id")
+//    @JsonBackReference
     private ClinicService clinicService;
 
     @OneToOne(mappedBy = "calendar")
+//    @JsonManagedReference
     private Appointment appointment;
 
     public Calendar() {
@@ -97,16 +100,7 @@ public class Calendar {
     @JsonIgnore
     public void setClinicService(ClinicService clinicService) {
         this.clinicService = clinicService;
-//        clinicService.getCalendars().add(this);
     }
-
-//    public Appointment getAppointment() {
-//        return appointment;
-//    }
-//
-//    public void setAppointment(Appointment appointment) {
-//        this.appointment = appointment;
-//    }
 
     public Appointment getAppointment() {
         return appointment;

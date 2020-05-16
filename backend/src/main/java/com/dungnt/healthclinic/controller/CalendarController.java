@@ -69,11 +69,15 @@ public class CalendarController {
         if (!currentCalendar.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+//        Optional<ClinicService> newClinicService = clinicSerService.findById(calendar.getClinicServiceId());
+//        if (!newClinicService.isPresent()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
         currentCalendar.get().setDate(calendar.getDate());
         currentCalendar.get().setTime(calendar.getTime());
         currentCalendar.get().setState(calendar.getState());
         currentCalendar.get().setRoom(calendar.getRoom());
-        currentCalendar.get().setClinicService(calendar.getClinicService());
+//        currentCalendar.get().setClinicService(calendar.getClinicService());
 
         calendarService.save(currentCalendar.get());
         return new ResponseEntity<>(currentCalendar.get(), HttpStatus.OK);
