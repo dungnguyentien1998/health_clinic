@@ -5,10 +5,12 @@ import com.dungnt.healthclinic.repository.QuestionRepository;
 import com.dungnt.healthclinic.repository.UserRepository;
 import com.dungnt.healthclinic.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class QuestionServiceImpl implements QuestionService {
     private QuestionRepository questionRepository;
 
@@ -32,6 +34,6 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public void remove(Question question) {
-
+        questionRepository.delete(question);
     }
 }

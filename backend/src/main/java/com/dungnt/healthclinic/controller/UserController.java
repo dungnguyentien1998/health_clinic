@@ -1,7 +1,5 @@
 package com.dungnt.healthclinic.controller;
 
-import com.dungnt.healthclinic.model.Calendar;
-import com.dungnt.healthclinic.model.ClinicService;
 import com.dungnt.healthclinic.model.User;
 import com.dungnt.healthclinic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@RestController
 public class UserController {
     private UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
