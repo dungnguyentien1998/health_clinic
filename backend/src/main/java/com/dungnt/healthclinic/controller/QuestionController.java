@@ -1,5 +1,6 @@
 package com.dungnt.healthclinic.controller;
 
+import com.dungnt.healthclinic.model.ClinicService;
 import com.dungnt.healthclinic.model.Question;
 import com.dungnt.healthclinic.model.User;
 import com.dungnt.healthclinic.service.QuestionService;
@@ -7,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,5 +37,32 @@ public class QuestionController {
             return  new ResponseEntity<>(question.get(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(question.get(), HttpStatus.OK);
+    }
+    @RequestMapping(value = "/create/question", method = RequestMethod.POST)
+    public ResponseEntity<Question> createQuestion(@RequestBody Question question){
+        questionService.save(question);
+        return new ResponseEntity<>(question, HttpStatus.CREATED);
+    }
+    @RequestMapping(value = "/update/question/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Question> updateQuestion(@PathVariable("id") Integer id,
+                                           @RequestBody Question question) {
+        Optional<Question> currentQuestion = questionService.findById(id);
+        if (!currentQuestion.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        currentQuestion.get().setQuestion(question.getQuestion());
+        currentQuestion.get().setAnswers(question.getAnswers());
+
+        questionService.save(currentQuestion.get());
+        return new ResponseEntity<>(currentQuestion.get(), HttpStatus.OK);
+    }
+    @RequestMapping(value = "/delete/question/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Question> deleteQuestion(@PathVariable("id") Integer id) {
+        Optional<Question> question = questionService.findById(id);
+        if (!question.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        questionService.remove(question.get());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

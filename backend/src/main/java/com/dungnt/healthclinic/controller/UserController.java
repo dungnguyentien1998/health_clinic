@@ -1,5 +1,6 @@
 package com.dungnt.healthclinic.controller;
 
+import com.dungnt.healthclinic.model.ClinicService;
 import com.dungnt.healthclinic.model.User;
 import com.dungnt.healthclinic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,29 @@ public class UserController {
         }
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
     }
+    @RequestMapping(value = "/create/user", method = RequestMethod.POST)
+    public ResponseEntity<User> createUser(@RequestBody User user){
+        userService.save(user);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+    @RequestMapping(value = "/update/user/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<User> updateUser(@PathVariable("id") Integer id,
+                                                             @RequestBody User user) {
+        Optional<User> currentUser = userService.findById(id);
+        if (!currentUser.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        currentUser.get().setFirstName(user.getFirstName());
+        currentUser.get().setLastName(user.getLastName());
+        currentUser.get().setCountry(user.getCountry());
+        currentUser.get().setPhone(user.getPhone());
+        currentUser.get().setEmail(user.getEmail());
+        currentUser.get().setState(user.getState());
+        currentUser.get().setPrivilege(user.getPrivilege());
+        userService.save(currentUser.get());
+
+        return new ResponseEntity<>(currentUser.get(), HttpStatus.OK);
+    }
+
 }
 
