@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -14,13 +16,16 @@ public class Calendar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 
-    @Column(name = "time")
-    private Time time;
+    @Column(name = "time_start")
+    private LocalTime timeStart;
+
+    @Column(name = "time_end")
+    private LocalTime timeEnd;
 
     @Column(name = "state")
     private Integer state;
@@ -33,35 +38,43 @@ public class Calendar {
 //    @JsonBackReference
     private ClinicService clinicService;
 
-    @OneToOne(mappedBy = "calendar")
+    @OneToOne(mappedBy = "calendar", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JsonManagedReference
     private Appointment appointment;
 
     public Calendar() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Time getTime() {
-        return time;
+    public LocalTime getTimeStart() {
+        return timeStart;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
+    public void setTimeStart(LocalTime timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public LocalTime getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(LocalTime timeEnd) {
+        this.timeEnd = timeEnd;
     }
 
     public Integer getState() {
@@ -80,7 +93,7 @@ public class Calendar {
         this.room = room;
     }
 
-    public Integer getClinicServiceId() {
+    public Long getClinicServiceId() {
         return clinicService.getId();
     }
 

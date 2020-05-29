@@ -1,6 +1,7 @@
 package com.dungnt.healthclinic.service.impl;
 
 import com.dungnt.healthclinic.model.Appointment;
+import com.dungnt.healthclinic.model.User;
 import com.dungnt.healthclinic.repository.AppointmentRepository;
 import com.dungnt.healthclinic.repository.CalendarRepository;
 import com.dungnt.healthclinic.service.AppointmentService;
@@ -27,7 +28,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Optional<Appointment> findById(Integer id) {
+    public Optional<Appointment> findById(Long id) throws Exception {
+        if (id == null) {
+            throw new Exception("Gia tri id null");
+        }
         return appointmentRepository.findById(id);
     }
 
@@ -39,5 +43,27 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void remove(Appointment appointment) {
         appointmentRepository.delete(appointment);
+    }
+
+    // Hien tai khong su dung
+    @Override
+    public List<Appointment> findAllByClientId(Long clientId) {
+        return appointmentRepository.findAllByClientId(clientId);
+    }
+
+    // Hien tai khong su dung
+    @Override
+    public List<Appointment> findAllByMedicalStaffId(Long medicalStaffId) {
+        return appointmentRepository.findAllByMedicalStaffId(medicalStaffId);
+    }
+
+    @Override
+    public List<Appointment> findAllByClient(User client) {
+        return appointmentRepository.findAllByClient(client);
+    }
+
+    @Override
+    public List<Appointment> findAllByMedicalStaff(User medicalStaff) {
+        return appointmentRepository.findAllByMedicalStaff(medicalStaff);
     }
 }

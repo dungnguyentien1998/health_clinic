@@ -18,17 +18,31 @@ public class QuestionServiceImpl implements QuestionService {
     public QuestionServiceImpl(QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
     }
+
     @Override
     public List<Question> findAll() {
         return (List<Question>) questionRepository.findAll();
     }
+
     @Override
-    public Optional<Question> findById(Integer id) {
+    public Optional<Question> findById(Long id) throws Exception {
+        if (id == null) {
+            throw new Exception("Gia tri id null");
+        }
         return questionRepository.findById(id);
     }
 
     @Override
-    public void save(Question question) {
+    public void save(Question question) throws Exception {
+        if (question == null) {
+            throw new Exception("Doi tuong cau hoi null");
+        }
+        if (question.getQuestion() == null) {
+            throw new Exception("Noi dung cau hoi null");
+        }
+        if (question.getAnswers() == null) {
+            throw new Exception("Noi dung cac cau tra loi null");
+        }
         questionRepository.save(question);
     }
 

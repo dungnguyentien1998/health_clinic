@@ -13,50 +13,42 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "country")
     private String country;
-    @Column(name = "phone")
-    private String phone;
     @Column(name = "email")
     private String email;
     @Column(name = "state")
     private String state;
-    @Column(name = "username")
+    @Column(name = "phone")
     private String username;
     @Column(name = "password")
     private String password;
     @Column(name = "privilege")
     private Integer privilege;
+    @Column(name = "room")
+    private String room;
 
-    @OneToMany(
-            mappedBy = "client",
-//            cascade = CascadeType.PERSIST,
-            fetch = FetchType.LAZY
-    )
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JsonManagedReference
     private Set<Appointment> clientAppointments = new HashSet<>();
 
-    @OneToMany(
-            mappedBy = "medicalStaff",
-//            cascade = CascadeType.PERSIST,
-            fetch = FetchType.LAZY
-    )
+    @OneToMany(mappedBy = "medicalStaff", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JsonManagedReference
     private Set<Appointment> medicalStaffAppointments = new HashSet<>();
 
     public User() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -82,14 +74,6 @@ public class User {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getEmail() {

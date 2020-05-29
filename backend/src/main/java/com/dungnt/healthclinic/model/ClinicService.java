@@ -12,7 +12,7 @@ public class ClinicService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -20,18 +20,18 @@ public class ClinicService {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "clinicService")
+    @OneToMany(mappedBy = "clinicService", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JsonManagedReference
     private Set<Calendar> calendars = new HashSet<>();
 
     public ClinicService() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

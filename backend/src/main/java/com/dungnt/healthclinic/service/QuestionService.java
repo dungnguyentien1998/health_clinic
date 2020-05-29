@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface QuestionService {
     List<Question> findAll();
-    Optional<Question> findById(Integer id);
-    void save(Question question);
+    Optional<Question> findById(Long id) throws Exception;
+    void save(Question question) throws Exception;
     void remove(Question question);
 }

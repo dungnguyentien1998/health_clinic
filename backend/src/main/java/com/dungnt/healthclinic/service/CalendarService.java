@@ -1,22 +1,25 @@
 package com.dungnt.healthclinic.service;
 
+import com.dungnt.healthclinic.dto.CalendarRequest;
 import com.dungnt.healthclinic.model.Calendar;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface CalendarService {
     List<Calendar> findAll();
 
-    Optional<Calendar> findById(Integer id);
+    Optional<Calendar> findById(Long id) throws Exception;
 
-    void save(Calendar calendar);
+    void save(Calendar calendar) throws Exception;
 
     void remove(Calendar calendar);
 
-    Page<Calendar> findAllCalendarsByClinicServiceId(Integer clinicServiceId, Pageable pageable);
+    List<Calendar> findSuitableCalendar(CalendarRequest calendarRequest, Integer state) throws Exception;
 
-//    Optional<Calendar> findCalendarByIdAndClinicServiceId(Integer calendarId, Integer clinicServiceId);
+    List<Calendar> recommendCalendars(CalendarRequest calendarRequest, Integer state) throws Exception;
 }

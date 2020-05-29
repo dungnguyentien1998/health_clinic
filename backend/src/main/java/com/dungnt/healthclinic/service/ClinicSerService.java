@@ -8,9 +8,11 @@ import java.util.Optional;
 public interface ClinicSerService {
     List<ClinicService> findAll();
 
-    Optional<ClinicService> findById(Integer id);
+    Optional<ClinicService> findById(Long id) throws Exception;
 
-    void save(ClinicService clinicService);
+    void save(ClinicService clinicService) throws Exception;
 
     void remove(ClinicService clinicService);
+//    boolean remove(Long id) throws Exception;
+
 }

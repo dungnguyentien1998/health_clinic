@@ -25,12 +25,21 @@ public class ClinicSerServiceImpl implements ClinicSerService {
     }
 
     @Override
-    public Optional<ClinicService> findById(Integer id) {
+    public Optional<ClinicService> findById(Long id) throws Exception{
+        if (id == null) {
+            throw new Exception("Gia tri id null");
+        }
         return clinicServiceRepository.findById(id);
     }
 
     @Override
-    public void save(ClinicService clinicService) {
+    public void save(ClinicService clinicService) throws Exception {
+        if (clinicService == null) {
+            throw new Exception("Doi tuong dich vu kham null");
+        }
+        if (clinicService.getName() == null || clinicService.getName() == "") {
+            throw new Exception("Ten dich vu kham null");
+        }
         clinicServiceRepository.save(clinicService);
     }
 
@@ -38,4 +47,5 @@ public class ClinicSerServiceImpl implements ClinicSerService {
     public void remove(ClinicService clinicService) {
         clinicServiceRepository.delete(clinicService);
     }
+
 }

@@ -30,22 +30,25 @@ public class QuestionController {
         }
         return new ResponseEntity<>(questions, HttpStatus.OK);
     }
+
     @RequestMapping(value = "/questions/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public  ResponseEntity<Question> findQuestionById(@PathVariable("id") Integer id){
+    public  ResponseEntity<Question> findQuestionById(@PathVariable("id") Long id) throws Exception {
         Optional<Question> question = questionService.findById(id);
         if (!question.isPresent()){
             return  new ResponseEntity<>(question.get(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(question.get(), HttpStatus.OK);
     }
+
     @RequestMapping(value = "/create/question", method = RequestMethod.POST)
-    public ResponseEntity<Question> createQuestion(@RequestBody Question question){
+    public ResponseEntity<Question> createQuestion(@RequestBody Question question) throws Exception {
         questionService.save(question);
         return new ResponseEntity<>(question, HttpStatus.CREATED);
     }
+
     @RequestMapping(value = "/update/question/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Question> updateQuestion(@PathVariable("id") Integer id,
-                                           @RequestBody Question question) {
+    public ResponseEntity<Question> updateQuestion(@PathVariable("id") Long id,
+                                           @RequestBody Question question) throws Exception {
         Optional<Question> currentQuestion = questionService.findById(id);
         if (!currentQuestion.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -56,8 +59,9 @@ public class QuestionController {
         questionService.save(currentQuestion.get());
         return new ResponseEntity<>(currentQuestion.get(), HttpStatus.OK);
     }
+
     @RequestMapping(value = "/delete/question/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Question> deleteQuestion(@PathVariable("id") Integer id) {
+    public ResponseEntity<Question> deleteQuestion(@PathVariable("id") Long id) throws Exception {
         Optional<Question> question = questionService.findById(id);
         if (!question.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

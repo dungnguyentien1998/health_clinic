@@ -32,7 +32,7 @@ public class ClinicServiceController {
     }
 
     @RequestMapping(value = "/clinicservices/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ClinicService> findClinicServiceById(@PathVariable("id") Integer id) {
+    public ResponseEntity<ClinicService> findClinicServiceById(@PathVariable("id") Long id) throws Exception {
         Optional<ClinicService> clinicService = clinicSerService.findById(id);
         if (!clinicService.isPresent()) {
             return new ResponseEntity<>(clinicService.get(), HttpStatus.NO_CONTENT);
@@ -41,16 +41,14 @@ public class ClinicServiceController {
     }
 
     @RequestMapping(value = "/clinicservices", method = RequestMethod.POST)
-    public ResponseEntity<ClinicService> createClinicService(@RequestBody ClinicService clinicService) {
+    public ResponseEntity<ClinicService> createClinicService(@RequestBody ClinicService clinicService) throws Exception {
         clinicSerService.save(clinicService);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setLocation(builder.path("/clinicservices/{id}").buildAndExpand(clinicService.getId()).toUri());
         return new ResponseEntity<>(clinicService, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/clinicservices/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<ClinicService> updateClinicService(@PathVariable("id") Integer id,
-                                                             @RequestBody ClinicService clinicService) {
+    public ResponseEntity<ClinicService> updateClinicService(@PathVariable("id") Long id,
+                                                             @RequestBody ClinicService clinicService) throws Exception {
         Optional<ClinicService> currentClinicService = clinicSerService.findById(id);
         if (!currentClinicService.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -58,12 +56,12 @@ public class ClinicServiceController {
         currentClinicService.get().setName(clinicService.getName());
         currentClinicService.get().setDescription(clinicService.getDescription());
         clinicSerService.save(currentClinicService.get());
-
         return new ResponseEntity<>(currentClinicService.get(), HttpStatus.OK);
+
     }
 
     @RequestMapping(value = "/clinicservices/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<ClinicService> deleteClinicService(@PathVariable("id") Integer id) {
+    public ResponseEntity<ClinicService> deleteClinicService(@PathVariable("id") Long id) throws Exception {
         Optional<ClinicService> clinicService = clinicSerService.findById(id);
         if (!clinicService.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

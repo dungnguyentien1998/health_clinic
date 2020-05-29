@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.util.Date;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 
 @Entity
 @Table(name = "appointments")
@@ -13,9 +15,9 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "calendar_id", referencedColumnName = "id", unique = true)
 //    @JsonBackReference
     private Calendar calendar;
@@ -36,24 +38,28 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getCalendarId() {
+    public Long getCalendarId() {
         return calendar.getId();
     }
 
-    public Date getCalendarDate() {
+    public LocalDate getCalendarDate() {
         return calendar.getDate();
     }
 
-    public Time getCalendarTime() {
-        return calendar.getTime();
+    public LocalTime getCalendarTimeStart() {
+        return calendar.getTimeStart();
+    }
+
+    public LocalTime getCalendarTimeEnd() {
+        return calendar.getTimeEnd();
     }
 
     public Integer getCalendarState() {
@@ -64,7 +70,7 @@ public class Appointment {
         return calendar.getRoom();
     }
 
-    public Integer getClinicServiceId() {
+    public Long getClinicServiceId() {
         return calendar.getClinicServiceId();
     }
 
@@ -96,7 +102,7 @@ public class Appointment {
         this.client = client;
     }
 
-    public Integer getClientId() {
+    public Long getClientId() {
         return client.getId();
     }
 
@@ -110,7 +116,7 @@ public class Appointment {
         this.medicalStaff = medicalStaff;
     }
 
-    public Integer getMedicalStaffId() {
+    public Long getMedicalStaffId() {
         return medicalStaff.getId();
     }
 }
