@@ -13,6 +13,5 @@ public interface ClinicSerService {
     void save(ClinicService clinicService) throws Exception;
 
     void remove(ClinicService clinicService);
-//    boolean remove(Long id) throws Exception;
 
 }

@@ -1,14 +1,9 @@
 package com.dungnt.healthclinic.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "calendars")
@@ -35,11 +30,9 @@ public class Calendar {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", referencedColumnName = "id")
-//    @JsonBackReference
     private ClinicService clinicService;
 
     @OneToOne(mappedBy = "calendar", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
     private Appointment appointment;
 
     public Calendar() {

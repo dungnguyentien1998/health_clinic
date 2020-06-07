@@ -1,11 +1,10 @@
 package com.dungnt.healthclinic.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
 
 @Entity
 @Table(name = "users")
@@ -33,13 +32,37 @@ public class User {
     @Column(name = "room")
     private String room;
 
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name="user_role",
+            joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id")})
+    private Set<Role> roles = new HashSet<>();
+
+    @JsonIgnore
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    @JsonIgnore
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Set<String> getRoleNames() {
+        Set<String> roleNames = new HashSet<>();
+        for (Role role: roles) {
+            roleNames.add(role.getName());
+        }
+        return roleNames;
+    }
+
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
     private Set<Appointment> clientAppointments = new HashSet<>();
 
     @OneToMany(mappedBy = "medicalStaff", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
     private Set<Appointment> medicalStaffAppointments = new HashSet<>();
+
 
     public User() {
     }

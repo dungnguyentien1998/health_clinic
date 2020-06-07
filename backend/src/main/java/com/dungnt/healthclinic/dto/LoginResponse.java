@@ -2,10 +2,16 @@ package com.dungnt.healthclinic.dto;
 
 public class LoginResponse {
     private String accessToken;
+    private Long userId;
     private String tokenType = "Bearer";
 
     public LoginResponse(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public LoginResponse(String accessToken, Long userId) {
+        this.accessToken = accessToken;
+        this.userId = userId;
     }
 
     public LoginResponse() {
@@ -25,5 +31,13 @@ public class LoginResponse {
 
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

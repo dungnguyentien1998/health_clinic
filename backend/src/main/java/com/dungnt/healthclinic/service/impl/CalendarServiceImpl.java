@@ -2,12 +2,11 @@ package com.dungnt.healthclinic.service.impl;
 
 import com.dungnt.healthclinic.dto.CalendarRequest;
 import com.dungnt.healthclinic.model.Calendar;
+import com.dungnt.healthclinic.model.ClinicService;
 import com.dungnt.healthclinic.repository.CalendarRepository;
 import com.dungnt.healthclinic.repository.ClinicServiceRepository;
 import com.dungnt.healthclinic.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -60,6 +59,41 @@ public class CalendarServiceImpl implements CalendarService {
         if (calendar.getRoom() == null) {
             throw new Exception("Gia tri phong kham null");
         }
+        boolean check = true;
+        String room = calendar.getRoom();
+        ClinicService service = calendar.getClinicService();
+        List<Calendar> calendarList = calendarRepository.findAllByRoom(room);
+        Calendar calendar1 = calendarList.get(0);
+        if (calendar1.getClinicService().getId() != service.getId()) {
+            check = false;
+        }
+        if (!check) {
+            throw new Exception("Phong ban chon khong su dung cho dich vu kham nay");
+        }
+
+        check = true;
+        LocalTime timeStart = calendar.getTimeStart();
+        LocalTime timeEnd = calendar.getTimeEnd();
+//        List<Calendar> calendars = calendarRepository.findAllByDateAndRoom(calendar.getDate(), room);
+        for (Calendar calendarTmp: calendarList) {
+            if (calendarTmp.getDate().isEqual(calendar.getDate())) {
+                LocalTime timeStartTmp = calendarTmp.getTimeStart();
+                LocalTime timeEndTmp = calendarTmp.getTimeEnd();
+                if (timeEnd.isAfter(timeStartTmp) && timeEnd.isBefore(timeEndTmp)) {
+                    check = false;
+                    break;
+                }
+                if (timeEnd.isAfter(timeEndTmp) && timeStart.isBefore(timeEndTmp)) {
+                    check = false;
+                    break;
+                }
+            }
+
+        }
+        if (!check) {
+            throw new Exception("Thoi gian ban chon khong phu hop do trung voi lich kham da co");
+        }
+
         calendarRepository.save(calendar);
     }
 

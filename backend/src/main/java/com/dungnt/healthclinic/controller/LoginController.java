@@ -31,8 +31,9 @@ public class LoginController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-        return new LoginResponse(jwt);
+        String token = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
+        Long userId = ((CustomUserDetails) authentication.getPrincipal()).getUser().getId();
+        return new LoginResponse(token, userId);
     }
 
 

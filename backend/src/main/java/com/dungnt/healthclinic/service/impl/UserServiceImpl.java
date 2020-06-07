@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
-
         userRepository.save(user);
     }
 
@@ -50,17 +49,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (username == null) {
+            try {
+                throw new Exception("Gia tri username null");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException("Khong the tim ra username " + username);
         }
         return new CustomUserDetails(user);
     }
 
-    public UserDetails loadUserById(Long id) {
+    public UserDetails loadUserById(Long id) throws Exception {
+        if (id == null) {
+            throw new Exception("Gia tri id null");
+        }
         Optional<User> user = userRepository.findById(id);
         if (user.get() == null) {
-            throw new UsernameNotFoundException("User not found with id = " + id);
+            throw new Exception("Khong tim ra user co id = " + id);
         }
         return new CustomUserDetails(user.get());
     }
