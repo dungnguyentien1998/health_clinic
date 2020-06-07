@@ -1,8 +1,6 @@
 package com.dungnt.healthclinic.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "questions")

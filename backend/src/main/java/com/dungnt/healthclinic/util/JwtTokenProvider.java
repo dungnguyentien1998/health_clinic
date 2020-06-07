@@ -5,10 +5,11 @@ import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import java.io.Serializable;
 import java.util.Date;
 
 @Component
-public class JwtTokenProvider {
+public class JwtTokenProvider implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     private final String JWT_SECRET = "SecretKey";

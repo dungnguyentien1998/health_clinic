@@ -1,7 +1,5 @@
 package com.dungnt.healthclinic.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +19,6 @@ public class ClinicService {
     private String description;
 
     @OneToMany(mappedBy = "clinicService", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
     private Set<Calendar> calendars = new HashSet<>();
 
     public ClinicService() {

@@ -4,7 +4,6 @@ public class AppointmentRequest {
     private Long calendarId;
     private Long clientId;
 
-
     public AppointmentRequest() {
     }
 
