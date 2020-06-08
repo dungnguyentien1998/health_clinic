@@ -119,8 +119,39 @@ public class CalendarController {
     }
 
     @RequestMapping(value = "/getCalendarsByDate", method = RequestMethod.POST)
-    public ResponseEntity<List<Calendar>> getCalendarsByDate(@RequestBody LocalDate date) {
+    public ResponseEntity<List<Calendar>> getCalendarsByDate(@RequestParam("date") String dateStr) {
+        LocalDate date = LocalDate.parse(dateStr);
         List<Calendar> calendars = calendarService.findAllByDate(date);
+        if (calendars.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(calendars, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getCalendarsByClinicService", method = RequestMethod.POST)
+    public ResponseEntity<List<Calendar>> getCalendarsByClinicService(@RequestParam("id") String clinicServiceIdStr) throws Exception {
+        Long clinicServiceId = Long.parseLong(clinicServiceIdStr);
+        Optional<ClinicService> service = clinicSerService.findById(clinicServiceId);
+        if (service.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<Calendar> calendars = calendarService.findAllByClinicService(service.get());
+        if (calendars.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(calendars, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getCalendarsByClinicServiceAndDate", method = RequestMethod.POST)
+    public ResponseEntity<List<Calendar>> getCalendarsByClinicServiceAndDate(@RequestParam("id") String clinicServiceIdStr,
+                                                                             @RequestParam("date") String dateStr) throws Exception {
+        Long clinicServiceId = Long.parseLong(clinicServiceIdStr);
+        Optional<ClinicService> service = clinicSerService.findById(clinicServiceId);
+        if (service.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        LocalDate date = LocalDate.parse(dateStr);
+        List<Calendar> calendars = calendarService.findAllByClinicServiceAndDate(service.get(), date);
         if (calendars.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

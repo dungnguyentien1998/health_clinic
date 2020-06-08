@@ -1,6 +1,7 @@
 package com.dungnt.healthclinic.repository;
 
 import com.dungnt.healthclinic.model.Calendar;
+import com.dungnt.healthclinic.model.ClinicService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,4 +30,6 @@ public interface CalendarRepository extends JpaRepository<Calendar, Long> {
     List<Calendar> findAllByRoom(String room);
 
     List<Calendar> findAllByDate(LocalDate date);
+    List<Calendar> findAllByClinicService(ClinicService service);
+    List<Calendar> findAllByClinicServiceAndDate(ClinicService service, LocalDate date);
 }

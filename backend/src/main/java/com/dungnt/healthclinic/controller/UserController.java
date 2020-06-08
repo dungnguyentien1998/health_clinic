@@ -51,12 +51,6 @@ public class UserController {
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/users", method = RequestMethod.POST)
-//    public ResponseEntity<User> createUser(@RequestBody User user){
-//        userService.save(user);
-//        return new ResponseEntity<>(user, HttpStatus.CREATED);
-//    }
-
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
     public ResponseEntity<User> updateUser(@PathVariable("id") Long id,
@@ -75,18 +69,31 @@ public class UserController {
     }
 
 
-    @PostMapping("/sign-up")
+//    @PostMapping("/sign-up")
+    @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
     public ResponseEntity signUp(@RequestBody SignUpRequest signUpRequest) throws Exception {
         User user = new User();
         ValidationService.validateCredentials(signUpRequest);
+        user.setName(signUpRequest.getName());
         user.setUsername(signUpRequest.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
+        user.setEmail(signUpRequest.getEmail());
         Role role = roleService.findByName(signUpRequest.getRole());
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/getUserByRoom", method = RequestMethod.POST)
+    public ResponseEntity<User> getUserByRoom(@RequestParam("room") String room) throws Exception {
+        List<User> users = userService.findAllByRoom(room);
+        if (users.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        User user = users.get(0);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 }

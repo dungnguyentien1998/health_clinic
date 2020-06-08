@@ -160,5 +160,15 @@ public class CalendarServiceImpl implements CalendarService {
         return calendarRepository.findAllByDate(date);
     }
 
+    @Override
+    public List<Calendar> findAllByClinicService(ClinicService service) {
+        return calendarRepository.findAllByClinicService(service);
+    }
+
+    @Override
+    public List<Calendar> findAllByClinicServiceAndDate(ClinicService service, LocalDate date) {
+        return calendarRepository.findAllByClinicServiceAndDate(service, date);
+    }
+
 
 }

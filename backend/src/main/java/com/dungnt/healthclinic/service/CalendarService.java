@@ -2,6 +2,7 @@ package com.dungnt.healthclinic.service;
 
 import com.dungnt.healthclinic.dto.CalendarRequest;
 import com.dungnt.healthclinic.model.Calendar;
+import com.dungnt.healthclinic.model.ClinicService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,4 +27,8 @@ public interface CalendarService {
     void checkCalendarState(Calendar calendar) throws Exception;
 
     List<Calendar> findAllByDate(LocalDate date);
+
+    List<Calendar> findAllByClinicService(ClinicService service);
+
+    List<Calendar> findAllByClinicServiceAndDate(ClinicService service, LocalDate date);
 }

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,6 +125,20 @@ public class AppointmentController {
         List<Appointment> appointments = appointmentService.findAllByMedicalStaff(medicalStaff.get());
         if (appointments.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getAppointmentsByDate", method = RequestMethod.POST)
+    public ResponseEntity<List<Appointment>> getAppointmentsByDate(@RequestParam("date") String dateStr) {
+        LocalDate date = LocalDate.parse(dateStr);
+        List<Calendar> calendars = calendarService.findAllByDate(date);
+        if (calendars.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<Appointment> appointments = new ArrayList<>();
+        for (Calendar calendar: calendars) {
+            appointments.add(calendar.getAppointment());
         }
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
