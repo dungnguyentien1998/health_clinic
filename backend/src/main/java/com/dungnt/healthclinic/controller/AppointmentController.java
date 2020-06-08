@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,9 +55,11 @@ public class AppointmentController {
         Appointment appointment = new Appointment();
         Optional<Calendar> calendar = calendarService.findById(calendarId);
         if (!calendar.isPresent()) {
-            // Can tao message cho truong hop nay
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        calendarService.checkCalendarState(calendar.get());
+        calendar.get().setState(1);
+        calendarService.save(calendar.get());
         appointment.setCalendar(calendar.get());
 
         Optional<User> client = userService.findById(clientId);
@@ -83,7 +86,15 @@ public class AppointmentController {
         if (!appointment.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        Calendar calendar = appointment.get().getCalendar();
         appointmentService.remove(appointment.get());
+        LocalDate now = LocalDate.now();
+        LocalDate calendarDate = calendar.getDate();
+        if (now.isBefore(calendarDate)) {
+            calendar.setState(0);
+            calendarService.save(calendar);
+        }
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

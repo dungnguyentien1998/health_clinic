@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,12 +64,14 @@ public class CalendarServiceImpl implements CalendarService {
         String room = calendar.getRoom();
         ClinicService service = calendar.getClinicService();
         List<Calendar> calendarList = calendarRepository.findAllByRoom(room);
-        Calendar calendar1 = calendarList.get(0);
-        if (calendar1.getClinicService().getId() != service.getId()) {
-            check = false;
-        }
-        if (!check) {
-            throw new Exception("Phong ban chon khong su dung cho dich vu kham nay");
+        if (!calendarList.isEmpty()) {
+            Calendar calendar1 = calendarList.get(0);
+            if (calendar1.getClinicService().getId() != service.getId()) {
+                check = false;
+            }
+            if (!check) {
+                throw new Exception("Phong ban chon khong su dung cho dich vu kham nay");
+            }
         }
 
         check = true;
@@ -139,7 +142,22 @@ public class CalendarServiceImpl implements CalendarService {
         LocalDate date = LocalDate.parse(calendarRequest.getDate());
         LocalTime timeStart = LocalTime.parse(calendarRequest.getTime());
         Long serviceId = Long.parseLong(calendarRequest.getServiceId());
-        return calendarRepository.findRecommendedCalendars(date, timeStart, serviceId, state);
+        List<Calendar> calendars = new ArrayList<>();
+        calendars.addAll(calendarRepository.findRecommendedCalendars1(date, timeStart, serviceId, state));
+        calendars.addAll(calendarRepository.findRecommendedCalendars2(date, serviceId, state));
+        return calendars;
+    }
+
+    @Override
+    public void checkCalendarState(Calendar calendar) throws Exception {
+        if (calendar.getState() == 1) {
+            throw new Exception("Lich kham da co nguoi dat");
+        }
+    }
+
+    @Override
+    public List<Calendar> findAllByDate(LocalDate date) {
+        return calendarRepository.findAllByDate(date);
     }
 
 

@@ -65,9 +65,9 @@ public class UserController {
         if (!currentUser.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        currentUser.get().setFirstName(user.getFirstName());
-        currentUser.get().setLastName(user.getLastName());
-        currentUser.get().setCountry(user.getCountry());
+        currentUser.get().setName(user.getName());
+        currentUser.get().setDateOfBirth(user.getDateOfBirth());
+        currentUser.get().setAddress(user.getAddress());
         currentUser.get().setEmail(user.getEmail());
         userService.save(currentUser.get());
 

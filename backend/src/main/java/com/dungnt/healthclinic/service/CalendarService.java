@@ -22,4 +22,8 @@ public interface CalendarService {
     List<Calendar> findSuitableCalendar(CalendarRequest calendarRequest, Integer state) throws Exception;
 
     List<Calendar> recommendCalendars(CalendarRequest calendarRequest, Integer state) throws Exception;
+
+    void checkCalendarState(Calendar calendar) throws Exception;
+
+    List<Calendar> findAllByDate(LocalDate date);
 }

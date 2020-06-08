@@ -3,6 +3,7 @@ package com.dungnt.healthclinic.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,10 +14,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    @Column(name = "first_name")
-    private String firstName;
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "address")
+    private String address;
     @Column(name = "country")
     private String country;
     @Column(name = "email")
@@ -27,10 +28,12 @@ public class User {
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(name = "privilege")
-    private Integer privilege;
     @Column(name = "room")
     private String room;
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+    @Column(name = "gender")
+    private String gender;
 
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
@@ -75,20 +78,20 @@ public class User {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getAddress() {
+        return address;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getCountry() {
@@ -131,12 +134,28 @@ public class User {
         this.password = password;
     }
 
-    public Integer getPrivilege() {
-        return privilege;
+    public String getRoom() {
+        return room;
     }
 
-    public void setPrivilege(Integer privilege) {
-        this.privilege = privilege;
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public Set<Appointment> getClientAppointments() {

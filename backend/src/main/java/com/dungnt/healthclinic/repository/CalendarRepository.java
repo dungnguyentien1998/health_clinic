@@ -20,8 +20,13 @@ public interface CalendarRepository extends JpaRepository<Calendar, Long> {
     List<Calendar> findSuitableCalendars(@Param("date")LocalDate date, @Param("timeStart")LocalTime timeStart, @Param("id")Long serviceId, @Param("state") Integer state);
 
     @Query(value = "Select ca.* from calendars ca where ca.date >= :date and ca.time_start = :timeStart and ca.service_id = :id and ca.state = :state", nativeQuery = true)
-    List<Calendar> findRecommendedCalendars(@Param("date")LocalDate date, @Param("timeStart")LocalTime timeStart, @Param("id")Long serviceId, @Param("state") Integer state);
+    List<Calendar> findRecommendedCalendars1(@Param("date")LocalDate date, @Param("timeStart")LocalTime timeStart, @Param("id")Long serviceId, @Param("state") Integer state);
+
+    @Query(value = "select ca.* from calendars ca where ca.date = :date and ca.service_id = :id and ca.state = :state", nativeQuery = true)
+    List<Calendar> findRecommendedCalendars2(@Param("date")LocalDate date, @Param("id")Long serviceId, @Param("state") Integer state);
 
     List<Calendar> findAllByDateAndRoom(LocalDate date, String room);
     List<Calendar> findAllByRoom(String room);
+
+    List<Calendar> findAllByDate(LocalDate date);
 }

@@ -13,7 +13,7 @@ public class Appointment {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calendar_id", referencedColumnName = "id", unique = true)
     private Calendar calendar;
 

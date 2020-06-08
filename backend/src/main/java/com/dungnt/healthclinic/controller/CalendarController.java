@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,14 +107,24 @@ public class CalendarController {
             List<Calendar> recommendedCalendars = calendarService.recommendCalendars(calendarRequest, 0);
             return new ResponseEntity<>(recommendedCalendars, HttpStatus.OK);
         } else {
-            // cap nhat trang thai state o day
+
             Long calendarId = suitableCalendars.get(0).getId();
             Optional<Calendar> calendar = calendarService.findById(calendarId);
             if (calendar.isPresent() && calendar.get().getState() == 0){
-                calendar.get().setState(1);
+//                calendar.get().setState(1);
                 calendarService.save(calendar.get());
             }
             return new ResponseEntity<>(suitableCalendars, HttpStatus.OK);
         }
     }
+
+    @RequestMapping(value = "/getCalendarsByDate", method = RequestMethod.POST)
+    public ResponseEntity<List<Calendar>> getCalendarsByDate(@RequestBody LocalDate date) {
+        List<Calendar> calendars = calendarService.findAllByDate(date);
+        if (calendars.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(calendars, HttpStatus.OK);
+    }
+
 }
