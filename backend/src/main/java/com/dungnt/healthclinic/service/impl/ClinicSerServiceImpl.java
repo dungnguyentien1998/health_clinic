@@ -40,6 +40,9 @@ public class ClinicSerServiceImpl implements ClinicSerService {
         if (clinicService.getName() == null || clinicService.getName() == "") {
             throw new Exception("Ten dich vu kham null");
         }
+        if (clinicService.getRoom() == null || clinicService.getRoom() == "") {
+            throw new Exception("Ten phong null");
+        }
         clinicServiceRepository.save(clinicService);
     }
 

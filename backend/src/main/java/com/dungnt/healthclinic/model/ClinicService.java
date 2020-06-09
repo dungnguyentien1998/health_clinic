@@ -12,11 +12,14 @@ public class ClinicService {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "room", nullable = false, unique = true)
+    private String room;
 
     @OneToMany(mappedBy = "clinicService", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Calendar> calendars = new HashSet<>();
@@ -46,6 +49,14 @@ public class ClinicService {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
     }
 
     public Set<Calendar> getCalendars() {

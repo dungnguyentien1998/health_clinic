@@ -55,6 +55,7 @@ public class ClinicServiceController {
         }
         currentClinicService.get().setName(clinicService.getName());
         currentClinicService.get().setDescription(clinicService.getDescription());
+
         clinicSerService.save(currentClinicService.get());
         return new ResponseEntity<>(currentClinicService.get(), HttpStatus.OK);
 

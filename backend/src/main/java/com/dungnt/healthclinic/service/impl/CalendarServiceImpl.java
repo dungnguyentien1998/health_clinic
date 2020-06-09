@@ -58,23 +58,11 @@ public class CalendarServiceImpl implements CalendarService {
             throw new Exception("Gia tri state null");
         }
         if (calendar.getRoom() == null) {
-            throw new Exception("Gia tri phong kham null");
-        }
-        boolean check = true;
-        String room = calendar.getRoom();
-        ClinicService service = calendar.getClinicService();
-        List<Calendar> calendarList = calendarRepository.findAllByRoom(room);
-        if (!calendarList.isEmpty()) {
-            Calendar calendar1 = calendarList.get(0);
-            if (calendar1.getClinicService().getId() != service.getId()) {
-                check = false;
-            }
-            if (!check) {
-                throw new Exception("Phong ban chon khong su dung cho dich vu kham nay");
-            }
+            throw new Exception("Gia tri room null");
         }
 
-        check = true;
+        boolean check = true;
+        List<Calendar> calendarList = calendarRepository.findAllByRoom(calendar.getRoom());
         LocalTime timeStart = calendar.getTimeStart();
         LocalTime timeEnd = calendar.getTimeEnd();
 //        List<Calendar> calendars = calendarRepository.findAllByDateAndRoom(calendar.getDate(), room);

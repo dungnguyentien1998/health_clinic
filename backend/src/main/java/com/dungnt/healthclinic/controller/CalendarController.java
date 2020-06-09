@@ -54,6 +54,7 @@ public class CalendarController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         calendar.setClinicService(clinicService.get());
+        calendar.setRoom(clinicService.get().getRoom());
         calendarService.save(calendar);
         return new ResponseEntity<>(calendar, HttpStatus.CREATED);
     }

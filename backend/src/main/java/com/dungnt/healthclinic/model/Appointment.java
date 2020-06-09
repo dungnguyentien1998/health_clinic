@@ -96,6 +96,10 @@ public class Appointment {
         return client.getId();
     }
 
+    public String getClientName() {
+        return client.getName();
+    }
+
     @JsonIgnore
     public User getMedicalStaff() {
         return medicalStaff;
@@ -108,5 +112,9 @@ public class Appointment {
 
     public Long getMedicalStaffId() {
         return medicalStaff.getId();
+    }
+
+    public String getMedicalStaffName() {
+        return medicalStaff.getName();
     }
 }
