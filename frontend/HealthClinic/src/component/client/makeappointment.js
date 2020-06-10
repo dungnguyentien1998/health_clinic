@@ -16,7 +16,7 @@ import styles from '../../style/makeappointment';
 const ScreenHeight = Dimensions.get('window').height;
 
 export default function MakeAppointment({route, navigation}) {
-    const {service, userId} = route.params;
+    const {service, userId, authorization} = route.params;
     const [datetime, setDatetime] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -56,7 +56,8 @@ export default function MakeAppointment({route, navigation}) {
                 method: 'POST',
                 headers: {
                     Accept: '*/*',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: authorization
                 },
                 body: JSON.stringify({
                     date: date,
@@ -67,11 +68,24 @@ export default function MakeAppointment({route, navigation}) {
             .then((response) => response.json())
             .then((json) => {
                 setCals(json);
-                if (json.length === 0) setNoCal(true);
+                if (json.length === 0) 
+                    setNoCal(true);
+                else
+                    setNoCal(false);
             })
             .catch((error) => {
                 setCals([]);
                 setNoCal(true);
+                Alert.alert(
+                    "Thông báo",
+                    "Lỗi kết nối!",
+                    [
+                        {
+                            text: "OK",
+                            style: "cancel"
+                        }
+                    ]
+                )
             })
             .finally(() => setLoading(false));
     }
@@ -223,7 +237,8 @@ export default function MakeAppointment({route, navigation}) {
                     style={styles.button}
                     onPress={() => navigation.navigate('SubmitAppointment', {
                         calendar: selectedCal,
-                        userId: userId
+                        userId: userId,
+                        authorization: authorization
                     })}
                 >
                     <Text style={styles.btnText}>Tạo lịch hẹn</Text>

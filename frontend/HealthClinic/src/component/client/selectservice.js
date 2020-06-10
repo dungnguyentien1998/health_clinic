@@ -7,20 +7,32 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     Alert,
+    FlatList,
 } from 'react-native';
 import styles from '../../style/selectservice';
+import {AuthContext} from '../../../App';
 
 export default function SelectService({route, navigation}) {
-    const {userId} = route.params;
+    const {userId, authorization} = route.params;
     const eyeIcon = require('../../icon/selectservice/eye.png');
     const earIcon = require('../../icon/selectservice/ear.png');
     const teethIcon = require('../../icon/selectservice/teeth.png');
     const skinIcon = require('../../icon/selectservice/skin.png');
     const [services, setServices] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    const {signOut} = React.useContext(AuthContext);
 
-    useEffect(() => {
-        fetch('http://192.168.56.1:8080/clinicservices')
+    useEffect(
+        () => navigation.addListener('focus', () => {
+            setLoading(true);
+            fetch('http://192.168.56.1:8080/clinicservices', {
+                method: 'GET',
+                headers: {
+                    Accept: '*/*',
+                    'Content-Type': 'application/json',
+                    Authorization: authorization
+                }
+            })
             .then((response) => response.json())
             .then((json) => setServices(json))
             .catch((error) => 
@@ -36,43 +48,44 @@ export default function SelectService({route, navigation}) {
                 )
             )
             .finally(() => setLoading(false))
-    }, []);
+        })
+    ,[]);
+
+    function setIcon(name) {
+        switch (name) {
+            case 'Khám mắt':
+                return eyeIcon;
+            case 'Khám da liễu':
+                return skinIcon;
+            case 'Khám tai mũi họng':
+                return earIcon;
+            case 'Khám răng':
+                return teethIcon;
+            default:
+                return eyeIcon;
+        }
+    }
     
     return (
         <View style={styles.container}>
             {isLoading ? <ActivityIndicator size={100} color='#191970'/> : (
                 <View style={styles.container}>
-                    <TouchableOpacity
-                        style={styles.service} 
-                        onPress={() => navigation.navigate('ServiceDetail', {service: services[0], userId: userId})}
-                    >
-                        <Image style={styles.icon} source={eyeIcon}/>
-                        <Text style={styles.serviceName}>{(services[0]).name}</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        style={styles.service}
-                        onPress={() => navigation.navigate('ServiceDetail', {service: services[1], userId: userId})}
-                    >
-                        <Image style={styles.icon} source={earIcon}/>
-                        <Text style={styles.serviceName}>{(services[1]).name}</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        style={styles.service}
-                        onPress={() => navigation.navigate('ServiceDetail', {service: services[2], userId: userId})}
-                    >
-                        <Image style={styles.icon} source={teethIcon}/>
-                        <Text style={styles.serviceName}>{(services[2]).name}</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.service} 
-                        onPress={() => navigation.navigate('ServiceDetail', {service: services[3], userId: userId})}
-                    >
-                        <Image style={styles.icon} source={skinIcon}/>
-                        <Text style={styles.serviceName}>{(services[3]).name}</Text>
-                    </TouchableOpacity>
+                    <View style={{flex: 0.8}}>
+                        <FlatList
+                            data={services}
+                            renderItem={({item}) => (
+                                <TouchableOpacity
+                                    style={styles.service} 
+                                    onPress={() => navigation.navigate('ServiceDetail', 
+                                            {service: item, userId: userId, authorization: authorization})}
+                                >
+                                    <Image style={styles.icon} source={setIcon(item.name)}/>
+                                    <Text style={styles.serviceName}>{item.name}</Text>
+                                </TouchableOpacity>
+                            )}
+                            keyExtractor={item => item.id.toString()}
+                        />
+                    </View>
 
                     <View style={styles.textContainer}>
                         <View style={styles.line}></View>
@@ -81,7 +94,7 @@ export default function SelectService({route, navigation}) {
                     </View>
 
                     <View style={styles.btnContainer}>
-                        <TouchableOpacity>
+                            <TouchableOpacity onPress={signOut}>
                             <Text style={styles.btnSurvey}>KHẢO SÁT SỨC KHỎE</Text>
                         </TouchableOpacity>
                     </View>

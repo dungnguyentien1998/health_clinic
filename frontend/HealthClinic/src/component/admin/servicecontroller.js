@@ -10,11 +10,19 @@ import {
 import styles from '../../style/servicecontroller';
 
 export default function ServiceController({route, navigation}) {
+    const {userId, authorization} = route.params;
     const [services, setServices] = useState([]);
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('http://192.168.56.1:8080/clinicservices')
+        fetch('http://192.168.56.1:8080/clinicservices', {
+            method: 'GET',
+            headers: {
+                Accept: '*/*',
+                'Content-Type': 'application/json',
+                Authorization: authorization
+            }
+        })
             .then((response) => response.json())
             .then((json) => setServices(json))
             .catch((error) => 

@@ -9,12 +9,13 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function Controller({route, navigation}) {
+    const {userId, authorization} = route.params;
     return (
         <View style={styles.container}>
             <View style={styles.row}>
                 <TouchableOpacity 
                     style={[styles.item, {backgroundColor: '#e6e6fa'}]}
-                    onPress={() => navigation.navigate('ServiceController')}
+                    onPress={() => navigation.navigate('ServiceController', {userId: userId, authorization: authorization})}
                 >
                     <FontAwesome5 style={styles.icon} name='medkit' size={60} color='#191970' solid/>
                     <Text style={styles.title}>Quản lý dịch vụ</Text>
@@ -26,7 +27,10 @@ export default function Controller({route, navigation}) {
                 </TouchableOpacity>
             </View>
             <View style={styles.row}>
-                <TouchableOpacity style={[styles.item, {backgroundColor: '#e6e6fa'}]}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('AppointmentController', {userId: userId, authorization: authorization})} 
+                    style={[styles.item, {backgroundColor: '#e6e6fa'}]}
+                >
                     <FontAwesome5 style={styles.icon} name='calendar-check' size={60} color='#191970' solid/>
                     <Text style={styles.title}>Quản lý lịch hẹn</Text>
                 </TouchableOpacity>

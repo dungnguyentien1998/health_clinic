@@ -14,12 +14,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ClientTabNavigator from './src/component/client/tabnavigator';
 import AdminTabNavigator from './src/component/admin/admintabnavigator';
-import AsyncStorage from '@react-native-community/async-storage';
 import {styles as signinstyles} from './src/style/signin';
 import {styles as signupstyles} from './src/style/signup';
 import styles from './src/style/home';
 
-const AuthContext = React.createContext();
+export const AuthContext = React.createContext();
 const Stack = createStackNavigator();
 
 // -------------- Man hinh dang nhap --------------
@@ -62,7 +61,7 @@ function SignIn({navigation}) {
             <TouchableOpacity
                 onPress={async () => {
                 setLoading(true);
-                result = await signIn({ username, password });
+                result = await signIn(username, password);
                 setLoading(false);
                 if (result === 1)
                     Alert.alert(
@@ -162,24 +161,18 @@ function SignUp({navigation}) {
     );
 }
 
-
-
-
 export default function App({ navigation }) {
     const [state, dispatch] = React.useReducer(
         (prevState, action) => {
             switch (action.type) {
-                case 'RESTORE_TOKEN':
-                    return {
-                        ...prevState,
-                        userToken: action.token,
-                    };
                 case 'SIGN_IN':
                     return {
                         ...prevState,
                         isSignout: false,
                         userToken: action.token,
-                        isAdmin: action.isAdmin
+                        userId: action.userId,
+                        userRole: action.role,
+                        tokenType: action.tokenType,
                     };
                 case 'SIGN_OUT':
                     return {
@@ -190,31 +183,18 @@ export default function App({ navigation }) {
             }
         },
         {   
-            id: '7',
+            userId: -1,
             isSignout: false,
             userToken: null,
-            isAdmin: false
+            userRole: '',
+            tokenType: ''
         }
     );
 
-    React.useEffect(() => {
-        const bootstrapAsync = async () => {
-            let userToken;
-            try {
-                userToken = await AsyncStorage.getItem('userToken');
-            } catch (e) {
-        
-            }
-            dispatch({ type: 'RESTORE_TOKEN', token: userToken });
-        };
-
-        bootstrapAsync();
-    }, []);
-
     const authContext = React.useMemo(
         () => ({
-            signIn: async data => {
-                let userToken;
+            signIn: async (username, password) => {
+                let userToken, userId, tokenType, role;
                 let result = 0;
                 try {
                     let response = await fetch('http://192.168.56.1:8080/login', {
@@ -224,26 +204,32 @@ export default function App({ navigation }) {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            username: data.username,
-                            password: data.password
+                            username: username,
+                            password: password
                         })
                     })
                     let json = await response.json();
-                    userToken = await json.accessToken === undefined ? null: json.accessToken;
+                    userToken = await json.accessToken === undefined ? null : json.accessToken;
+                    userId = await json.accessToken === undefined ? -1 : json.userId;
+                    role = await json.accessToken === undefined ? '' : json.role;
+                    tokenType = await json.accessToken === undefined ? '' : json.tokenType;
                     if (userToken != null) result = 2;
                 } catch (e) {
                     userToken = null;
+                    userId = -1;
+                    userRole = '';
+                    tokenType = '';
                     result = 1;
                 }
-                dispatch({ type: 'SIGN_IN', token: userToken, isAdmin: (data.username === "0111111111") });
+                dispatch({ type: 'SIGN_IN', token: userToken, userId: userId, role: role, tokenType: tokenType });
                 return result;
             },
 
-            signOut: () => dispatch({ type: 'SIGN_OUT' }),
+            signOut: async () => dispatch({ type: 'SIGN_OUT' }),
 
             signUp: async data => {
                 dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
-            },
+            }
         }),[]
     );
 
@@ -263,19 +249,18 @@ export default function App({ navigation }) {
                             options = {{title: "Đăng ký"}}
                         />
                     </>
-                    ) : (
-                    
-                    state.isAdmin ?
+                    ) : ( 
+                    state.userRole === 'ADMIN' ?
                     <Stack.Screen 
                         name="AdminTabNavigator" component={AdminTabNavigator}
                         options = {{title: "Trang chủ"}}
-                        initialParams={{userId: state.id}}
+                        initialParams={{userId: state.userId, authorization: (state.tokenType + ' ' + state. userToken)}}
                     />
                     :
                     <Stack.Screen 
                         name="ClientTabNavigator" component={ClientTabNavigator}
                         options = {{title: "Trang chủ"}}
-                        initialParams={{userId: state.id}}
+                        initialParams={{userId: state.userId, authorization: (state.tokenType + ' ' + state. userToken)}}
                     />
                     )}
                 </Stack.Navigator>
