@@ -7,6 +7,8 @@ import Controller from './controller';
 import ServiceController from './servicecontroller';
 import AppointmentController from './appointmentcontroller';
 import PersonalInformation from './personalinformation';
+import ServiceDetail from './servicedetail';
+import AddService from './addservice';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator(); 
@@ -30,6 +32,8 @@ function ControllerScreen({route, navigation}) {
             <ControllerStack.Screen name="Controller" component={Controller} options={{title: "Công cụ quản lý"}} 
                 initialParams={{userId: userId, authorization: authorization}}/>
             <ControllerStack.Screen name="ServiceController" component={ServiceController} options={{title: "Dịch vụ phòng khám"}}/>
+            <ControllerStack.Screen name="ServiceDetail" component={ServiceDetail} options={{title: "Chi tiết dịch vụ"}}/>
+            <ControllerStack.Screen name="AddService" component={AddService} options={{title: "Thêm dịch vụ"}}/>
             <ControllerStack.Screen name="AppointmentController" component={AppointmentController} options={{title: "Quản lý lịch hẹn"}}/>
         </ControllerStack.Navigator>
     );
