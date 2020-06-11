@@ -12,17 +12,29 @@ import styles from '../../style/viewappointment';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export default function ViewAppointment({route, navigation}) {
-    const {userId} = route.params;
+    const {userId, authorization} = route.params;
     const [isLoading, setLoading] = useState(true);
     const [appts, setAppts] = useState([]);
     const [noAppt, setNoAppt] = useState(false);
 
-    React.useEffect(() => {
-        fetch('http://192.168.56.1:8080/getClientAppointments/' + userId)
-            .then((response) => response.status === 204 ? [] : response.json())
+    React.useEffect(
+        () => navigation.addListener('focus', () => {
+            setLoading(true);
+            fetch('http://192.168.56.1:8080/getClientAppointments/' + userId, {
+                method: 'GET',
+                headers: {
+                    Accept: '*/*',
+                    'Content-Type': 'application/json',
+                    Authorization: authorization
+                },
+            })
+            .then((response) => (response.status === 204 ? [] : response.json()))
             .then((json) => {
                 setAppts(json);
-                if (json.length === 0) setNoAppt(true); 
+                if (json.length === 0) 
+                    setNoAppt(true);
+                else
+                    setNoAppt(false);
             })
             .catch((error) => {
                 Alert.alert(
@@ -37,7 +49,8 @@ export default function ViewAppointment({route, navigation}) {
                 );
             })
             .finally(() => setLoading(false))
-    }, []);
+        })
+    ,[]);
 
     function changeDateFormat(date, mode) {
         if (mode === 0) {
@@ -73,7 +86,7 @@ export default function ViewAppointment({route, navigation}) {
                         data={appts}
                         renderItem={({item}) => (
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('AppointmentDetail', {appt: item, userId: userId})}
+                                onPress={() => navigation.navigate('AppointmentDetail', {appt: item, userId: userId, authorization: authorization})}
                                 style={{backgroundColor: 'white', height: 120, marginVertical: 10, justifyContent: 'center', elevation: 0, borderColor: '#191970', borderWidth: 3, borderRadius: 10}}
                             >
                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>

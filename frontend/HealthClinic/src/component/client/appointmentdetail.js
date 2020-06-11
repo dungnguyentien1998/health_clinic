@@ -14,19 +14,8 @@ import ClientTabNavigator from './tabnavigator';
 const screenHeight = Dimensions.get('window').height;
 
 export default function AppointmentDetail({route, navigation}) {
-    const {appt, userId} = route.params;
-    const [name, setName] = useState("");
+    const {appt, userId, authorization} = route.params;
     const [isLoading, setLoading] = useState(false);
-
-    React.useEffect(() => {
-        fetch('http://192.168.56.1:8080/users/' + appt.medicalStaffId)
-            .then((response) => response.json())
-            .then((json) => {
-                setName(json.lastName);
-                console.log(appt.id);
-            })
-            .catch((error) => {})
-    }, []);
 
     function changeDateFormat(date, mode) {
         if (mode === 0) {
@@ -50,7 +39,12 @@ export default function AppointmentDetail({route, navigation}) {
 
     function deleteAppt() {
         fetch('http://192.168.56.1:8080/appointments/' + appt.id, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    Accept: '*/*',
+                    'Content-Type': 'application/json',
+                    Authorization: authorization
+                },
             })
             .then((response) => {
                 setLoading(false);
@@ -61,7 +55,7 @@ export default function AppointmentDetail({route, navigation}) {
                         [
                             {
                                 text: "OK",
-                                onPress: () => navigation.push('ViewAppointment')
+                                onPress: () => navigation.popToTop()
                             }
                         ]
                     );
@@ -140,7 +134,7 @@ export default function AppointmentDetail({route, navigation}) {
                     <FontAwesome5 name='user-md' color='#191970' size={25}/>
                     <Text style={styles.title}>Nhân viên y tế</Text>
                 </View>
-                <Text style={styles.content}>{name}</Text>
+                <Text style={styles.content}>{appt.medicalStaffName}</Text>
             </View>
             <View style={styles.btnContainer}>
                 <TouchableOpacity 

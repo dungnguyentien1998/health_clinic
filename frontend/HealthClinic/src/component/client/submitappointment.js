@@ -9,19 +9,18 @@ import {
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import styles from '../../style/submitappointment';
-
 const screenHeight = Dimensions.get('window').height;
 
 export default function SubmitAppointment({route, navigation}) {
-    const {calendar, userId} = route.params;
+    const {calendar, userId, authorization} = route.params;
     const [isLoading, setLoading] = useState(false);
-
     function createAppointment() {
         fetch('http://192.168.56.1:8080/appointments', {
                 method: 'POST',
                 headers: {
                     Accept: '*/*',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: authorization
                 },
                 body: JSON.stringify({
                     calendarId: calendar.id,
@@ -37,7 +36,7 @@ export default function SubmitAppointment({route, navigation}) {
                         [
                             {
                                 text: "OK",
-                                onPress: () => navigation.push('SelectService')
+                                onPress:  () => navigation.popToTop()
                             }
                         ]
                     );

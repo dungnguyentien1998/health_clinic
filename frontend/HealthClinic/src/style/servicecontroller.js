@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         height: 80, 
         marginVertical: 10,
         justifyContent: 'center', 
-        elevation: 10, 
+        elevation: 5, 
         borderRadius: 15
     },
     name: {

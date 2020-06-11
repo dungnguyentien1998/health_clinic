@@ -10,7 +10,6 @@ import styles from '../../style/home';
 
 export default function Home({route, navigation}) {
     const {userId} = route.params;
-    React.useEffect(() => {console.log(userId)}, []);
     const [img, setImg] = useState(require('../../image/home/image1.jpg'));
     return (
         <View style={styles.container}>

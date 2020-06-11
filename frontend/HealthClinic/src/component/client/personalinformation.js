@@ -6,12 +6,13 @@ import {
     TextInput,
     ScrollView,
     ActivityIndicator,
+    Alert
 } from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import styles from '../../style/personalinformation';
 
 export default function PersonalInformation({route, params}) {
-    const {userId} = route.params;
+    const {userId, authorization} = route.params;
     const [user, setUser] = useState({});
     const [accountImg, setAccountImg] = useState(require('../../image/personalinformation/account.png'));
     const [editableInfo, setEditableInfo] = useState(false);
@@ -19,12 +20,47 @@ export default function PersonalInformation({route, params}) {
     const [isLoading, setLoading] = useState(true);
 
     React.useEffect(() => {
-        fetch('http://192.168.56.1:8080/users/' + userId)
+        fetch('http://192.168.56.1:8080/users/' + userId, {
+            method: 'GET',
+            headers: {
+                Accept: '*/*',
+                'Content-Type': 'application/json',
+                Authorization: authorization
+            }
+        })
             .then((response) => response.json())
-            .then((json) => setUser(json))
-            .catch((error) => console.error(error))
+            .then((json) => {
+                setUser(json);
+                return json;
+            })
+            .then((json) => setGender(json.gender))
+            .catch((error) => 
+                Alert.alert(
+                    "Thông báo",
+                    "Lỗi kết nối!",
+                    [
+                        {
+                            text: "OK",
+                            style: "cancel"
+                        }
+                    ]
+                )
+            )
             .finally(() => setLoading(false))
     }, []);
+
+    function changeDateFormat(date, mode) {
+        if (mode === 0) {
+            // Chuyen tu dang 29/06/2020 thanh 2020-06-29
+            tmp = date.split("/");
+            return (tmp[2] + "-" + tmp[1] + "-" + tmp[0]);
+        }
+        else if (mode === 1) {
+            // Chuyen tu dang 2020-06-29 thanh 29/06/2020
+            tmp = date.split("-");
+            return (tmp[2] + "/" + tmp[1] + "/" + tmp[0]);
+        }
+    }
 
     return (
         isLoading ? <ActivityIndicator style={styles.loading} size={100} color='#191970'/> :
@@ -37,7 +73,7 @@ export default function PersonalInformation({route, params}) {
             <View style={styles.infoContainer}>
 
                 <Text style={styles.label}>Họ tên</Text>
-                <TextInput style={styles.txtInfo} value={user.lastName} editable={editableInfo}/>
+                <TextInput style={styles.txtInfo} value={user.name} editable={editableInfo}/>
                 <View style={styles.line}></View>
                 
                 <Text style={styles.label}>Giới tính</Text>
@@ -58,11 +94,11 @@ export default function PersonalInformation({route, params}) {
                 <View style={styles.line}></View>
 
                 <Text style={styles.label}>Ngày sinh</Text>
-                <TextInput style={styles.txtInfo} value={"25/04/1998"} editable={editableInfo}/>
+                <TextInput style={styles.txtInfo} value={changeDateFormat(user.dateOfBirth, 1)} editable={editableInfo}/>
                 <View style={styles.line}></View>
 
                 <Text style={styles.label}>Địa chỉ</Text>
-                <TextInput style={styles.txtInfo} value={"Hà Nội"} editable={editableInfo}/>
+                <TextInput style={styles.txtInfo} value={user.address} editable={editableInfo}/>
                 <View style={styles.line}></View>
 
                 <Text style={styles.label}>Số điện thoại</Text>

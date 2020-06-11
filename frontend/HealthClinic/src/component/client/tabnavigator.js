@@ -23,19 +23,19 @@ const ViewCalendarStack = createStackNavigator();
 const AccountStack = createStackNavigator();
 
 function HomeScreen({route, navigation}) {
-    const {userId} = route.params;
+    const {userId, authorization} = route.params;
     return (
         <HomeStack.Navigator>
-            <HomeStack.Screen name="Home" component={Home} options={{title: "Trang chủ"}} initialParams={{userId: userId}}/>
+            <HomeStack.Screen name="Home" component={Home} options={{title: "Trang chủ"}} initialParams={{userId: userId, authorization: authorization}}/>
         </HomeStack.Navigator>
     );
 }
 
 function CreateCalendarScreen({route, navigation}) {
-    const {userId} = route.params;
+    const {userId, authorization} = route.params;
     return (
         <CreateCalendarStack.Navigator>
-            <CreateCalendarStack.Screen name="SelectService" component={SelectService} options={{title: "Chọn dịch vụ"}} initialParams={{userId: userId}}/>
+            <CreateCalendarStack.Screen name="SelectService" component={SelectService} options={{title: "Chọn dịch vụ"}} initialParams={{userId: userId, authorization: authorization}}/>
             <CreateCalendarStack.Screen name="ServiceDetail" component={ServiceDetail} options={{title: "Chi tiết dịch vụ"}}/>
             <CreateCalendarStack.Screen name="MakeAppointment" component={MakeAppointment} options={{title: "Tạo lịch hẹn"}}/>
             <CreateCalendarStack.Screen name="SubmitAppointment" component={SubmitAppointment} options={{title: "Chi tiết lịch hẹn"}}/>
@@ -44,25 +44,25 @@ function CreateCalendarScreen({route, navigation}) {
 }
 
 function ViewCalendarScreen({route, navigation}) {
-    const {userId} = route.params;
+    const {userId, authorization} = route.params;
     return (
         <ViewCalendarStack.Navigator>
-            <ViewCalendarStack.Screen name="ViewAppointment" component={ViewAppointment} options={{title: "Lịch hẹn của bạn"}} initialParams={{userId: userId}}/>
+            <ViewCalendarStack.Screen name="ViewAppointment" component={ViewAppointment} options={{title: "Lịch hẹn của bạn"}} initialParams={{userId: userId, authorization: authorization}}/>
             <ViewCalendarStack.Screen name="AppointmentDetail" component={AppointmentDetail} options={{title: "Chi tiết lịch hẹn"}}/>
         </ViewCalendarStack.Navigator>
   );
 }
 function AccountScreen({route, navigation}) {
-    const {userId} = route.params;
+    const {userId, authorization} = route.params;
     return (
         <AccountStack.Navigator>
-            <AccountStack.Screen name="PersonalInformation" component={PersonalInformation} options={{title: "Thông tin cá nhân"}} initialParams={{userId: userId}}/>
+            <AccountStack.Screen name="PersonalInformation" component={PersonalInformation} options={{title: "Thông tin cá nhân"}} initialParams={{userId: userId, authorization: authorization}}/>
         </AccountStack.Navigator>
     );
 }
 
 export default function ClientTabNavigator({route, navigation}) {
-    const {userId} = route.params;
+    const {userId, authorization} = route.params;
     return (
         <Tab.Navigator
             screenOptions={({route}) => ({
@@ -86,10 +86,10 @@ export default function ClientTabNavigator({route, navigation}) {
                 keyboardHidesTabBar: true,
             }}
         >
-            <Tab.Screen name="Trang chủ" component={HomeScreen} initialParams={{userId: userId}}/>
-            <Tab.Screen name="Tạo lịch hẹn" component={CreateCalendarScreen} initialParams={{userId: userId}}/>
-            <Tab.Screen name="Xem lịch hẹn" component={ViewCalendarScreen} initialParams={{userId: userId}}/>
-            <Tab.Screen name="Tài khoản" component={AccountScreen} initialParams={{userId: userId}}/>
+            <Tab.Screen name="Trang chủ" component={HomeScreen} initialParams={{userId: userId, authorization: authorization}}/>
+            <Tab.Screen name="Tạo lịch hẹn" component={CreateCalendarScreen} initialParams={{userId: userId, authorization: authorization}}/>
+            <Tab.Screen name="Xem lịch hẹn" component={ViewCalendarScreen} initialParams={{userId: userId, authorization: authorization}}/>
+            <Tab.Screen name="Tài khoản" component={AccountScreen} initialParams={{userId: userId, authorization: authorization}}/>
         </Tab.Navigator>
     );
 }
