@@ -39,7 +39,6 @@ public class CalendarServiceImpl implements CalendarService {
         return calendarRepository.findById(id);
     }
 
-    // Can kiem tra cac kieu Date, Time cho hop logic
     @Override
     public void save(Calendar calendar) throws Exception {
         if (calendar == null) {
@@ -65,7 +64,7 @@ public class CalendarServiceImpl implements CalendarService {
         List<Calendar> calendarList = calendarRepository.findAllByRoom(calendar.getRoom());
         LocalTime timeStart = calendar.getTimeStart();
         LocalTime timeEnd = calendar.getTimeEnd();
-//        List<Calendar> calendars = calendarRepository.findAllByDateAndRoom(calendar.getDate(), room);
+
         for (Calendar calendarTmp: calendarList) {
             if (calendarTmp.getDate().isEqual(calendar.getDate())) {
                 LocalTime timeStartTmp = calendarTmp.getTimeStart();
@@ -93,8 +92,21 @@ public class CalendarServiceImpl implements CalendarService {
         calendarRepository.delete(calendar);
     }
 
+    /**
+     *
+     * @param calendarRequest
+     * @param state
+     * @return List
+     * @throws Exception
+     * @description phuong thuc tra ve lich hen theo tham so dau vao la ngay, gio, dich vu kham
+     */
+
     @Override
     public List<Calendar> findSuitableCalendar(CalendarRequest calendarRequest, Integer state) throws Exception {
+        if (calendarRequest == null) {
+            throw new Exception("Gia tri calendar request null");
+        }
+
         if (calendarRequest.getDate() == null) {
             throw new Exception("Gia tri date null");
         }
@@ -113,8 +125,21 @@ public class CalendarServiceImpl implements CalendarService {
         return calendarRepository.findSuitableCalendars(date, timeStart, serviceId, state);
     }
 
+    /**
+     *
+     * @param calendarRequest
+     * @param state
+     * @return List
+     * @throws Exception
+     * @description phuong thuc goi y cac cuoc hen dua vao tham so dau vao la ngay, gio, dich vu kham
+     */
+
     @Override
     public List<Calendar> recommendCalendars(CalendarRequest calendarRequest, Integer state) throws Exception {
+        if (calendarRequest == null) {
+            throw new Exception("Gia tri calendar request null");
+        }
+
         if (calendarRequest.getDate() == null) {
             throw new Exception("Gia tri date null");
         }
@@ -136,6 +161,13 @@ public class CalendarServiceImpl implements CalendarService {
         return calendars;
     }
 
+    /**
+     *
+     * @param calendar
+     * @throws Exception
+     * @description Kiem tra trang thai cua lich
+     */
+
     @Override
     public void checkCalendarState(Calendar calendar) throws Exception {
         if (calendar.getState() == 1) {
@@ -144,7 +176,10 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public List<Calendar> findAllByDate(LocalDate date) {
+    public List<Calendar> findAllByDate(LocalDate date) throws Exception {
+        if (date == null) {
+            throw new Exception("Tham so date null");
+        }
         return calendarRepository.findAllByDate(date);
     }
 

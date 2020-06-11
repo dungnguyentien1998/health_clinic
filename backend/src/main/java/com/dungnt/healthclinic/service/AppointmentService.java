@@ -15,10 +15,6 @@ public interface AppointmentService {
 
     void remove(Appointment appointment);
 
-    List<Appointment> findAllByClientId(Long clientId);
-
-    List<Appointment> findAllByMedicalStaffId(Long medicalStaffId);
-
     List<Appointment> findAllByClient(User client);
 
     List<Appointment> findAllByMedicalStaff(User medicalStaff);

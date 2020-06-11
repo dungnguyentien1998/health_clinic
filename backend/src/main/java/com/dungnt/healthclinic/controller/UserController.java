@@ -24,12 +24,15 @@ public class UserController {
     private UserService userService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private RoleService roleService;
+    private ValidationService validationService;
 
     @Autowired
-    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder, RoleService roleService) {
+    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder, RoleService roleService,
+                          ValidationService validationService) {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.roleService = roleService;
+        this.validationService = validationService;
     }
 
 //    @PreAuthorize("hasRole('ADMIN')")
@@ -59,6 +62,7 @@ public class UserController {
         if (!currentUser.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        validationService.checkNullParameter(user);
         currentUser.get().setName(user.getName());
         currentUser.get().setDateOfBirth(user.getDateOfBirth());
         currentUser.get().setAddress(user.getAddress());
@@ -69,11 +73,10 @@ public class UserController {
     }
 
 
-//    @PostMapping("/sign-up")
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
     public ResponseEntity signUp(@RequestBody SignUpRequest signUpRequest) throws Exception {
         User user = new User();
-        ValidationService.validateCredentials(signUpRequest);
+        validationService.validateCredentials(signUpRequest);
         user.setName(signUpRequest.getName());
         user.setUsername(signUpRequest.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));

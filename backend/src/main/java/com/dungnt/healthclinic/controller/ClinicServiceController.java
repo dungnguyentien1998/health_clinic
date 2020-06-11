@@ -2,13 +2,13 @@ package com.dungnt.healthclinic.controller;
 
 import com.dungnt.healthclinic.model.ClinicService;
 import com.dungnt.healthclinic.service.ClinicSerService;
+import com.dungnt.healthclinic.service.impl.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -16,10 +16,12 @@ import java.util.Optional;
 @RestController
 public class ClinicServiceController {
     private ClinicSerService clinicSerService;
+    private ValidationService validationService;
 
     @Autowired
-    public ClinicServiceController(ClinicSerService clinicSerService) {
+    public ClinicServiceController(ClinicSerService clinicSerService, ValidationService validationService) {
         this.clinicSerService = clinicSerService;
+        this.validationService = validationService;
     }
 
     @RequestMapping(value = "/clinicservices", method = RequestMethod.GET)
@@ -55,7 +57,8 @@ public class ClinicServiceController {
         }
         currentClinicService.get().setName(clinicService.getName());
         currentClinicService.get().setDescription(clinicService.getDescription());
-
+        validationService.checkRoom(clinicService.getRoom());
+        currentClinicService.get().setRoom(clinicService.getRoom());
         clinicSerService.save(currentClinicService.get());
         return new ResponseEntity<>(currentClinicService.get(), HttpStatus.OK);
 

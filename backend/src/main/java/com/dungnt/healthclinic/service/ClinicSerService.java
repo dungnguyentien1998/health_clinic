@@ -14,4 +14,6 @@ public interface ClinicSerService {
 
     void remove(ClinicService clinicService);
 
+    ClinicService findByRoom(String room) throws Exception;
+
 }

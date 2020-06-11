@@ -6,10 +6,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
-public class CustomUserDetails implements UserDetails {
+public class MyUserDetails implements UserDetails {
     User user;
 
-    public CustomUserDetails(User user) {
+    public MyUserDetails(User user) {
         this.user = user;
     }
 
@@ -17,10 +17,6 @@ public class CustomUserDetails implements UserDetails {
         return user;
     }
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
-//    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = user.getRoles();

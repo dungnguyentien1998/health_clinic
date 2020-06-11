@@ -44,7 +44,6 @@ public class CalendarController {
         return new ResponseEntity<>(calendar.get(), HttpStatus.OK);
     }
 
-    ///////////////////
     @RequestMapping(value = "/clinicservices/{clinicserviceId}/calendars", method = RequestMethod.POST)
     public ResponseEntity<Calendar> createCalendar(@PathVariable("clinicserviceId") Long clinicServiceId,
                                                    @RequestBody Calendar calendar) throws Exception {
@@ -94,33 +93,31 @@ public class CalendarController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     *
+     * @param calendarRequest
+     * @return List
+     * @throws Exception
+     * @description Lay ra lich hen mong muon, hoac goi y mot so lich hen neu lich hen mong muon khong the dap ung
+     */
     @RequestMapping(value = "/getCalendars", method = RequestMethod.POST)
     public ResponseEntity<List<Calendar>> getSuitableCalendars(@RequestBody CalendarRequest calendarRequest) throws Exception {
-//        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        LocalDate date = LocalDate.parse(calendarRequest.getDate(), formatter1);
-//        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm:ss");
-//        LocalTime timeStart = LocalTime.parse(calendarRequest.getTime(), formatter2);
-//        LocalDate date = LocalDate.parse(calendarRequest.getDate());
-//        LocalTime timeStart = LocalTime.parse(calendarRequest.getTime());
-//        Long serviceId = Long.parseLong(calendarRequest.getServiceId());
         List<Calendar> suitableCalendars = calendarService.findSuitableCalendar(calendarRequest, 0);
         if (suitableCalendars.isEmpty()) {
             List<Calendar> recommendedCalendars = calendarService.recommendCalendars(calendarRequest, 0);
             return new ResponseEntity<>(recommendedCalendars, HttpStatus.OK);
         } else {
-
-            Long calendarId = suitableCalendars.get(0).getId();
-            Optional<Calendar> calendar = calendarService.findById(calendarId);
-            if (calendar.isPresent() && calendar.get().getState() == 0){
-//                calendar.get().setState(1);
-                calendarService.save(calendar.get());
-            }
+//            Long calendarId = suitableCalendars.get(0).getId();
+//            Optional<Calendar> calendar = calendarService.findById(calendarId);
+//            if (calendar.isPresent() && calendar.get().getState() == 0){
+//                calendarService.save(calendar.get());
+//            }
             return new ResponseEntity<>(suitableCalendars, HttpStatus.OK);
         }
     }
 
     @RequestMapping(value = "/getCalendarsByDate", method = RequestMethod.POST)
-    public ResponseEntity<List<Calendar>> getCalendarsByDate(@RequestParam("date") String dateStr) {
+    public ResponseEntity<List<Calendar>> getCalendarsByDate(@RequestParam("date") String dateStr) throws Exception {
         LocalDate date = LocalDate.parse(dateStr);
         List<Calendar> calendars = calendarService.findAllByDate(date);
         if (calendars.isEmpty()) {

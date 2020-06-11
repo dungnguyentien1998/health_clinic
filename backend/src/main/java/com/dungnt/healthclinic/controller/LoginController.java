@@ -2,8 +2,7 @@ package com.dungnt.healthclinic.controller;
 
 import com.dungnt.healthclinic.dto.LoginRequest;
 import com.dungnt.healthclinic.dto.LoginResponse;
-import com.dungnt.healthclinic.model.CustomUserDetails;
-import com.dungnt.healthclinic.model.Role;
+import com.dungnt.healthclinic.model.MyUserDetails;
 import com.dungnt.healthclinic.util.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,9 +30,9 @@ public class LoginController {
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-        Long userId = ((CustomUserDetails) authentication.getPrincipal()).getUser().getId();
-        Set<String> roles = ((CustomUserDetails) authentication.getPrincipal()).getUser().getRoleNames();
+        String token = tokenProvider.generateToken((MyUserDetails) authentication.getPrincipal());
+        Long userId = ((MyUserDetails) authentication.getPrincipal()).getUser().getId();
+        Set<String> roles = ((MyUserDetails) authentication.getPrincipal()).getUser().getRoleNames();
         String role = "USER";
         for (String tmp: roles) {
             if (tmp.equals("ADMIN")) {

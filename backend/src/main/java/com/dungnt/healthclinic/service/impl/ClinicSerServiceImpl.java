@@ -51,4 +51,12 @@ public class ClinicSerServiceImpl implements ClinicSerService {
         clinicServiceRepository.delete(clinicService);
     }
 
+    @Override
+    public ClinicService findByRoom(String room) throws Exception {
+        if (room == null) {
+            throw new Exception("Gia tri room null");
+        }
+        return clinicServiceRepository.findByRoom(room);
+    }
+
 }

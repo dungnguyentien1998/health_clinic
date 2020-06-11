@@ -24,7 +24,7 @@ public class User {
     private String email;
     @Column(name = "state")
     private String state;
-    @Column(name = "phone")
+    @Column(name = "phone", unique = true)
     private String username;
     @Column(name = "password")
     private String password;

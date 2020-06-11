@@ -26,7 +26,7 @@ public interface CalendarService {
 
     void checkCalendarState(Calendar calendar) throws Exception;
 
-    List<Calendar> findAllByDate(LocalDate date);
+    List<Calendar> findAllByDate(LocalDate date) throws Exception;
 
     List<Calendar> findAllByClinicService(ClinicService service);
 

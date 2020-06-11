@@ -49,6 +49,13 @@ public class AppointmentController {
         return new ResponseEntity<>(appointment.get(), HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param appointmentRequest
+     * @return Appointment
+     * @throws Exception
+     * @description Tao lich hen khi biet cac tham so la Calendar va Client
+     */
     @RequestMapping(value = "/appointments", method = RequestMethod.POST)
     public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentRequest appointmentRequest) throws Exception {
         Long calendarId = appointmentRequest.getCalendarId();
@@ -99,9 +106,15 @@ public class AppointmentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     *
+     * @param clientId
+     * @return List
+     * @throws Exception
+     * @description Tra ve cac cuoc hen cua Client
+     */
     @RequestMapping(value = "/getClientAppointments/{id}", method = RequestMethod.GET)
     public ResponseEntity<List<Appointment>> getClientAppointments(@PathVariable("id") Long clientId) throws Exception {
-//        List<Appointment> appointments = appointmentService.findAllByClientId(clientId);
         Optional<User> client = userService.findById(clientId);
         if (!client.isPresent()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -114,9 +127,15 @@ public class AppointmentController {
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param medicalStaffId
+     * @return List
+     * @throws Exception
+     * @description Tra ve cac cuoc hen cua Medical Staff
+     */
     @RequestMapping(value = "/getMedicalStaffAppointments/{id}", method = RequestMethod.GET)
     public ResponseEntity<List<Appointment>> getMedicalStaffAppointments(@PathVariable("id") Long medicalStaffId) throws Exception {
-//        List<Appointment> appointments = appointmentService.findAllByMedicalStaffId(medicalStaffId);
         Optional<User> medicalStaff = userService.findById(medicalStaffId);
         if (!medicalStaff.isPresent()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -130,7 +149,7 @@ public class AppointmentController {
     }
 
     @RequestMapping(value = "/getAppointmentsByDate", method = RequestMethod.POST)
-    public ResponseEntity<List<Appointment>> getAppointmentsByDate(@RequestParam("date") String dateStr) {
+    public ResponseEntity<List<Appointment>> getAppointmentsByDate(@RequestParam("date") String dateStr) throws Exception {
         LocalDate date = LocalDate.parse(dateStr);
         List<Calendar> calendars = calendarService.findAllByDate(date);
         if (calendars.isEmpty()) {
@@ -139,6 +158,9 @@ public class AppointmentController {
         List<Appointment> appointments = new ArrayList<>();
         for (Calendar calendar: calendars) {
             appointments.add(calendar.getAppointment());
+        }
+        if (appointments.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }

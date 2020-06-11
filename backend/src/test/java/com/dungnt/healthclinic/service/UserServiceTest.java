@@ -35,7 +35,7 @@ public class UserServiceTest {
         try {
             userService.findById(id);
         } catch (Exception e) {
-            assertEquals("", e.getMessage());
+            assertEquals("Gia tri id null", e.getMessage());
         }
     }
 
@@ -55,7 +55,7 @@ public class UserServiceTest {
         try {
             userService.findAllByRoom(room);
         } catch (Exception e) {
-            assertEquals("", e.getMessage());
+            assertEquals("Gia tri room null", e.getMessage());
         }
     }
 

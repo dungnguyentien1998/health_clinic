@@ -45,18 +45,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.delete(appointment);
     }
 
-    // Hien tai khong su dung
-    @Override
-    public List<Appointment> findAllByClientId(Long clientId) {
-        return appointmentRepository.findAllByClientId(clientId);
-    }
-
-    // Hien tai khong su dung
-    @Override
-    public List<Appointment> findAllByMedicalStaffId(Long medicalStaffId) {
-        return appointmentRepository.findAllByMedicalStaffId(medicalStaffId);
-    }
-
     @Override
     public List<Appointment> findAllByClient(User client) {
         return appointmentRepository.findAllByClient(client);

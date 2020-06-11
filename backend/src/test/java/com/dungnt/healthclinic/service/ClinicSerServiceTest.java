@@ -33,7 +33,7 @@ public class ClinicSerServiceTest {
         try {
             clinicSerService.findById(id);
         } catch (Exception e) {
-            assertEquals("", e.getMessage());
+            assertEquals("Gia tri id null", e.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class ClinicSerServiceTest {
         try {
             clinicSerService.save(clinicService);
         } catch (Exception e) {
-            assertEquals("", e.getMessage());
+            assertEquals("Doi tuong dich vu kham null", e.getMessage());
         }
     }
 
@@ -63,7 +63,7 @@ public class ClinicSerServiceTest {
         try {
             clinicSerService.save(clinicService);
         } catch (Exception e) {
-            assertEquals("", e.getMessage());
+            assertEquals("Ten dich vu kham null", e.getMessage());
         }
     }
 

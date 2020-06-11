@@ -1,6 +1,6 @@
 package com.dungnt.healthclinic.service.impl;
 
-import com.dungnt.healthclinic.model.CustomUserDetails;
+import com.dungnt.healthclinic.model.MyUserDetails;
 import com.dungnt.healthclinic.model.User;
 import com.dungnt.healthclinic.repository.UserRepository;
 import com.dungnt.healthclinic.service.UserService;
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UsernameNotFoundException("Khong the tim ra username " + username);
         }
-        return new CustomUserDetails(user);
+        return new MyUserDetails(user);
     }
 
     public UserDetails loadUserById(Long id) throws Exception {
@@ -71,6 +71,6 @@ public class UserServiceImpl implements UserService {
         if (user.get() == null) {
             throw new Exception("Khong tim ra user co id = " + id);
         }
-        return new CustomUserDetails(user.get());
+        return new MyUserDetails(user.get());
     }
 }
