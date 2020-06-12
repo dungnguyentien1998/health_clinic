@@ -157,7 +157,9 @@ public class AppointmentController {
         }
         List<Appointment> appointments = new ArrayList<>();
         for (Calendar calendar: calendars) {
-            appointments.add(calendar.getAppointment());
+            if (calendar.getAppointment() != null) {
+                appointments.add(calendar.getAppointment());
+            }
         }
         if (appointments.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

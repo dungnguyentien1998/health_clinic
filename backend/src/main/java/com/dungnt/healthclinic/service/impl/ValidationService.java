@@ -96,7 +96,7 @@ public class ValidationService {
 
     public void checkRoom(String room) throws Exception {
         ClinicService clinicService = clinicServiceRepository.findByRoom(room);
-        if (room != null) {
+        if (clinicService != null) {
             throw new Exception("Phong nay da su dung cho mot dich vu khac");
         }
     }
