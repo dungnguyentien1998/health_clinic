@@ -90,8 +90,15 @@ public class ValidationService {
             throw new Exception("Khong co thong tin dia chi");
         }
         if (user.getEmail() == null) {
-            throw new Exception("Khong co thong tin dia chi");
+            throw new Exception("Khong co thong tin dia chi email");
         }
+        if (user.getCountry() == null) {
+            throw new Exception("Khong co thong tin quoc gia");
+        }
+        if (user.getGender() == null) {
+            throw new Exception("Khong co thong tin gioi tinh");
+        }
+
     }
 
     public void checkRoom(String room) throws Exception {

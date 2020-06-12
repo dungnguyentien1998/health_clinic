@@ -67,6 +67,8 @@ public class UserController {
         currentUser.get().setDateOfBirth(user.getDateOfBirth());
         currentUser.get().setAddress(user.getAddress());
         currentUser.get().setEmail(user.getEmail());
+        currentUser.get().setCountry(user.getCountry());
+        currentUser.get().setGender(user.getGender());
         userService.save(currentUser.get());
 
         return new ResponseEntity<>(currentUser.get(), HttpStatus.OK);
