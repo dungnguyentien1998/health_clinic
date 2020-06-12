@@ -21,7 +21,10 @@ export default function Controller({route, navigation}) {
                     <Text style={styles.title}>Quản lý dịch vụ</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={[styles.item, {backgroundColor: '#e6e6fa'}]}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('CalendarController', {userId: userId, authorization: authorization})} 
+                    style={[styles.item, {backgroundColor: '#e6e6fa'}]}
+                >
                     <FontAwesome style={styles.icon} name='calendar' size={60} color='#191970' solid/>
                     <Text style={styles.title}>Quản lý lịch hoạt động</Text>
                 </TouchableOpacity>

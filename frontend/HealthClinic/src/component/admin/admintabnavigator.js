@@ -6,11 +6,14 @@ import Home from './home';
 import Controller from './controller';
 import ServiceController from './servicecontroller';
 import AppointmentController from './appointmentcontroller';
+import AppointmentDetail from './appointmentdetail';
 import PersonalInformation from './personalinformation';
 import ServiceDetail from './servicedetail';
 import AddService from './addservice';
+import CalendarController from './calendarcontroller';
+import AddCalendar from './addcalendar';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator(); 
 const HomeStack = createStackNavigator(); 
 const ControllerStack = createStackNavigator();
 const AccountStack = createStackNavigator();
@@ -35,6 +38,9 @@ function ControllerScreen({route, navigation}) {
             <ControllerStack.Screen name="ServiceDetail" component={ServiceDetail} options={{title: "Chi tiết dịch vụ"}}/>
             <ControllerStack.Screen name="AddService" component={AddService} options={{title: "Thêm dịch vụ"}}/>
             <ControllerStack.Screen name="AppointmentController" component={AppointmentController} options={{title: "Quản lý lịch hẹn"}}/>
+            <ControllerStack.Screen name="AppointmentDetail" component={AppointmentDetail} options={{title: "Chi tiết lịch hẹn"}}/>
+            <ControllerStack.Screen name="CalendarController" component={CalendarController} options={{title: "Quản lý lịch hoạt động"}}/>
+            <ControllerStack.Screen name="AddCalendar" component={AddCalendar} options={{title: "Thêm lịch hoạt động"}}/>
         </ControllerStack.Navigator>
     );
 }

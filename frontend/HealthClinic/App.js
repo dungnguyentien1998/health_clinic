@@ -116,9 +116,71 @@ function SignUp({navigation}) {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [submitPwd, setSubmitPwd] = useState('');
+    const {signIn} = React.useContext(AuthContext);
+    const [isLoading, setLoading] = useState(false);
+
+    function signUp() {
+        setLoading(true);
+        fetch('http://192.168.56.1:8080/sign-up', {
+            method: 'POST',
+            headers: {
+                Accept: '*/*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                username: phone,
+                password: password,
+                email: email,
+                role: "USER"
+            })
+        })
+            .then((response) => {
+                if (response.status === 201) {
+                    setLoading(false);
+                    signIn(phone, password);
+                }
+                else {
+                    setLoading(false);
+                    Alert.alert(
+                        "Thông báo",
+                        "Số điện thoại đã được đăng ký!",
+                        [
+                            {
+                                text: "OK",
+                                style: "cancel"
+                            }
+                        ]
+                    );
+                }
+            })
+            .catch((error) => {
+                setLoading(false);
+                Alert.alert(
+                    "Thông báo",
+                    "Đã xảy ra lỗi!",
+                    [
+                        {
+                            text: "OK",
+                            style: "cancel"
+                        }
+                    ]
+                );
+            })
+            .finally(() => setLoading(false))
+    }
 
     return (
         <ScrollView contentContainerStyle={signupstyles.container}>
+            {isLoading &&
+            <View style={[signinstyles.loading, {backgroundColor: 'rgba(192,192,192,0.7)'}]}></View>
+            }
+            {isLoading &&
+            <View style={signinstyles.loading}>
+                <ActivityIndicator size={100} color='#191970'/>
+            </View>
+            }
+
             <Text style={signupstyles.title}>Đăng ký</Text>
             <TextInput
                 onChangeText={(text) => setName(text)}
@@ -154,6 +216,9 @@ function SignUp({navigation}) {
             />
             <TouchableOpacity
                 style={signupstyles.btnSignup}
+                onPress={() => {
+                    signUp();
+                }}
             >
                 <Text style={signupstyles.text}>ĐĂNG KÝ</Text>
             </TouchableOpacity>
@@ -226,10 +291,6 @@ export default function App({ navigation }) {
             },
 
             signOut: async () => dispatch({ type: 'SIGN_OUT' }),
-
-            signUp: async data => {
-                dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
-            }
         }),[]
     );
 

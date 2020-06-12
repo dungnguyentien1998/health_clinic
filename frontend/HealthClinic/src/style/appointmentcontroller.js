@@ -63,8 +63,13 @@ const styles = StyleSheet.create({
     },
     btnFind: {
         backgroundColor: '#191970', 
-        padding: 5, 
-        borderRadius: 5
+        borderRadius: 10,
+        padding: 5
+    },
+    btnText: {
+        color: 'white',
+        fontSize: 18,
+        padding: 10,
     }
 });
 
