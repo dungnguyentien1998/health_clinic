@@ -46,6 +46,17 @@ const styles = StyleSheet.create({
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center',
+    }, 
+    btnContainer: {
+        backgroundColor: '#87cefa', 
+        marginTop: 10, 
+        padding: 10, 
+        alignItems: 'center', 
+        justifyContent: 'center'
+    },
+    btnText: {
+        fontSize: 18, 
+        fontWeight: 'bold'
     }
 });
 
