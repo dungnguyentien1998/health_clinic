@@ -19,7 +19,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role findByName(String name) throws Exception {
         if (name == null) {
-            throw new Exception("Ten dich vu kham null");
+            throw new Exception("Gia tri name null");
         }
         return roleRepository.findByName(name);
     }
