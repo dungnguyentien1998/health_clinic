@@ -57,8 +57,8 @@ public class ClinicServiceController {
         }
         currentClinicService.get().setName(clinicService.getName());
         currentClinicService.get().setDescription(clinicService.getDescription());
-        validationService.checkRoom(clinicService.getRoom());
-        currentClinicService.get().setRoom(clinicService.getRoom());
+//        validationService.checkRoom(clinicService.getRoom());
+//        currentClinicService.get().setRoom(clinicService.getRoom());
         clinicSerService.save(currentClinicService.get());
         return new ResponseEntity<>(currentClinicService.get(), HttpStatus.OK);
 

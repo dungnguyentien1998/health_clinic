@@ -56,12 +56,9 @@ public class CalendarServiceImpl implements CalendarService {
         if (calendar.getState() == null) {
             throw new Exception("Gia tri state null");
         }
-        if (calendar.getRoom() == null) {
-            throw new Exception("Gia tri room null");
-        }
 
         boolean check = true;
-        List<Calendar> calendarList = calendarRepository.findAllByRoom(calendar.getRoom());
+        List<Calendar> calendarList = calendarRepository.findAllByRoom(calendar.getMedicalStaff().getRoom());
         LocalTime timeStart = calendar.getTimeStart();
         LocalTime timeEnd = calendar.getTimeEnd();
 

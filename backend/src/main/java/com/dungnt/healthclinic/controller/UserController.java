@@ -90,9 +90,12 @@ public class UserController {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
-        Optional<ClinicService> clinicService = clinicSerService.findById(signUpRequest.getServiceId());
-        if (!clinicService.isEmpty()) {
-            user.setRoom(clinicService.get().getRoom());
+//        Optional<ClinicService> clinicService = clinicSerService.findById(signUpRequest.getServiceId());
+//        if (!clinicService.isEmpty()) {
+//            user.setRoom(clinicService.get().getRoom());
+//        }
+        if (signUpRequest.getRoom() != null) {
+            user.setRoom(signUpRequest.getRoom());
         }
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.CREATED);

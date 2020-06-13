@@ -3,8 +3,10 @@ package com.dungnt.healthclinic.controller;
 import com.dungnt.healthclinic.dto.CalendarRequest;
 import com.dungnt.healthclinic.model.Calendar;
 import com.dungnt.healthclinic.model.ClinicService;
+import com.dungnt.healthclinic.model.User;
 import com.dungnt.healthclinic.service.CalendarService;
 import com.dungnt.healthclinic.service.ClinicSerService;
+import com.dungnt.healthclinic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,11 +21,13 @@ import java.util.Optional;
 public class CalendarController {
     private ClinicSerService clinicSerService;
     private CalendarService calendarService;
+    private UserService userService;
 
     @Autowired
-    public CalendarController(ClinicSerService clinicSerService, CalendarService calendarService) {
+    public CalendarController(ClinicSerService clinicSerService, CalendarService calendarService, UserService userService) {
         this.clinicSerService = clinicSerService;
         this.calendarService = calendarService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/calendars", method = RequestMethod.GET)
@@ -44,23 +48,28 @@ public class CalendarController {
         return new ResponseEntity<>(calendar.get(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/clinicservices/{clinicserviceId}/calendars", method = RequestMethod.POST)
-    public ResponseEntity<Calendar> createCalendar(@PathVariable("clinicserviceId") Long clinicServiceId,
+    @RequestMapping(value = "/calendars", method = RequestMethod.POST)
+    public ResponseEntity<Calendar> createCalendar(@RequestParam("clinicserviceId") Long clinicServiceId,
+                                                   @RequestParam("medicalStaffId") Long medicalStaffId,
                                                    @RequestBody Calendar calendar) throws Exception {
         Optional<ClinicService> clinicService = clinicSerService.findById(clinicServiceId);
         if (!clinicService.isPresent()) {
-            // Can tao message cho truong hop nay
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         calendar.setClinicService(clinicService.get());
-        calendar.setRoom(clinicService.get().getRoom());
+        Optional<User> medicalStaff = userService.findById(medicalStaffId);
+        if (!medicalStaff.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        calendar.setMedicalStaff(medicalStaff.get());
         calendarService.save(calendar);
         return new ResponseEntity<>(calendar, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/calendars/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Calendar> updateCalendar(@PathVariable("id") Long id, @RequestBody Calendar calendar,
-                                                   @RequestParam("clinicServiceId") Long clinicServiceId) throws Exception {
+                                                   @RequestParam("clinicServiceId") Long clinicServiceId,
+                                                   @RequestParam("medicalStaffId") Long medicalStaffId) throws Exception {
         Optional<Calendar> currentCalendar = calendarService.findById(id);
         if (!currentCalendar.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -69,7 +78,6 @@ public class CalendarController {
         currentCalendar.get().setTimeStart(calendar.getTimeStart());
         currentCalendar.get().setTimeEnd(calendar.getTimeEnd());
         currentCalendar.get().setState(calendar.getState());
-//        currentCalendar.get().setRoom(calendar.getRoom());
 
         if (clinicServiceId != null) {
             Optional<ClinicService> newClinicService = clinicSerService.findById(clinicServiceId);
@@ -77,6 +85,14 @@ public class CalendarController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             currentCalendar.get().setClinicService(newClinicService.get());
+        }
+
+        if (medicalStaffId != null) {
+            Optional<User> newMedicalStaff = userService.findById(medicalStaffId);
+            if (!newMedicalStaff.isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            currentCalendar.get().setMedicalStaff(newMedicalStaff.get());
         }
 
         calendarService.save(currentCalendar.get());
@@ -107,11 +123,6 @@ public class CalendarController {
             List<Calendar> recommendedCalendars = calendarService.recommendCalendars(calendarRequest, 0);
             return new ResponseEntity<>(recommendedCalendars, HttpStatus.OK);
         } else {
-//            Long calendarId = suitableCalendars.get(0).getId();
-//            Optional<Calendar> calendar = calendarService.findById(calendarId);
-//            if (calendar.isPresent() && calendar.get().getState() == 0){
-//                calendarService.save(calendar.get());
-//            }
             return new ResponseEntity<>(suitableCalendars, HttpStatus.OK);
         }
     }

@@ -78,16 +78,6 @@ public class AppointmentController {
         }
         appointment.setClient(client.get());
 
-        String room = calendar.get().getRoom();
-        List<User> users = userService.findAllByRoom(room);
-        if (users.isEmpty()) {
-            calendar.get().setState(0);
-            calendarService.save(calendar.get());
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        User medicalStaff = users.get(0);
-        appointment.setMedicalStaff(medicalStaff);
-
         appointmentService.save(appointment);
         return new ResponseEntity<>(appointment, HttpStatus.CREATED);
     }

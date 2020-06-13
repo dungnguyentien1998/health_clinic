@@ -40,9 +40,9 @@ public class ClinicSerServiceImpl implements ClinicSerService {
         if (clinicService.getName() == null || clinicService.getName() == "") {
             throw new Exception("Ten dich vu kham null");
         }
-        if (clinicService.getRoom() == null || clinicService.getRoom() == "") {
-            throw new Exception("Ten phong null");
-        }
+//        if (clinicService.getRoom() == null || clinicService.getRoom() == "") {
+//            throw new Exception("Ten phong null");
+//        }
         clinicServiceRepository.save(clinicService);
     }
 
@@ -51,12 +51,12 @@ public class ClinicSerServiceImpl implements ClinicSerService {
         clinicServiceRepository.delete(clinicService);
     }
 
-    @Override
-    public ClinicService findByRoom(String room) throws Exception {
-        if (room == null) {
-            throw new Exception("Gia tri room null");
-        }
-        return clinicServiceRepository.findByRoom(room);
-    }
+//    @Override
+//    public ClinicService findByRoom(String room) throws Exception {
+//        if (room == null) {
+//            throw new Exception("Gia tri room null");
+//        }
+//        return clinicServiceRepository.findByRoom(room);
+//    }
 
 }

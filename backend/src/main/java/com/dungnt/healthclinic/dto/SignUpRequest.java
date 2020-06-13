@@ -6,7 +6,7 @@ public class SignUpRequest {
     private String password;
     private String email;
     private String role;
-    private Long serviceId;
+    private String room;
 
     public SignUpRequest() {
     }
@@ -64,11 +64,11 @@ public class SignUpRequest {
         this.role = role;
     }
 
-    public Long getServiceId() {
-        return serviceId;
+    public String getRoom() {
+        return room;
     }
 
-    public void setServiceId(Long serviceId) {
-        this.serviceId = serviceId;
+    public void setRoom(String room) {
+        this.room = room;
     }
 }

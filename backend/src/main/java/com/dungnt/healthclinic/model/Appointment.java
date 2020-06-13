@@ -21,9 +21,6 @@ public class Appointment {
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private User client;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "medical_staff_id", referencedColumnName = "id")
-    private User medicalStaff;
 
     public Appointment() {
     }
@@ -56,9 +53,6 @@ public class Appointment {
         return calendar.getState();
     }
 
-    public String getCalendarRoom() {
-        return calendar.getRoom();
-    }
 
     public Long getClinicServiceId() {
         return calendar.getClinicServiceId();
@@ -100,21 +94,6 @@ public class Appointment {
         return client.getName();
     }
 
-    @JsonIgnore
-    public User getMedicalStaff() {
-        return medicalStaff;
-    }
 
-    @JsonIgnore
-    public void setMedicalStaff(User medicalStaff) {
-        this.medicalStaff = medicalStaff;
-    }
 
-    public Long getMedicalStaffId() {
-        return medicalStaff.getId();
-    }
-
-    public String getMedicalStaffName() {
-        return medicalStaff.getName();
-    }
 }
