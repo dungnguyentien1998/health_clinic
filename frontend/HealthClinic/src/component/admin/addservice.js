@@ -11,6 +11,7 @@ import {
     Alert
 } from 'react-native';
 import styles from '../../style/adminservicedetail';
+import {ip as ip} from '../../../ipconfig.json';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -23,7 +24,7 @@ export default function AddService({route, navigation}) {
 
     function createService() {
         setLoading(true);
-        fetch('http://192.168.56.1:8080/clinicservices', {
+        fetch('http://' + ip + ':8080/clinicservices', {
                 method: 'POST',
                 headers: {
                     Accept: '*/*',

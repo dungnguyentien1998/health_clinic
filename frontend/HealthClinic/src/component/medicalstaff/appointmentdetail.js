@@ -38,56 +38,7 @@ export default function AppointmentDetail({route, navigation}) {
             return (time + ":00");
     }
 
-    function deleteAppt() {
-        fetch('http://' + ip + ':8080/appointments/' + appt.id, {
-                method: 'DELETE',
-                headers: {
-                    Accept: '*/*',
-                    'Content-Type': 'application/json',
-                    Authorization: authorization
-                },
-            })
-            .then((response) => {
-                setLoading(false);
-                if (response.ok) {
-                    Alert.alert(
-                        "Thông báo",
-                        "Xóa lịch hẹn thành công!",
-                        [
-                            {
-                                text: "OK",
-                                onPress: () => navigation.pop(1)
-                            }
-                        ]
-                    );
-                } else {
-                    Alert.alert(
-                        "Thông báo",
-                        "Đã xảy ra lỗi!",
-                        [
-                            {
-                                text: "OK",
-                                style: 'cancel'
-                            }
-                        ]
-                    );
-                }
-            })
-            .catch((error) => {
-                setLoading(false);
-                Alert.alert(
-                    "Thông báo",
-                    "Đã xảy ra lỗi!",
-                    [
-                        {
-                            text: "OK",
-                            style: 'cancel'
-                        }
-                    ]
-                );
-            })
-    }
-
+    
     return (
         <ScrollView style={styles.container}>
             {isLoading &&
@@ -133,33 +84,6 @@ export default function AppointmentDetail({route, navigation}) {
                 <Text style={styles.label}>Nhân viên y tế</Text>
                 <Text style={styles.txtInfo}>{appt.medicalStaffName}</Text>
             </View>
-            
-            <View style={[styles.btnContainer, {flexDirection: 'row'}]}>
-                <TouchableOpacity 
-                    style={[styles.button, {backgroundColor: 'red'}]}
-                    onPress={() => {
-                        Alert.alert(
-                            "Thông báo",
-                            "Bạn có chắc chắn muốn xóa dịch vụ này?",
-                            [
-                                {
-                                    text: "Có",
-                                    onPress: () => {
-                                        setLoading(true);
-                                        deleteAppt();
-                                    }
-                                },
-                                {
-                                    text: "Không",
-                                    style: 'cancel'
-                                }
-                            ]
-                        )
-                    }} 
-                >
-                    <Text style={styles.btnText}>Xóa</Text>
-                </TouchableOpacity>
-            </View>       
         </ScrollView>
     );
 }

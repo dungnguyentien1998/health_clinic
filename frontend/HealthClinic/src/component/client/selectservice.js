@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import styles from '../../style/selectservice';
 import {AuthContext} from '../../../App';
+import {ip as ip} from '../../../ipconfig.json';
 
 export default function SelectService({route, navigation}) {
     const {userId, authorization} = route.params;
@@ -25,7 +26,7 @@ export default function SelectService({route, navigation}) {
     useEffect(
         () => navigation.addListener('focus', () => {
             setLoading(true);
-            fetch('http://192.168.56.1:8080/clinicservices', {
+            fetch('http://' + ip + ':8080/clinicservices', {
                 method: 'GET',
                 headers: {
                     Accept: '*/*',

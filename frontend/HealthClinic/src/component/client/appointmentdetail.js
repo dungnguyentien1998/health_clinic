@@ -7,6 +7,7 @@ import {
     Alert,
     ActivityIndicator
 } from 'react-native';
+import {ip as ip} from '../../../ipconfig.json';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import styles from '../../style/submitappointment';
 import ClientTabNavigator from './tabnavigator';
@@ -38,7 +39,7 @@ export default function AppointmentDetail({route, navigation}) {
     }
 
     function deleteAppt() {
-        fetch('http://192.168.56.1:8080/appointments/' + appt.id, {
+        fetch('http://'+ ip + ':8080/appointments/' + appt.id, {
                 method: 'DELETE',
                 headers: {
                     Accept: '*/*',

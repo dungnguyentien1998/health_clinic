@@ -11,6 +11,7 @@ import styles from '../../style/appointmentcontroller';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {ip as ip} from '../../../ipconfig.json';
 
 export default function AppointmentController({route, navigation}) {
     const {userId, authorization} = route.params;
@@ -29,7 +30,7 @@ export default function AppointmentController({route, navigation}) {
     getAppt = async () => {
         var d = await date;
         setLoading(true);
-        fetch('http://192.168.56.1:8080/getAppointmentsByDate?date=' + changeDateFormat(d, 0), {
+        fetch('http://' + ip + ':8080/getAppointmentsByDate?date=' + changeDateFormat(d, 0), {
             method: 'POST',
             headers: {
                 Accept: '*/*',

@@ -9,6 +9,7 @@ import {
     FlatList,
     ActivityIndicator,
 } from 'react-native';
+import {ip as ip} from '../../../ipconfig.json';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import styles from '../../style/makeappointment';
@@ -52,7 +53,7 @@ export default function MakeAppointment({route, navigation}) {
     function getSuitableCals(date, time, serviceId) {
         setLoading(true);
         setNoCal(false);
-        return fetch('http://192.168.56.1:8080/getCalendars', {
+        return fetch('http://'+ ip + ':8080/getCalendars', {
                 method: 'POST',
                 headers: {
                     Accept: '*/*',

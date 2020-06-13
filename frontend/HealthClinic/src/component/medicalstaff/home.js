@@ -6,11 +6,9 @@ import {
     ScrollView,
     TouchableOpacity,
 } from 'react-native';
-import {ip as ip} from '../../../ipconfig.json';
 import styles from '../../style/home';
 
-export default function Home({route, navigation}) {
-    const {userId} = route.params;
+export default function Home() {
     const [img, setImg] = useState(require('../../image/home/image1.jpg'));
     return (
         <View style={styles.container}>

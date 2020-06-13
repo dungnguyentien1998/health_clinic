@@ -7,6 +7,7 @@ import {
     Alert,
     TouchableOpacity
 } from 'react-native';
+import {ip as ip} from '../../../ipconfig.json';
 import styles from '../../style/servicecontroller';
 
 export default function ServiceController({route, navigation}) {
@@ -16,7 +17,7 @@ export default function ServiceController({route, navigation}) {
 
     useEffect(
         () => navigation.addListener('focus', () => {
-            fetch('http://192.168.56.1:8080/clinicservices', {
+            fetch('http://' + ip + ':8080/clinicservices', {
                 method: 'GET',
                 headers: {
                     Accept: '*/*',

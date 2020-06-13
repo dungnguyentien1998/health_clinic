@@ -10,6 +10,7 @@ import {
     ActivityIndicator,
     Alert
 } from 'react-native';
+import {ip as ip} from '../../../ipconfig.json';
 import styles from '../../style/addcalendar';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-community/picker';
@@ -38,7 +39,7 @@ export default function AddCalendar({route, navigation}) {
 
     function createCalendar() {
         setLoading(true);
-        fetch('http://192.168.56.1:8080/clinicservices/' + selectService + '/calendars', {
+        fetch('http://' + ip + ':8080/clinicservices/' + selectService + '/calendars', {
                 method: 'POST',
                 headers: {
                     Accept: '*/*',

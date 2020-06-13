@@ -7,6 +7,7 @@ import {
     ActivityIndicator,
     Alert
 } from 'react-native';
+import {ip as ip} from '../../../ipconfig.json';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import styles from '../../style/submitappointment';
 const screenHeight = Dimensions.get('window').height;
@@ -15,7 +16,7 @@ export default function SubmitAppointment({route, navigation}) {
     const {calendar, userId, authorization} = route.params;
     const [isLoading, setLoading] = useState(false);
     function createAppointment() {
-        fetch('http://192.168.56.1:8080/appointments', {
+        fetch('http://' + ip + ':8080/appointments', {
                 method: 'POST',
                 headers: {
                     Accept: '*/*',

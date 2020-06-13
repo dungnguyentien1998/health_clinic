@@ -9,6 +9,7 @@ import {
     Alert, 
     TouchableOpacity
 } from 'react-native';
+import {ip as ip} from '../../../ipconfig.json';
 import {Picker} from '@react-native-community/picker';
 import styles from '../../style/personalinformation';
 import {AuthContext} from '../../../App';
@@ -37,7 +38,7 @@ export default function PersonalInformation({route, params}) {
     }, []);
 
     function getInfo() {
-        fetch('http://192.168.56.1:8080/users/' + userId, {
+        fetch('http://'+ ip + ':8080/users/' + userId, {
             method: 'GET',
             headers: {
                 Accept: '*/*',
@@ -72,7 +73,7 @@ export default function PersonalInformation({route, params}) {
 
     function updateInfo() {
         setLoading(true);
-        fetch('http://192.168.56.1:8080/users/' + userId, {
+        fetch('http://'+ ip + ':8080/users/' + userId, {
                 method: 'PUT',
                 headers: {
                     Accept: '*/*',

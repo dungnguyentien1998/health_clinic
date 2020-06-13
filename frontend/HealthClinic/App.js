@@ -10,10 +10,12 @@ import {
     ScrollView,
     Alert
 } from 'react-native';
+import {ip as ip} from './ipconfig.json';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ClientTabNavigator from './src/component/client/tabnavigator';
 import AdminTabNavigator from './src/component/admin/admintabnavigator';
+import MedicalTabNavigator from './src/component/medicalstaff/medicaltabnavigator';
 import {styles as signinstyles} from './src/style/signin';
 import {styles as signupstyles} from './src/style/signup';
 import styles from './src/style/home';
@@ -121,7 +123,7 @@ function SignUp({navigation}) {
 
     function signUp() {
         setLoading(true);
-        fetch('http://192.168.56.1:8080/sign-up', {
+        fetch('http://'+ ip + ':8080/sign-up', {
             method: 'POST',
             headers: {
                 Accept: '*/*',
@@ -262,7 +264,7 @@ export default function App({ navigation }) {
                 let userToken, userId, tokenType, role;
                 let result = 0;
                 try {
-                    let response = await fetch('http://192.168.56.1:8080/login', {
+                    let response = await fetch('http://'+ ip + ':8080/login', {
                         method: 'POST',
                         headers: {
                             Accept: '*/*',
@@ -317,13 +319,20 @@ export default function App({ navigation }) {
                         options = {{title: "Trang chủ"}}
                         initialParams={{userId: state.userId, authorization: (state.tokenType + ' ' + state. userToken)}}
                     />
-                    :
+                    : (
+                    state.userRole === 'USER' ?
                     <Stack.Screen 
                         name="ClientTabNavigator" component={ClientTabNavigator}
                         options = {{title: "Trang chủ"}}
                         initialParams={{userId: state.userId, authorization: (state.tokenType + ' ' + state. userToken)}}
                     />
-                    )}
+                    :
+                    <Stack.Screen 
+                        name="ClientTabNavigator" component={MedicalTabNavigator}
+                        options = {{title: "Trang chủ"}}
+                        initialParams={{userId: state.userId, authorization: (state.tokenType + ' ' + state. userToken)}}
+                    />
+                    ))}
                 </Stack.Navigator>
             </NavigationContainer>
         </AuthContext.Provider>

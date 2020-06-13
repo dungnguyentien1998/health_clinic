@@ -11,6 +11,7 @@ import {
     Alert
 } from 'react-native';
 import styles from '../../style/adminservicedetail';
+import {ip as ip} from '../../../ipconfig.json';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -25,7 +26,7 @@ export default function ServiceDetail({route, navigation}) {
 
     function updateService() {
         setLoading(true);
-        fetch('http://192.168.56.1:8080/clinicservices/' + service.id, {
+        fetch('http://' + ip + ':8080/clinicservices/' + service.id, {
                 method: 'PUT',
                 headers: {
                     Accept: '*/*',
@@ -88,7 +89,7 @@ export default function ServiceDetail({route, navigation}) {
 
     function deleteService() {
         setLoading(true);
-        fetch('http://192.168.56.1:8080/clinicservices/' + service.id, {
+        fetch('http://' + ip + ':8080/clinicservices/' + service.id, {
                 method: 'DELETE',
                 headers: {
                     Accept: '*/*',
