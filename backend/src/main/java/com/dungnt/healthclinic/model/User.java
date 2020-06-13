@@ -64,7 +64,7 @@ public class User {
     private Set<Appointment> clientAppointments = new HashSet<>();
 
     @OneToMany(mappedBy = "medicalStaff", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Appointment> medicalStaffAppointments = new HashSet<>();
+    private Set<Calendar> medicalStaffCalendars = new HashSet<>();
 
 
     public User() {
@@ -166,11 +166,11 @@ public class User {
         this.clientAppointments = clientAppointments;
     }
 
-    public Set<Appointment> getMedicalStaffAppointments() {
-        return medicalStaffAppointments;
+    public Set<Calendar> getMedicalStaffAppointments() {
+        return medicalStaffCalendars;
     }
 
-    public void setMedicalStaffAppointments(Set<Appointment> medicalStaffAppointments) {
-        this.medicalStaffAppointments = medicalStaffAppointments;
+    public void setMedicalStaffAppointments(Set<Calendar> medicalStaffAppointments) {
+        this.medicalStaffCalendars = medicalStaffAppointments;
     }
 }

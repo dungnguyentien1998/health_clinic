@@ -50,8 +50,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.findAllByClient(client);
     }
 
-    @Override
-    public List<Appointment> findAllByMedicalStaff(User medicalStaff) {
-        return appointmentRepository.findAllByMedicalStaff(medicalStaff);
-    }
+//    @Override
+//    public List<Appointment> findAllByMedicalStaff(User medicalStaff) {
+//        return appointmentRepository.findAllByMedicalStaff(medicalStaff);
+//    }
 }

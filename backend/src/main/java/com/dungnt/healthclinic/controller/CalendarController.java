@@ -49,7 +49,7 @@ public class CalendarController {
     }
 
     @RequestMapping(value = "/calendars", method = RequestMethod.POST)
-    public ResponseEntity<Calendar> createCalendar(@RequestParam("clinicserviceId") Long clinicServiceId,
+    public ResponseEntity<Calendar> createCalendar(@RequestParam("clinicServiceId") Long clinicServiceId,
                                                    @RequestParam("medicalStaffId") Long medicalStaffId,
                                                    @RequestBody Calendar calendar) throws Exception {
         Optional<ClinicService> clinicService = clinicSerService.findById(clinicServiceId);

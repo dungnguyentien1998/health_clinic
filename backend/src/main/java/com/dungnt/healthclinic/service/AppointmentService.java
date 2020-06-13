@@ -17,6 +17,6 @@ public interface AppointmentService {
 
     List<Appointment> findAllByClient(User client);
 
-    List<Appointment> findAllByMedicalStaff(User medicalStaff);
+//    List<Appointment> findAllByMedicalStaff(User medicalStaff);
 
 }

@@ -3,6 +3,7 @@ package com.dungnt.healthclinic.service.impl;
 import com.dungnt.healthclinic.dto.CalendarRequest;
 import com.dungnt.healthclinic.model.Calendar;
 import com.dungnt.healthclinic.model.ClinicService;
+import com.dungnt.healthclinic.model.User;
 import com.dungnt.healthclinic.repository.CalendarRepository;
 import com.dungnt.healthclinic.repository.ClinicServiceRepository;
 import com.dungnt.healthclinic.service.CalendarService;
@@ -58,7 +59,7 @@ public class CalendarServiceImpl implements CalendarService {
         }
 
         boolean check = true;
-        List<Calendar> calendarList = calendarRepository.findAllByRoom(calendar.getMedicalStaff().getRoom());
+        List<Calendar> calendarList = calendarRepository.findAllByMedicalStaff(calendar.getMedicalStaff());
         LocalTime timeStart = calendar.getTimeStart();
         LocalTime timeEnd = calendar.getTimeEnd();
 
@@ -188,6 +189,11 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public List<Calendar> findAllByClinicServiceAndDate(ClinicService service, LocalDate date) {
         return calendarRepository.findAllByClinicServiceAndDate(service, date);
+    }
+
+    @Override
+    public List<Calendar> findAllByMedicalStaff(User medicalStaff) {
+        return calendarRepository.findAllByMedicalStaff(medicalStaff);
     }
 
 

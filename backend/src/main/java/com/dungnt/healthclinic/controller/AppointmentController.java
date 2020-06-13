@@ -135,9 +135,14 @@ public class AppointmentController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        List<Appointment> appointments = appointmentService.findAllByMedicalStaff(medicalStaff.get());
-        if (appointments.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        List<Appointment> appointments = appointmentService.findAllByMedicalStaff(medicalStaff.get());
+//        if (appointments.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+        List<Calendar> calendars = calendarService.findAllByMedicalStaff(medicalStaff.get());
+        List<Appointment> appointments = new ArrayList<>();
+        for (Calendar calendar: calendars) {
+            appointments.add(calendar.getAppointment());
         }
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
