@@ -1,8 +1,10 @@
 package com.dungnt.healthclinic.controller;
 
 import com.dungnt.healthclinic.dto.SignUpRequest;
+import com.dungnt.healthclinic.model.ClinicService;
 import com.dungnt.healthclinic.model.Role;
 import com.dungnt.healthclinic.model.User;
+import com.dungnt.healthclinic.service.ClinicSerService;
 import com.dungnt.healthclinic.service.RoleService;
 import com.dungnt.healthclinic.service.UserService;
 import com.dungnt.healthclinic.service.impl.ValidationService;
@@ -25,10 +27,11 @@ public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private RoleService roleService;
     private ValidationService validationService;
+    private ClinicSerService clinicSerService;
 
     @Autowired
     public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder, RoleService roleService,
-                          ValidationService validationService) {
+                          ValidationService validationService, ClinicSerService clinicSerService) {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.roleService = roleService;
@@ -87,6 +90,10 @@ public class UserController {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
+        Optional<ClinicService> clinicService = clinicSerService.findById(signUpRequest.getServiceId());
+        if (!clinicService.isEmpty()) {
+            user.setRoom(clinicService.get().getRoom());
+        }
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
