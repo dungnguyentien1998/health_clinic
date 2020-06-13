@@ -69,7 +69,7 @@ public class CalendarController {
         currentCalendar.get().setTimeStart(calendar.getTimeStart());
         currentCalendar.get().setTimeEnd(calendar.getTimeEnd());
         currentCalendar.get().setState(calendar.getState());
-        currentCalendar.get().setRoom(calendar.getRoom());
+//        currentCalendar.get().setRoom(calendar.getRoom());
 
         if (clinicServiceId != null) {
             Optional<ClinicService> newClinicService = clinicSerService.findById(clinicServiceId);

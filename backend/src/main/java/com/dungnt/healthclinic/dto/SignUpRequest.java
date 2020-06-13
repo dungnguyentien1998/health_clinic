@@ -6,6 +6,7 @@ public class SignUpRequest {
     private String password;
     private String email;
     private String role;
+    private Long serviceId;
 
     public SignUpRequest() {
     }
@@ -61,5 +62,13 @@ public class SignUpRequest {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
     }
 }
