@@ -150,6 +150,14 @@ public class AppointmentController {
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param medicalStaffId
+     * @param dateStr
+     * @return
+     * @throws Exception
+     * @description Tra ve cac cuoc hen cua medical staff theo ngay
+     */
     @RequestMapping(value = "/getMedicalStaffAppointmentsByDate/{id}", method = RequestMethod.POST)
     public ResponseEntity<List<Appointment>> getMedicalStaffAppointmentsByDate(@PathVariable("id") Long medicalStaffId,
                                                                                @RequestParam("date") String dateStr) throws Exception {
@@ -174,6 +182,13 @@ public class AppointmentController {
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param dateStr
+     * @return
+     * @throws Exception
+     * @description Tra ve cac cuoc hen theo ngay
+     */
     @RequestMapping(value = "/getAppointmentsByDate", method = RequestMethod.POST)
     public ResponseEntity<List<Appointment>> getAppointmentsByDate(@RequestParam("date") String dateStr) throws Exception {
         LocalDate date = LocalDate.parse(dateStr);
