@@ -25,12 +25,13 @@ public class Calendar {
     @Column(name = "state")
     private Integer state;
 
-    @Column(name = "room")
-    private String room;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", referencedColumnName = "id")
     private ClinicService clinicService;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medical_staff_id", referencedColumnName = "id")
+    private User medicalStaff;
 
     @OneToOne(mappedBy = "calendar", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private Appointment appointment;
@@ -78,14 +79,6 @@ public class Calendar {
         this.state = state;
     }
 
-    public String getRoom() {
-        return room;
-    }
-
-    public void setRoom(String room) {
-        this.room = room;
-    }
-
     public Long getClinicServiceId() {
         return clinicService.getId();
     }
@@ -114,5 +107,27 @@ public class Calendar {
 
     public void setAppointment(Appointment appointment) {
         this.appointment = appointment;
+    }
+
+    @JsonIgnore
+    public User getMedicalStaff() {
+        return medicalStaff;
+    }
+
+    @JsonIgnore
+    public void setMedicalStaff(User medicalStaff) {
+        this.medicalStaff = medicalStaff;
+    }
+
+    public Long getMedicalStaffId() {
+        return medicalStaff.getId();
+    }
+
+    public String getMedicalStaffName() {
+        return medicalStaff.getName();
+    }
+
+    public String getMedicalStaffRoom() {
+        return medicalStaff.getRoom();
     }
 }

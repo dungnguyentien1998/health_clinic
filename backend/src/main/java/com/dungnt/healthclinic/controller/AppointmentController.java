@@ -78,16 +78,6 @@ public class AppointmentController {
         }
         appointment.setClient(client.get());
 
-        String room = calendar.get().getRoom();
-        List<User> users = userService.findAllByRoom(room);
-        if (users.isEmpty()) {
-            calendar.get().setState(0);
-            calendarService.save(calendar.get());
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        User medicalStaff = users.get(0);
-        appointment.setMedicalStaff(medicalStaff);
-
         appointmentService.save(appointment);
         return new ResponseEntity<>(appointment, HttpStatus.CREATED);
     }
@@ -144,8 +134,40 @@ public class AppointmentController {
         if (!medicalStaff.isPresent()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        List<Calendar> calendars = calendarService.findAllByMedicalStaff(medicalStaff.get());
+        if (calendars.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<Appointment> appointments = new ArrayList<>();
+        for (Calendar calendar: calendars) {
+            if (calendar.getAppointment() != null) {
+                appointments.add(calendar.getAppointment());
+            }
+        }
+        if (appointments.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
 
-        List<Appointment> appointments = appointmentService.findAllByMedicalStaff(medicalStaff.get());
+    @RequestMapping(value = "/getMedicalStaffAppointmentsByDate/{id}", method = RequestMethod.POST)
+    public ResponseEntity<List<Appointment>> getMedicalStaffAppointmentsByDate(@PathVariable("id") Long medicalStaffId,
+                                                                               @RequestParam("date") String dateStr) throws Exception {
+        Optional<User> medicalStaff = userService.findById(medicalStaffId);
+        if (!medicalStaff.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        LocalDate date = LocalDate.parse(dateStr);
+        List<Calendar> calendars = calendarService.findAllByDateAndMedicalStaff(date, medicalStaff.get());
+        if (calendars.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<Appointment> appointments = new ArrayList<>();
+        for (Calendar calendar: calendars) {
+            if (calendar.getAppointment() != null) {
+                appointments.add(calendar.getAppointment());
+            }
+        }
         if (appointments.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -170,5 +192,7 @@ public class AppointmentController {
         }
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
+
+
 
 }

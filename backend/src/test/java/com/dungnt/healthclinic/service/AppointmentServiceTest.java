@@ -84,13 +84,13 @@ public class AppointmentServiceTest {
 //        }
 //    }
 
-    @Test
-    public void testFindAllByMedicalStaffWhenTrue() {
-        User medicalStaff = new User();
-        List<Appointment> appointments = new ArrayList<>();
-        when(appointmentRepository.findAllByMedicalStaff(medicalStaff)).thenReturn(appointments);
-        List<Appointment> testAppointments = appointmentService.findAllByMedicalStaff(medicalStaff);
-        assertNotNull(testAppointments);
-    }
+//    @Test
+//    public void testFindAllByMedicalStaffWhenTrue() {
+//        User medicalStaff = new User();
+//        List<Appointment> appointments = new ArrayList<>();
+//        when(appointmentRepository.findAllByMedicalStaff(medicalStaff)).thenReturn(appointments);
+//        List<Appointment> testAppointments = appointmentService.findAllByMedicalStaff(medicalStaff);
+//        assertNotNull(testAppointments);
+//    }
 
 }

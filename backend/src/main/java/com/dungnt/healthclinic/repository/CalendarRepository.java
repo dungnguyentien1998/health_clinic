@@ -2,6 +2,7 @@ package com.dungnt.healthclinic.repository;
 
 import com.dungnt.healthclinic.model.Calendar;
 import com.dungnt.healthclinic.model.ClinicService;
+import com.dungnt.healthclinic.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,10 +27,11 @@ public interface CalendarRepository extends JpaRepository<Calendar, Long> {
     @Query(value = "select ca.* from calendars ca where ca.date = :date and ca.service_id = :id and ca.state = :state", nativeQuery = true)
     List<Calendar> findRecommendedCalendars2(@Param("date")LocalDate date, @Param("id")Long serviceId, @Param("state") Integer state);
 
-    List<Calendar> findAllByDateAndRoom(LocalDate date, String room);
-    List<Calendar> findAllByRoom(String room);
-
+//    List<Calendar> findAllByDateAndRoom(LocalDate date, String room);
+//    List<Calendar> findAllByRoom(String room);
+    List<Calendar> findAllByMedicalStaff(User medicalStaff);
     List<Calendar> findAllByDate(LocalDate date);
     List<Calendar> findAllByClinicService(ClinicService service);
     List<Calendar> findAllByClinicServiceAndDate(ClinicService service, LocalDate date);
+    List<Calendar> findAllByDateAndMedicalStaff(LocalDate date, User medicalStaff);
 }

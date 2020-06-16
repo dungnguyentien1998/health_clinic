@@ -1,6 +1,7 @@
 package com.dungnt.healthclinic.service.impl;
 
 import com.dungnt.healthclinic.model.MyUserDetails;
+import com.dungnt.healthclinic.model.Role;
 import com.dungnt.healthclinic.model.User;
 import com.dungnt.healthclinic.repository.UserRepository;
 import com.dungnt.healthclinic.service.UserService;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,6 +47,11 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.findAllByRoom(room);
     }
+
+//    @Override
+//    public List<User> findAllByRoles(Set<Role> roles) {
+//        return userRepository.findAllByRoles(roles);
+//    }
 
 
     @Override

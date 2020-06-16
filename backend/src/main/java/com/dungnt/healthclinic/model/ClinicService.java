@@ -1,5 +1,7 @@
 package com.dungnt.healthclinic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,8 +20,6 @@ public class ClinicService {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "room", nullable = false, unique = true)
-    private String room;
 
     @OneToMany(mappedBy = "clinicService", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Calendar> calendars = new HashSet<>();
@@ -51,18 +51,12 @@ public class ClinicService {
         this.description = description;
     }
 
-    public String getRoom() {
-        return room;
-    }
-
-    public void setRoom(String room) {
-        this.room = room;
-    }
-
+    @JsonIgnore
     public Set<Calendar> getCalendars() {
         return calendars;
     }
 
+    @JsonIgnore
     public void setCalendars(Set<Calendar> calendars) {
         this.calendars = calendars;
     }

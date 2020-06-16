@@ -3,6 +3,7 @@ package com.dungnt.healthclinic.service;
 import com.dungnt.healthclinic.dto.CalendarRequest;
 import com.dungnt.healthclinic.model.Calendar;
 import com.dungnt.healthclinic.model.ClinicService;
+import com.dungnt.healthclinic.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -31,4 +32,8 @@ public interface CalendarService {
     List<Calendar> findAllByClinicService(ClinicService service);
 
     List<Calendar> findAllByClinicServiceAndDate(ClinicService service, LocalDate date);
+
+    List<Calendar> findAllByMedicalStaff(User medicalStaff);
+
+    List<Calendar> findAllByDateAndMedicalStaff(LocalDate date, User medicalStaff);
 }

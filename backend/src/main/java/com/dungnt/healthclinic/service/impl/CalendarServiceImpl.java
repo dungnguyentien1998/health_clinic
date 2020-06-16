@@ -3,6 +3,7 @@ package com.dungnt.healthclinic.service.impl;
 import com.dungnt.healthclinic.dto.CalendarRequest;
 import com.dungnt.healthclinic.model.Calendar;
 import com.dungnt.healthclinic.model.ClinicService;
+import com.dungnt.healthclinic.model.User;
 import com.dungnt.healthclinic.repository.CalendarRepository;
 import com.dungnt.healthclinic.repository.ClinicServiceRepository;
 import com.dungnt.healthclinic.service.CalendarService;
@@ -56,12 +57,9 @@ public class CalendarServiceImpl implements CalendarService {
         if (calendar.getState() == null) {
             throw new Exception("Gia tri state null");
         }
-        if (calendar.getRoom() == null) {
-            throw new Exception("Gia tri room null");
-        }
 
         boolean check = true;
-        List<Calendar> calendarList = calendarRepository.findAllByRoom(calendar.getRoom());
+        List<Calendar> calendarList = calendarRepository.findAllByMedicalStaff(calendar.getMedicalStaff());
         LocalTime timeStart = calendar.getTimeStart();
         LocalTime timeEnd = calendar.getTimeEnd();
 
@@ -69,11 +67,11 @@ public class CalendarServiceImpl implements CalendarService {
             if (calendarTmp.getDate().isEqual(calendar.getDate())) {
                 LocalTime timeStartTmp = calendarTmp.getTimeStart();
                 LocalTime timeEndTmp = calendarTmp.getTimeEnd();
-                if (timeEnd.isAfter(timeStartTmp) && timeEnd.isBefore(timeEndTmp)) {
+                if (timeEnd.compareTo(timeStartTmp) >= 0 && timeEnd.compareTo(timeEndTmp) <= 0  ) {
                     check = false;
                     break;
                 }
-                if (timeEnd.isAfter(timeEndTmp) && timeStart.isBefore(timeEndTmp)) {
+                if (timeEnd.compareTo(timeEndTmp) >= 0 && timeStart.compareTo(timeEndTmp) <= 0) {
                     check = false;
                     break;
                 }
@@ -191,6 +189,16 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public List<Calendar> findAllByClinicServiceAndDate(ClinicService service, LocalDate date) {
         return calendarRepository.findAllByClinicServiceAndDate(service, date);
+    }
+
+    @Override
+    public List<Calendar> findAllByMedicalStaff(User medicalStaff) {
+        return calendarRepository.findAllByMedicalStaff(medicalStaff);
+    }
+
+    @Override
+    public List<Calendar> findAllByDateAndMedicalStaff(LocalDate date, User medicalStaff) {
+        return calendarRepository.findAllByDateAndMedicalStaff(date, medicalStaff);
     }
 
 
