@@ -126,4 +126,8 @@ public class Calendar {
     public String getMedicalStaffName() {
         return medicalStaff.getName();
     }
+
+    public String getMedicalStaffRoom() {
+        return medicalStaff.getRoom();
+    }
 }

@@ -67,11 +67,11 @@ public class CalendarServiceImpl implements CalendarService {
             if (calendarTmp.getDate().isEqual(calendar.getDate())) {
                 LocalTime timeStartTmp = calendarTmp.getTimeStart();
                 LocalTime timeEndTmp = calendarTmp.getTimeEnd();
-                if (timeEnd.isAfter(timeStartTmp) && timeEnd.isBefore(timeEndTmp)) {
+                if (timeEnd.compareTo(timeStartTmp) >= 0 && timeEnd.compareTo(timeEndTmp) <= 0  ) {
                     check = false;
                     break;
                 }
-                if (timeEnd.isAfter(timeEndTmp) && timeStart.isBefore(timeEndTmp)) {
+                if (timeEnd.compareTo(timeEndTmp) >= 0 && timeStart.compareTo(timeEndTmp) <= 0) {
                     check = false;
                     break;
                 }
@@ -194,6 +194,11 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public List<Calendar> findAllByMedicalStaff(User medicalStaff) {
         return calendarRepository.findAllByMedicalStaff(medicalStaff);
+    }
+
+    @Override
+    public List<Calendar> findAllByDateAndMedicalStaff(LocalDate date, User medicalStaff) {
+        return calendarRepository.findAllByDateAndMedicalStaff(date, medicalStaff);
     }
 
 

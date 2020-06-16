@@ -33,4 +33,5 @@ public interface CalendarRepository extends JpaRepository<Calendar, Long> {
     List<Calendar> findAllByDate(LocalDate date);
     List<Calendar> findAllByClinicService(ClinicService service);
     List<Calendar> findAllByClinicServiceAndDate(ClinicService service, LocalDate date);
+    List<Calendar> findAllByDateAndMedicalStaff(LocalDate date, User medicalStaff);
 }

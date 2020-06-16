@@ -34,4 +34,6 @@ public interface CalendarService {
     List<Calendar> findAllByClinicServiceAndDate(ClinicService service, LocalDate date);
 
     List<Calendar> findAllByMedicalStaff(User medicalStaff);
+
+    List<Calendar> findAllByDateAndMedicalStaff(LocalDate date, User medicalStaff);
 }

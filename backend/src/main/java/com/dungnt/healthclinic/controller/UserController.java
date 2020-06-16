@@ -16,10 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 public class UserController {
@@ -109,6 +106,22 @@ public class UserController {
         }
         User user = users.get(0);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getUsersByRole", method = RequestMethod.POST)
+    public ResponseEntity<List<User>> getUsersByRole(@RequestParam("role") String role) throws Exception {
+        List<User> users = userService.findAll();
+        List<User> usersResponse = new ArrayList<>();
+        for (User user: users) {
+            Set<String> roleNames = user.getRoleNames();
+            if (roleNames.size() == 1 && roleNames.contains(role)) {
+                usersResponse.add(user);
+            }
+        }
+        if (usersResponse.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(usersResponse, HttpStatus.OK);
     }
 
 }

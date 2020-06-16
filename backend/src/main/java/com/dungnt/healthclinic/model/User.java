@@ -158,6 +158,7 @@ public class User {
         this.gender = gender;
     }
 
+    @JsonIgnore
     public Set<Appointment> getClientAppointments() {
         return clientAppointments;
     }
@@ -166,6 +167,7 @@ public class User {
         this.clientAppointments = clientAppointments;
     }
 
+    @JsonIgnore
     public Set<Calendar> getMedicalStaffAppointments() {
         return medicalStaffCalendars;
     }

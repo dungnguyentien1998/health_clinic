@@ -94,6 +94,12 @@ public class Appointment {
         return client.getName();
     }
 
+    public String getRoom() {
+        return calendar.getMedicalStaffRoom();
+    }
 
+    public String getMedicalStaff() {
+        return calendar.getMedicalStaffName();
+    }
 
 }
