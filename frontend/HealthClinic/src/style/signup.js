@@ -32,5 +32,9 @@ export const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         color: '#191970'
+    },
+    require:{
+        fontSize: 8,
+        color: 'gray'
     }
 });

@@ -19,7 +19,6 @@ export default function AddService({route, navigation}) {
     const {authorization} = route.params;
     const [name, setName] = useState('');
     const [des, setDes] = useState('');
-    const [room, setRoom] = useState('');
     const [isLoading, setLoading] = useState(false);
 
     function createService() {
@@ -33,8 +32,7 @@ export default function AddService({route, navigation}) {
                 },
                 body: JSON.stringify({
                     name: name,
-                    description: des,
-                    room: room
+                    description: des
                 })
             })
             .then((response) => {
@@ -101,11 +99,6 @@ export default function AddService({route, navigation}) {
                 <Text style={styles.label}>Mô tả</Text>
                 <TextInput style={[styles.txtInfo, {height: Math.round(screenHeight*0.4), textAlignVertical: 'top'}]} 
                     value={des} multiline={true} onChangeText={(text) => setDes(text)}/>
-            </View>
-                
-            <View style={styles.subContainer}>
-                <Text style={styles.label}>Phòng</Text>
-                <TextInput style={styles.txtInfo} value={room} onChangeText={(text) => setRoom(text)}/>
             </View>
             
             <View style={[styles.btnContainer, {flexDirection: 'row'}]}>

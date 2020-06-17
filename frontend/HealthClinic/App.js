@@ -19,6 +19,7 @@ import MedicalTabNavigator from './src/component/medicalstaff/medicaltabnavigato
 import {styles as signinstyles} from './src/style/signin';
 import {styles as signupstyles} from './src/style/signup';
 import styles from './src/style/home';
+import { enableScreens } from 'react-native-screens';
 
 export const AuthContext = React.createContext();
 const Stack = createStackNavigator();
@@ -29,9 +30,17 @@ function SignIn({navigation}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setLoading] = useState(false);
-
+    const [checkUsername, setCheckUsername] = useState(false);
+    const [checkPassword, setCheckPassword] = useState(false);
     const {signIn} = React.useContext(AuthContext);
     logo = require('./src/icon/login/logo.png');
+
+    function checkInput() {
+        if (username.length * password.length === 0)
+            return false;
+        else
+            return true;
+    }
 
     return ( 
         <View style={signinstyles.container} accessible={false}>
@@ -46,15 +55,21 @@ function SignIn({navigation}) {
 
             <Image style={signinstyles.logo} source={logo}></Image>
             <TextInput
-                onChangeText={(text) => setUsername(text)}
-                underlineColorAndroid={'#191970'}
+                onChangeText={(text) => {
+                    setCheckUsername(true);
+                    setUsername(text)
+                }}
+                underlineColorAndroid={(checkUsername && username.length === 0) ? 'red' : '#191970'}
                 style={signinstyles.textInput}
                 placeholder={'Số điện thoại'}
                 editable={!isLoading}
             />
             <TextInput
-                onChangeText={(text) => setPassword(text)}
-                underlineColorAndroid={'#191970'}
+                onChangeText={(text) => {
+                    setCheckPassword(true);
+                    setPassword(text)
+                }}
+                underlineColorAndroid={(checkPassword && password.length === 0) ? 'red' : '#191970'}
                 style={signinstyles.textInput}
                 placeholder={'Mật khẩu'}
                 secureTextEntry={true}
@@ -62,31 +77,46 @@ function SignIn({navigation}) {
             />
             <TouchableOpacity
                 onPress={async () => {
-                setLoading(true);
-                result = await signIn(username, password);
-                setLoading(false);
-                if (result === 1)
-                    Alert.alert(
-                        "Thông báo",
-                        "Lỗi kết nối!",
-                        [
-                            {
-                                text: "OK",
-                                style: "cancel"
-                            }
-                        ]
-                    );
-                else if (result === 0)
-                    Alert.alert(
-                        "Thông báo",
-                        "Tên đăng nhập hoặc mật khẩu không đúng!",
-                        [
-                            {
-                                text: "OK",
-                                style: "cancel"
-                            }
-                        ]
-                    );
+                    if (!checkInput()) {
+                        setCheckPassword(true);
+                        setCheckUsername(true);
+                        Alert.alert(
+                            "Thông báo",
+                            "Bạn phải nhập đủ tên đăng nhập và mật khẩu!",
+                            [
+                                {
+                                    text: "OK",
+                                    style: "cancel"
+                                }
+                            ]
+                        );
+                    } else {
+                        setLoading(true);
+                        result = await signIn(username, password);
+                        setLoading(false);
+                        if (result === 1)
+                            Alert.alert(
+                                "Thông báo",
+                                "Lỗi kết nối!",
+                                [
+                                    {
+                                        text: "OK",
+                                        style: "cancel"
+                                    }
+                                ]
+                            );
+                        else if (result === 0)
+                            Alert.alert(
+                                "Thông báo",
+                                "Tên đăng nhập hoặc mật khẩu không đúng!",
+                                [
+                                    {
+                                        text: "OK",
+                                        style: "cancel"
+                                    }
+                                ]
+                            );
+                    }
                 }} 
                 style={signinstyles.btnLogin}
                 disabled={isLoading}
@@ -114,10 +144,15 @@ function SignIn({navigation}) {
 
 function SignUp({navigation}) {
     const [name, setName] = useState('');
+    const [checkName, setCheckName] = useState(false);
     const [email, setEmail] = useState('');
+    const [checkEmail, setCheckEmail] = useState(false);
     const [phone, setPhone] = useState('');
+    const [checkPhone, setCheckPhone] = useState(false);
     const [password, setPassword] = useState('');
+    const [checkPassword, setCheckPassword] = useState(false);
     const [submitPwd, setSubmitPwd] = useState('');
+    const [checkSubmitPwd, setCheckSubmitPwd] = useState(false);
     const {signIn} = React.useContext(AuthContext);
     const [isLoading, setLoading] = useState(false);
 
@@ -172,6 +207,87 @@ function SignUp({navigation}) {
             .finally(() => setLoading(false))
     }
 
+    function checkNameFormat () {
+        if (name.length === 0) 
+            return false;
+        else 
+            return true;
+    }
+
+    function checkEmailFormat() {
+        if (email.length === 0)
+            return false;
+        else 
+            return true;
+    }
+
+    function checkPhoneFormat() {
+        if (phone.length === 0)
+            return false;
+        else
+            return true;
+    }
+
+    function checkPasswordFormat() {
+        const regex = RegExp(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$/);
+        return regex.test(password); 
+    }
+    function checkSubmitPwdFormat() {
+        return ((password === submitPwd) && (submitPwd.length != 0));
+    }
+
+    function checkInput() {
+        if (checkNameFormat() && checkEmailFormat() && checkPhoneFormat() && checkPasswordFormat()
+            && checkSubmitPwdFormat())
+            return true;
+        else {
+            setCheckName(true);
+            setCheckEmail(true);
+            setCheckPhone(true);
+            setCheckPassword(true);
+            setCheckSubmitPwd(true);
+            return false;
+        }
+    }
+
+    function errorNotice() {
+        if ((name.length === 0) && (email.length === 0) && (phone.length === 0) 
+            && (password.length === 0) && (submitPwd.length === 0)) {
+                Alert.alert(
+                    "Thông báo",
+                    "Bạn phải nhập đầy đủ các thông tin!",
+                    [
+                        {
+                            text: "OK",
+                            style: "cancel"
+                        }
+                    ]
+                );
+        } else if (!checkPasswordFormat()) {
+            Alert.alert(
+                "Thông báo",
+                "Mật khẩu không đúng định dạng!",
+                [
+                    {
+                        text: "OK",
+                        style: "cancel"
+                    }
+                ]
+            );
+        } else if (!checkSubmitPwdFormat()) {
+            Alert.alert(
+                "Thông báo",
+                "Xác nhận mật khẩu không khớp!",
+                [
+                    {
+                        text: "OK",
+                        style: "cancel"
+                    }
+                ]
+            );
+        }
+    }
+
     return (
         <ScrollView contentContainerStyle={signupstyles.container}>
             {isLoading &&
@@ -185,33 +301,50 @@ function SignUp({navigation}) {
 
             <Text style={signupstyles.title}>Đăng ký</Text>
             <TextInput
-                onChangeText={(text) => setName(text)}
-                underlineColorAndroid={'#191970'}
+                onChangeText={(text) => {
+                    setCheckName(true);
+                    setName(text);
+                }}
+                underlineColorAndroid={(checkName && !checkNameFormat()) ? 'red' : '#191970'}
                 style={signupstyles.textInput}
                 placeholder={'Họ và tên'}
             />
             <TextInput
-                onChangeText={(text) => setEmail(text)}
-                underlineColorAndroid={'#191970'}
+                onChangeText={(text) => {
+                    setCheckEmail(true);
+                    setEmail(text);
+                }}
+                underlineColorAndroid={(checkEmail && !checkEmailFormat()) ? 'red' : '#191970'}
+                style={signupstyles.textInput}
                 style={signupstyles.textInput}
                 placeholder={'Email'}
             />
             <TextInput
-                onChangeText={(text) => setPhone(text)}
-                underlineColorAndroid={'#191970'}
+                onChangeText={(text) => {
+                    setCheckPhone(true);
+                    setPhone(text);
+                }}
+                underlineColorAndroid={(checkPhone && !checkPhoneFormat()) ? 'red' : '#191970'}
                 style={signupstyles.textInput}
                 placeholder={'Số điện thoại'}
             />
             <TextInput
-                onChangeText={(text) => setPassword(text)}
-                underlineColorAndroid={'#191970'}
-                style={signupstyles.textInput}
+                onChangeText={(text) => {
+                    setCheckPassword(true);
+                    setPassword(text);
+                }}
+                underlineColorAndroid={(checkPassword && !checkPasswordFormat()) ? 'red' : '#191970'}
+                style={[signupstyles.textInput, {marginBottom: 5}]}
                 placeholder={'Mật khẩu'}
                 secureTextEntry={true}
             />
+            <Text style={signupstyles.require}>Mật khẩu tối thiểu 8 ký tự, ít nhất 1 chữ số và 1 chữ cái viết hoa.</Text>
             <TextInput
-                onChangeText={(text) => setSubmitPwd(text)}
-                underlineColorAndroid={'#191970'}
+                onChangeText={(text) => {
+                    setCheckSubmitPwd(true);
+                    setSubmitPwd(text);
+                }}
+                underlineColorAndroid={(checkSubmitPwd && !checkSubmitPwdFormat()) ? 'red' : '#191970'}
                 style={signupstyles.textInput}
                 placeholder={'Xác nhận mật khẩu'}
                 secureTextEntry={true}
@@ -219,7 +352,10 @@ function SignUp({navigation}) {
             <TouchableOpacity
                 style={signupstyles.btnSignup}
                 onPress={() => {
-                    signUp();
+                    if (checkInput())
+                        signUp();
+                    else
+                        errorNotice();
                 }}
             >
                 <Text style={signupstyles.text}>ĐĂNG KÝ</Text>

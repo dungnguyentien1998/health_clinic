@@ -126,12 +126,12 @@ export default function AppointmentDetail({route, navigation}) {
                 
             <View style={styles.subContainer}>
                 <Text style={styles.label}>Phòng</Text>
-                <Text style={styles.txtInfo}>{appt.calendarRoom}</Text>
+                <Text style={styles.txtInfo}>{appt.room}</Text>
             </View>
 
             <View style={styles.subContainer}>
                 <Text style={styles.label}>Nhân viên y tế</Text>
-                <Text style={styles.txtInfo}>{appt.medicalStaffName}</Text>
+                <Text style={styles.txtInfo}>{appt.medicalStaff}</Text>
             </View>
             
             <View style={[styles.btnContainer, {flexDirection: 'row'}]}>
@@ -140,7 +140,7 @@ export default function AppointmentDetail({route, navigation}) {
                     onPress={() => {
                         Alert.alert(
                             "Thông báo",
-                            "Bạn có chắc chắn muốn xóa dịch vụ này?",
+                            "Bạn có chắc chắn muốn xóa lịch hẹn này?",
                             [
                                 {
                                     text: "Có",

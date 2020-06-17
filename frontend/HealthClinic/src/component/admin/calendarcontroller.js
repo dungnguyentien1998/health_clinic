@@ -35,7 +35,9 @@ export default function CalendarController({route, navigation}) {
             setNoCal(true);
             setLoading(true);
             await getService();
-            await getCal();
+            const timer = setTimeout(async () => {
+                await getCal();
+            }, 1000);
         }), []);
 
     getCal = async () => {
@@ -220,6 +222,7 @@ export default function CalendarController({route, navigation}) {
                             data={cals}
                             renderItem={({item}) => (
                                 <TouchableOpacity style={[styles.item,{backgroundColor: (item.state ? '#90ee90' : '#e6e6fa')}]}
+                                    onPress={() => navigation.navigate('CalendarDetail', {authorization: authorization, calendar: item})}
                                 >
                                     <View style={{flexDirection: 'row'}}>
                                         <View style={styles.itemRow}>
@@ -228,7 +231,7 @@ export default function CalendarController({route, navigation}) {
                                         </View>
                                         <View style={styles.itemRow}>
                                             <FontAwesome5 name={'clinic-medical'} color='#191970' size={25} solid/>
-                                            <Text style={styles.txtList}>{item.room}</Text>
+                                            <Text style={styles.txtList}>{item.medicalStaffRoom}</Text>
                                         </View>
                                     </View>
 
