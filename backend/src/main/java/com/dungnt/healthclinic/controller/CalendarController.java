@@ -7,6 +7,7 @@ import com.dungnt.healthclinic.model.User;
 import com.dungnt.healthclinic.service.CalendarService;
 import com.dungnt.healthclinic.service.ClinicSerService;
 import com.dungnt.healthclinic.service.UserService;
+import com.dungnt.healthclinic.service.impl.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,12 +23,15 @@ public class CalendarController {
     private ClinicSerService clinicSerService;
     private CalendarService calendarService;
     private UserService userService;
+    private ValidationService validationService;
 
     @Autowired
-    public CalendarController(ClinicSerService clinicSerService, CalendarService calendarService, UserService userService) {
+    public CalendarController(ClinicSerService clinicSerService, CalendarService calendarService, UserService userService,
+                              ValidationService validationService) {
         this.clinicSerService = clinicSerService;
         this.calendarService = calendarService;
         this.userService = userService;
+        this.validationService = validationService;
     }
 
     @RequestMapping(value = "/calendars", method = RequestMethod.GET)
@@ -62,6 +66,7 @@ public class CalendarController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         calendar.setMedicalStaff(medicalStaff.get());
+        validationService.validateCalendar(calendar);
         calendarService.save(calendar);
         return new ResponseEntity<>(calendar, HttpStatus.CREATED);
     }

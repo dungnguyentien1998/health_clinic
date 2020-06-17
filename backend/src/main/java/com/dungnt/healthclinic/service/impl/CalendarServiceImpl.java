@@ -42,45 +42,45 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public void save(Calendar calendar) throws Exception {
-        if (calendar == null) {
-            throw new Exception("Doi tuong calendar null");
-        }
-        if (calendar.getDate() == null) {
-            throw new Exception("Gia tri date null");
-        }
-        if (calendar.getTimeStart() == null) {
-            throw new Exception("Gia tri thoi gian bat dau null");
-        }
-        if (calendar.getTimeEnd() == null) {
-            throw new Exception("Gia tri thoi gian ket thuc null");
-        }
-        if (calendar.getState() == null) {
-            throw new Exception("Gia tri state null");
-        }
-
-        boolean check = true;
-        List<Calendar> calendarList = calendarRepository.findAllByMedicalStaff(calendar.getMedicalStaff());
-        LocalTime timeStart = calendar.getTimeStart();
-        LocalTime timeEnd = calendar.getTimeEnd();
-
-        for (Calendar calendarTmp: calendarList) {
-            if (calendarTmp.getDate().isEqual(calendar.getDate())) {
-                LocalTime timeStartTmp = calendarTmp.getTimeStart();
-                LocalTime timeEndTmp = calendarTmp.getTimeEnd();
-                if (timeEnd.compareTo(timeStartTmp) >= 0 && timeEnd.compareTo(timeEndTmp) <= 0  ) {
-                    check = false;
-                    break;
-                }
-                if (timeEnd.compareTo(timeEndTmp) >= 0 && timeStart.compareTo(timeEndTmp) <= 0) {
-                    check = false;
-                    break;
-                }
-            }
-
-        }
-        if (!check) {
-            throw new Exception("Thoi gian ban chon khong phu hop do trung voi lich kham da co");
-        }
+//        if (calendar == null) {
+//            throw new Exception("Doi tuong calendar null");
+//        }
+//        if (calendar.getDate() == null) {
+//            throw new Exception("Gia tri date null");
+//        }
+//        if (calendar.getTimeStart() == null) {
+//            throw new Exception("Gia tri thoi gian bat dau null");
+//        }
+//        if (calendar.getTimeEnd() == null) {
+//            throw new Exception("Gia tri thoi gian ket thuc null");
+//        }
+//        if (calendar.getState() == null) {
+//            throw new Exception("Gia tri state null");
+//        }
+//
+//        boolean check = true;
+//        List<Calendar> calendarList = calendarRepository.findAllByMedicalStaff(calendar.getMedicalStaff());
+//        LocalTime timeStart = calendar.getTimeStart();
+//        LocalTime timeEnd = calendar.getTimeEnd();
+//
+//        for (Calendar calendarTmp: calendarList) {
+//            if (calendarTmp.getDate().isEqual(calendar.getDate())) {
+//                LocalTime timeStartTmp = calendarTmp.getTimeStart();
+//                LocalTime timeEndTmp = calendarTmp.getTimeEnd();
+//                if (timeEnd.compareTo(timeStartTmp) >= 0 && timeEnd.compareTo(timeEndTmp) <= 0  ) {
+//                    check = false;
+//                    break;
+//                }
+//                if (timeEnd.compareTo(timeEndTmp) >= 0 && timeStart.compareTo(timeEndTmp) <= 0) {
+//                    check = false;
+//                    break;
+//                }
+//            }
+//
+//        }
+//        if (!check) {
+//            throw new Exception("Thoi gian ban chon khong phu hop do trung voi lich kham da co");
+//        }
 
         calendarRepository.save(calendar);
     }

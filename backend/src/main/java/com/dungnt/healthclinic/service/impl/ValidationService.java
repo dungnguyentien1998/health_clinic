@@ -1,22 +1,30 @@
 package com.dungnt.healthclinic.service.impl;
 
 import com.dungnt.healthclinic.dto.SignUpRequest;
+import com.dungnt.healthclinic.model.Calendar;
 import com.dungnt.healthclinic.model.ClinicService;
 import com.dungnt.healthclinic.model.User;
+import com.dungnt.healthclinic.repository.CalendarRepository;
 import com.dungnt.healthclinic.repository.ClinicServiceRepository;
 import com.dungnt.healthclinic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+import java.util.List;
+
 @Service
 public class ValidationService {
     private UserRepository userRepository;
     private ClinicServiceRepository clinicServiceRepository;
+    private CalendarRepository calendarRepository;
 
     @Autowired
-    public ValidationService(UserRepository userRepository, ClinicServiceRepository clinicServiceRepository) {
+    public ValidationService(UserRepository userRepository, ClinicServiceRepository clinicServiceRepository,
+                             CalendarRepository calendarRepository) {
         this.userRepository = userRepository;
         this.clinicServiceRepository = clinicServiceRepository;
+        this.calendarRepository = calendarRepository;
     }
 
     public void validateCredentials(SignUpRequest signUpRequest) throws Exception {
@@ -101,10 +109,46 @@ public class ValidationService {
 
     }
 
-//    public void checkRoom(String room) throws Exception {
-//        ClinicService clinicService = clinicServiceRepository.findByRoom(room);
-//        if (clinicService != null) {
-//            throw new Exception("Phong nay da su dung cho mot dich vu khac");
-//        }
-//    }
+    public void validateCalendar(Calendar calendar) throws Exception {
+        if (calendar == null) {
+            throw new Exception("Doi tuong calendar null");
+        }
+        if (calendar.getDate() == null) {
+            throw new Exception("Gia tri date null");
+        }
+        if (calendar.getTimeStart() == null) {
+            throw new Exception("Gia tri thoi gian bat dau null");
+        }
+        if (calendar.getTimeEnd() == null) {
+            throw new Exception("Gia tri thoi gian ket thuc null");
+        }
+        if (calendar.getState() == null) {
+            throw new Exception("Gia tri state null");
+        }
+
+        boolean check = true;
+        List<Calendar> calendarList = calendarRepository.findAllByMedicalStaff(calendar.getMedicalStaff());
+        LocalTime timeStart = calendar.getTimeStart();
+        LocalTime timeEnd = calendar.getTimeEnd();
+
+        for (Calendar calendarTmp: calendarList) {
+            if (calendarTmp.getDate().isEqual(calendar.getDate())) {
+                LocalTime timeStartTmp = calendarTmp.getTimeStart();
+                LocalTime timeEndTmp = calendarTmp.getTimeEnd();
+                if (timeEnd.compareTo(timeStartTmp) >= 0 && timeEnd.compareTo(timeEndTmp) <= 0  ) {
+                    check = false;
+                    break;
+                }
+                if (timeEnd.compareTo(timeEndTmp) >= 0 && timeStart.compareTo(timeEndTmp) <= 0) {
+                    check = false;
+                    break;
+                }
+            }
+
+        }
+        if (!check) {
+            throw new Exception("Thoi gian ban chon khong phu hop do trung voi lich kham da co");
+        }
+    }
+
 }
