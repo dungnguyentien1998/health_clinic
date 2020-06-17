@@ -25,17 +25,14 @@ DROP TABLE IF EXISTS `appointments`;
 CREATE TABLE `appointments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `client_id` int(11) NOT NULL,
-  `medical_staff_id` int(11) NOT NULL,
   `calendar_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `calendar_id_UNIQUE` (`calendar_id`),
   KEY `calendar_id_idx` (`calendar_id`),
   KEY `client_id_idx` (`client_id`),
-  KEY `medical_staff_id_idx` (`medical_staff_id`),
   CONSTRAINT `calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`),
-  CONSTRAINT `client_id` FOREIGN KEY (`client_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `medical_staff_id` FOREIGN KEY (`medical_staff_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `client_id` FOREIGN KEY (`client_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -60,12 +57,14 @@ CREATE TABLE `calendars` (
   `time_start` time NOT NULL,
   `time_end` time NOT NULL,
   `state` int(11) NOT NULL,
-  `room` varchar(45) DEFAULT NULL,
   `service_id` int(11) NOT NULL,
+  `medical_staff_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `service_id_idx` (`service_id`),
+  KEY `medical_staff_id_idx` (`medical_staff_id`),
+  CONSTRAINT `medical_staff_id` FOREIGN KEY (`medical_staff_id`) REFERENCES `users` (`id`),
   CONSTRAINT `service_id` FOREIGN KEY (`service_id`) REFERENCES `clinic_services` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,10 +87,8 @@ CREATE TABLE `clinic_services` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `description` varchar(1000) DEFAULT NULL,
-  `room` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `room_UNIQUE` (`room`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +97,7 @@ CREATE TABLE `clinic_services` (
 
 LOCK TABLES `clinic_services` WRITE;
 /*!40000 ALTER TABLE `clinic_services` DISABLE KEYS */;
-INSERT INTO `clinic_services` VALUES (1,'Khám mắt',NULL,'201'),(2,'Khám tai mũi họng',NULL,'202'),(3,'Khám da liễu',NULL,'203'),(4,'Khám răng',NULL,'204');
+INSERT INTO `clinic_services` VALUES (1,'Khám mắt',NULL),(2,'Khám tai mũi họng',NULL),(3,'Khám da liễu',NULL),(4,'Khám răng',NULL);
 /*!40000 ALTER TABLE `clinic_services` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,7 +141,7 @@ CREATE TABLE `user_role` (
   KEY `user_id_idx` (`user_id`),
   CONSTRAINT `role_id` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +150,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES (6,13,2),(7,15,2),(8,16,2);
+INSERT INTO `user_role` VALUES (11,19,3),(12,20,2),(13,21,2);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,7 +176,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_UNIQUE` (`phone`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +185,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (13,'admin',NULL,NULL,'dungnt123@gmail.com',NULL,'09876543210','$2a$10$TJYqabmMIx.0hH4k8PD3euSpUqOPJch9LShstMHYZxMGPazvODm8e',NULL,NULL,NULL),(15,'admin',NULL,NULL,'dungnt456@gmail.com',NULL,'0123456789','$2a$10$HZ7TCMxleWu06EtXo3l3zOkFGU5FS67nE35aDFgYGCqLQXLOc33gG',NULL,NULL,NULL),(16,'admin',NULL,NULL,'dungnt789@gmail.com',NULL,'09988776655','$2a$10$rRZhlossReBtLzLibOkVTOsJl9hsx7DEp8KHkYkEoJhGyRNsubIH.',NULL,NULL,NULL);
+INSERT INTO `users` VALUES (19,'doctor',NULL,NULL,'dungnt789@gmail.com',NULL,'09988776655','$2a$10$FS/aMtIwmnp/MGCDrEliVeQy/pnOF4P70Tjym9DgiQBKpJdMtLzwu','201',NULL,NULL),(20,'admin',NULL,NULL,'dungnt123@gmail.com',NULL,'0987654321','$2a$10$3aXrApOLKMJZ2xkDox8a2.kUNvzbuih16jOk9qLIcdSCtp9za/Fwm',NULL,NULL,NULL),(21,'admin',NULL,NULL,'dungnt456@gmail.com',NULL,'0123456789','$2a$10$yCJbphAjJYLnFKeo0BNtgeZgWCOjQWbDch5e267bXCgbSMe8BbZJ.',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -201,4 +198,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-12 20:30:48
+-- Dump completed on 2020-06-17 22:51:43
