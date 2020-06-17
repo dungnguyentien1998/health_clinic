@@ -19,48 +19,6 @@ CREATE SCHEMA IF NOT EXISTS `health_clinic` DEFAULT CHARACTER SET utf8mb4 COLLAT
 USE `health_clinic` ;
 
 -- -----------------------------------------------------
--- Table `health_clinic`.`clinic_services`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `health_clinic`.`clinic_services` ;
-
-CREATE TABLE IF NOT EXISTS `health_clinic`.`clinic_services` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(50) NOT NULL,
-  `description` VARCHAR(1000) NULL DEFAULT NULL,
-  `room` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `room_UNIQUE` (`room` ASC) VISIBLE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 7
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `health_clinic`.`calendars`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `health_clinic`.`calendars` ;
-
-CREATE TABLE IF NOT EXISTS `health_clinic`.`calendars` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `date` DATE NOT NULL,
-  `time_start` TIME NOT NULL,
-  `time_end` TIME NOT NULL,
-  `state` INT(11) NOT NULL,
-  `room` VARCHAR(45) NULL DEFAULT NULL,
-  `service_id` INT(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `service_id_idx` (`service_id` ASC) VISIBLE,
-  CONSTRAINT `service_id`
-    FOREIGN KEY (`service_id`)
-    REFERENCES `health_clinic`.`clinic_services` (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 7
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
 -- Table `health_clinic`.`users`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `health_clinic`.`users` ;
@@ -81,7 +39,51 @@ CREATE TABLE IF NOT EXISTS `health_clinic`.`users` (
   UNIQUE INDEX `phone_UNIQUE` (`phone` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 17
+AUTO_INCREMENT = 19
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `health_clinic`.`clinic_services`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `health_clinic`.`clinic_services` ;
+
+CREATE TABLE IF NOT EXISTS `health_clinic`.`clinic_services` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  `description` VARCHAR(1000) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 9
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `health_clinic`.`calendars`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `health_clinic`.`calendars` ;
+
+CREATE TABLE IF NOT EXISTS `health_clinic`.`calendars` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `date` DATE NOT NULL,
+  `time_start` TIME NOT NULL,
+  `time_end` TIME NOT NULL,
+  `state` INT(11) NOT NULL,
+  `service_id` INT(11) NOT NULL,
+  `medical_staff_id` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `service_id_idx` (`service_id` ASC) VISIBLE,
+  INDEX `medical_staff_id_idx` (`medical_staff_id` ASC) VISIBLE,
+  CONSTRAINT `medical_staff_id`
+    FOREIGN KEY (`medical_staff_id`)
+    REFERENCES `health_clinic`.`users` (`id`),
+  CONSTRAINT `service_id`
+    FOREIGN KEY (`service_id`)
+    REFERENCES `health_clinic`.`clinic_services` (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -94,24 +96,19 @@ DROP TABLE IF EXISTS `health_clinic`.`appointments` ;
 CREATE TABLE IF NOT EXISTS `health_clinic`.`appointments` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `client_id` INT(11) NOT NULL,
-  `medical_staff_id` INT(11) NOT NULL,
   `calendar_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `calendar_id_UNIQUE` (`calendar_id` ASC) VISIBLE,
   INDEX `calendar_id_idx` (`calendar_id` ASC) VISIBLE,
   INDEX `client_id_idx` (`client_id` ASC) VISIBLE,
-  INDEX `medical_staff_id_idx` (`medical_staff_id` ASC) VISIBLE,
   CONSTRAINT `calendar_id`
     FOREIGN KEY (`calendar_id`)
     REFERENCES `health_clinic`.`calendars` (`id`),
   CONSTRAINT `client_id`
     FOREIGN KEY (`client_id`)
-    REFERENCES `health_clinic`.`users` (`id`),
-  CONSTRAINT `medical_staff_id`
-    FOREIGN KEY (`medical_staff_id`)
     REFERENCES `health_clinic`.`users` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -150,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `health_clinic`.`user_role` (
     FOREIGN KEY (`user_id`)
     REFERENCES `health_clinic`.`users` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 9
+AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
