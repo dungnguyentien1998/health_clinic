@@ -126,25 +126,32 @@ public class ValidationService {
             throw new Exception("Gia tri state null");
         }
 
+
         boolean check = true;
         List<Calendar> calendarList = calendarRepository.findAllByMedicalStaff(calendar.getMedicalStaff());
         LocalTime timeStart = calendar.getTimeStart();
         LocalTime timeEnd = calendar.getTimeEnd();
 
+        if (timeEnd.compareTo(timeStart) <= 0) {
+            throw new Exception("Thoi gian bat dau phai o truoc thoi gian ket thuc");
+        }
+
         for (Calendar calendarTmp: calendarList) {
             if (calendarTmp.getDate().isEqual(calendar.getDate())) {
                 LocalTime timeStartTmp = calendarTmp.getTimeStart();
                 LocalTime timeEndTmp = calendarTmp.getTimeEnd();
-                if (timeEnd.compareTo(timeStartTmp) >= 0 && timeEnd.compareTo(timeEndTmp) <= 0  ) {
+
+                if (timeEnd.compareTo(timeStartTmp) > 0 && timeEnd.compareTo(timeEndTmp) <= 0  ) {
                     check = false;
                     break;
                 }
-                if (timeEnd.compareTo(timeEndTmp) >= 0 && timeStart.compareTo(timeEndTmp) <= 0) {
-                    check = false;
-                    break;
+                if (timeEnd.compareTo(timeEndTmp) > 0) {
+                    if (timeStart.compareTo(timeEndTmp) < 0) {
+                        check = false;
+                        break;
+                    }
                 }
             }
-
         }
         if (!check) {
             throw new Exception("Thoi gian ban chon khong phu hop do trung voi lich kham da co");
