@@ -127,7 +127,7 @@ export default function AppointmentDetail({route, navigation}) {
                     <FontAwesome5 name='clinic-medical' color='#191970' size={25}/>
                     <Text style={styles.title}>Phòng</Text>
                 </View>
-                <Text style={styles.content}>{appt.calendarRoom}</Text>  
+                <Text style={styles.content}>{appt.room}</Text>  
             </View>
 
             <View style={styles.textContainer}>
@@ -135,7 +135,7 @@ export default function AppointmentDetail({route, navigation}) {
                     <FontAwesome5 name='user-md' color='#191970' size={25}/>
                     <Text style={styles.title}>Nhân viên y tế</Text>
                 </View>
-                <Text style={styles.content}>{appt.medicalStaffName}</Text>
+                <Text style={styles.content}>{appt.medicalStaff}</Text>
             </View>
             <View style={styles.btnContainer}>
                 <TouchableOpacity 

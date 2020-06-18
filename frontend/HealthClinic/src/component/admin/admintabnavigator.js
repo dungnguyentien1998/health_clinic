@@ -12,6 +12,7 @@ import ServiceDetail from './servicedetail';
 import AddService from './addservice';
 import CalendarController from './calendarcontroller';
 import AddCalendar from './addcalendar';
+import CalendarDetail from './calendardetail';
 
 const Tab = createBottomTabNavigator(); 
 const HomeStack = createStackNavigator(); 
@@ -41,6 +42,7 @@ function ControllerScreen({route, navigation}) {
             <ControllerStack.Screen name="AppointmentDetail" component={AppointmentDetail} options={{title: "Chi tiết lịch hẹn"}}/>
             <ControllerStack.Screen name="CalendarController" component={CalendarController} options={{title: "Quản lý lịch hoạt động"}}/>
             <ControllerStack.Screen name="AddCalendar" component={AddCalendar} options={{title: "Thêm lịch hoạt động"}}/>
+            <ControllerStack.Screen name="CalendarDetail" component={CalendarDetail} options={{title: "Chi tiết lịch hoạt động"}}/>
         </ControllerStack.Navigator>
     );
 }

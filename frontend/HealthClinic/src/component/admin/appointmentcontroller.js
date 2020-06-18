@@ -158,7 +158,7 @@ export default function AppointmentController({route, navigation}) {
                                         </View>
                                         <View style={styles.itemRow}>
                                             <FontAwesome5 name={'clinic-medical'} color='#191970' size={25} solid/>
-                                            <Text style={styles.txtList}>{item.calendarRoom}</Text>
+                                            <Text style={styles.txtList}>{item.room}</Text>
                                         </View>
                                     </View>
 

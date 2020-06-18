@@ -21,7 +21,7 @@ export default function PersonalInformation({route, params}) {
     const [accountImg, setAccountImg] = useState(require('../../image/personalinformation/account.png'));
     const [editableInfo, setEditableInfo] = useState(false);
     const [name, setName] = useState("");
-    const [gender, setGender] = useState("");
+    const [gender, setGender] = useState("Nam");
     const [dateOfBirth, setDateOfBirth] = useState("yyyy-mm-dd");
     const [address, setAddress] = useState("");
     const [country, setCountry] = useState("");

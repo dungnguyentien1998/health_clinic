@@ -26,11 +26,15 @@ export default function AddCalendar({route, navigation}) {
     const [timeS, setTimeS] = useState(showTime(datetime));
     const [showDatePicker3, setShowDatePicker3] = useState(false);
     const [timeE, setTimeE] = useState(showTime(datetime));
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
     const [serviceList, setServiceList] = useState(new Map());
     const [selectService, setSelectService] = useState();
+    const [medicStaff, setMedicStaff] = useState([]);
+    const [selectStaff, setSelectStaff] = useState('');
+    const [staffList, setStaffList] = useState(new Map());
 
-    React.useEffect(() => {
+    React.useEffect( () => {
+        getMedicStaff();
         for (var i = 0; i < services.length; i++) {
             setServiceList(serviceList.set(services[i].id.toString(), services[i].name));
         }
@@ -39,7 +43,7 @@ export default function AddCalendar({route, navigation}) {
 
     function createCalendar() {
         setLoading(true);
-        fetch('http://' + ip + ':8080/clinicservices/' + selectService + '/calendars', {
+        fetch('http://' + ip + ':8080/calendars?clinicServiceId=' + selectService + '&medicalStaffId=' + selectStaff, {
                 method: 'POST',
                 headers: {
                     Accept: '*/*',
@@ -69,16 +73,29 @@ export default function AddCalendar({route, navigation}) {
                         ]
                     );
                 } else {
-                    Alert.alert(
-                        "Thông báo",
-                        "Đã xảy ra lỗi!",
-                        [
-                            {
-                                text: "OK",
-                                style: 'cancel'
-                            }
-                        ]
-                    );
+                    if (response.status === 500) {
+                        Alert.alert(
+                            "Thông báo",
+                            "Thời gian bị trùng với lịch hoạt động khác!",
+                            [
+                                {
+                                    text: "OK",
+                                    style: 'cancel'
+                                }
+                            ]
+                        );
+                    } else {
+                        Alert.alert(
+                            "Thông báo",
+                            "Đã xảy ra lỗi!",
+                            [
+                                {
+                                    text: "OK",
+                                    style: 'cancel'
+                                }
+                            ]
+                        );
+                    }
                 }
             })
             .catch((error) => {
@@ -94,6 +111,39 @@ export default function AddCalendar({route, navigation}) {
                     ]
                 );
             });
+    }
+
+    function getMedicStaff() {
+        setLoading(true);
+        fetch('http://' + ip + ':8080/getUsersByRole?role=MEDIC', {
+                method: 'POST',
+                headers: {
+                    Accept: '*/*',
+                    'Content-Type': 'application/json',
+                    Authorization: authorization
+                }
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    setMedicStaff(json);
+                    setSelectStaff(json[0].id.toString());
+                    for (var i = 0; i < json.length; i++) {
+                        setStaffList(staffList.set(json[i].id.toString(), json[i].name));
+                    }
+                })
+                .catch((error) => 
+                    Alert.alert(
+                        "Thông báo",
+                        "Lỗi kết nối!",
+                        [
+                            {
+                                text: "OK",
+                                style: "cancel"
+                            }
+                        ]
+                    )
+                )
+                .finally(() => setLoading(false))
     }
 
     function changeDateFormat(date, mode) {
@@ -141,6 +191,22 @@ export default function AddCalendar({route, navigation}) {
             )
         }
         return items;
+    }
+
+    function renderStaffItem() {
+        var items = [];
+        for (var i = 0; i < medicStaff.length; i++) {
+            items.push(
+                <Picker.Item fontWeight='bold' key={medicStaff[i].id.toString()} label={medicStaff[i].name}
+                    value={medicStaff[i].id.toString()} color='#191970'
+                />
+            )
+        }
+        return items;
+    }
+
+    function checkTime() {
+        return ((timeS.localeCompare(timeE) < 0))
     }
 
     return (
@@ -235,11 +301,42 @@ export default function AddCalendar({route, navigation}) {
                 <Text style={styles.label}>Thời gian kết thúc</Text>
                 <Text style={styles.txtInfo} onPress={() => setShowDatePicker3(true)}>{timeE}</Text>
             </View>
+            <View style={styles.subContainer}>
+                <Text style={styles.label}>Nhân viên y tế</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={styles.txtInfo}>{staffList.get(selectStaff)}</Text>
+                    <Picker
+                        selectedValue={selectStaff}
+                        style={{width: 40, height: 30}}
+                        onValueChange={async (itemValue, itemIndex) => {
+                            await setSelectStaff(itemValue);
+                        }}
+                    >
+                        {renderStaffItem()}                
+                    </Picker> 
+                </View>
+                
+            </View>
             
             <View style={[styles.btnContainer, {flexDirection: 'row'}]}>
                 <TouchableOpacity 
                     style={[styles.button, {marginRight: 80}]}
-                    onPress={() => createCalendar()} 
+                    onPress={() => {
+                        if (checkTime()) {
+                            createCalendar();
+                        } else {
+                            Alert.alert(
+                                "Thông báo",
+                                "Thời gian kết thúc phải sau thời gian bắt đầu!",
+                                [
+                                    {
+                                        text: "OK",
+                                        style: "cancel"
+                                    }
+                                ]
+                            )
+                        }                        
+                    }} 
                 >
                     <Text style={styles.btnText}>Thêm</Text>
                 </TouchableOpacity>
@@ -267,7 +364,8 @@ export default function AddCalendar({route, navigation}) {
                 >
                     <Text style={styles.btnText}>Hủy</Text>
                 </TouchableOpacity>
-            </View>     
+            </View>
+                
         </ScrollView>
     );
 }

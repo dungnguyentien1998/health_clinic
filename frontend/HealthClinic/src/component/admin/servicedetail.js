@@ -21,7 +21,6 @@ export default function ServiceDetail({route, navigation}) {
     const [editable, setEditable] = useState(false);
     const [name, setName] = useState(service.name);
     const [des, setDes] = useState(service.description);
-    const [room, setRoom] = useState(service.room);
     const [isLoading, setLoading] = useState(false);
 
     function updateService() {
@@ -35,8 +34,7 @@ export default function ServiceDetail({route, navigation}) {
                 },
                 body: JSON.stringify({
                     name: name,
-                    description: des,
-                    room: room
+                    description: des
                 })
             })
             .then((response) => {
@@ -52,8 +50,7 @@ export default function ServiceDetail({route, navigation}) {
                                     setEditable(false);
                                     setCurrentService({
                                         name: name,
-                                        description: des,
-                                        room: room
+                                        description: des
                                     });
                                 }
                             }
@@ -164,11 +161,6 @@ export default function ServiceDetail({route, navigation}) {
                     onChangeText={(text) => setDes(text)}/>
             </View>
                 
-            <View style={styles.subContainer}>
-                <Text style={styles.label}>Phòng</Text>
-                <TextInput style={styles.txtInfo} value={room} editable={editable}
-                    onChangeText={(text) => setRoom(text)}/>
-            </View>
             { !editable ?
             <View style={[styles.btnContainer, {flexDirection: 'row'}]}>
                 <TouchableOpacity 
@@ -210,7 +202,6 @@ export default function ServiceDetail({route, navigation}) {
                         setEditable(false);
                         setName(currentService.name);
                         setDes(currentService.description);
-                        setRoom(currentService.room);
                     }} 
                 >
                     <Text style={styles.btnText}>Hủy</Text>
