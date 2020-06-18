@@ -73,8 +73,8 @@ public class CalendarController {
 
     @RequestMapping(value = "/calendars/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Calendar> updateCalendar(@PathVariable("id") Long id, @RequestBody Calendar calendar,
-                                                   @RequestParam("clinicServiceId") Long clinicServiceId,
-                                                   @RequestParam("medicalStaffId") Long medicalStaffId) throws Exception {
+                                                   @RequestParam(value = "clinicServiceId", required = false) Long clinicServiceId,
+                                                   @RequestParam(value = "medicalStaffId", required = false) Long medicalStaffId) throws Exception {
         Optional<Calendar> currentCalendar = calendarService.findById(id);
         if (!currentCalendar.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -99,7 +99,7 @@ public class CalendarController {
             }
             currentCalendar.get().setMedicalStaff(newMedicalStaff.get());
         }
-
+        validationService.validateCalendar(currentCalendar.get());
         calendarService.save(currentCalendar.get());
         return new ResponseEntity<>(currentCalendar.get(), HttpStatus.OK);
     }

@@ -142,13 +142,17 @@ public class ValidationService {
                 LocalTime timeEndTmp = calendarTmp.getTimeEnd();
 
                 if (timeEnd.compareTo(timeStartTmp) > 0 && timeEnd.compareTo(timeEndTmp) <= 0  ) {
-                    check = false;
-                    break;
+                    if (calendar.getId() == null || (calendar.getId() != null && calendar.getId() != calendarTmp.getId())) {
+                        check = false;
+                        break;
+                    }
                 }
                 if (timeEnd.compareTo(timeEndTmp) > 0) {
                     if (timeStart.compareTo(timeEndTmp) < 0) {
-                        check = false;
-                        break;
+                        if (calendar.getId() == null || (calendar.getId() != null && calendar.getId() != calendarTmp.getId())) {
+                            check = false;
+                            break;
+                        }
                     }
                 }
             }
