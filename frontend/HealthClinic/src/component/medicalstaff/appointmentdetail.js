@@ -77,12 +77,12 @@ export default function AppointmentDetail({route, navigation}) {
                 
             <View style={styles.subContainer}>
                 <Text style={styles.label}>Phòng</Text>
-                <Text style={styles.txtInfo}>{appt.calendarRoom}</Text>
+                <Text style={styles.txtInfo}>{appt.room}</Text>
             </View>
 
             <View style={styles.subContainer}>
                 <Text style={styles.label}>Nhân viên y tế</Text>
-                <Text style={styles.txtInfo}>{appt.medicalStaffName}</Text>
+                <Text style={styles.txtInfo}>{appt.medicalStaff}</Text>
             </View>
         </ScrollView>
     );

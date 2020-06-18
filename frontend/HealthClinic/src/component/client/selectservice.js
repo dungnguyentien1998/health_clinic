@@ -10,7 +10,6 @@ import {
     FlatList,
 } from 'react-native';
 import styles from '../../style/selectservice';
-import {AuthContext} from '../../../App';
 import {ip as ip} from '../../../ipconfig.json';
 
 export default function SelectService({route, navigation}) {
@@ -21,7 +20,6 @@ export default function SelectService({route, navigation}) {
     const skinIcon = require('../../icon/selectservice/skin.png');
     const [services, setServices] = useState([]);
     const [isLoading, setLoading] = useState(true);
-    const {signOut} = React.useContext(AuthContext);
 
     useEffect(
         () => navigation.addListener('focus', () => {
@@ -95,7 +93,7 @@ export default function SelectService({route, navigation}) {
                     </View>
 
                     <View style={styles.btnContainer}>
-                            <TouchableOpacity onPress={signOut}>
+                            <TouchableOpacity>
                             <Text style={styles.btnSurvey}>KHẢO SÁT SỨC KHỎE</Text>
                         </TouchableOpacity>
                     </View>

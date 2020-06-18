@@ -15,7 +15,7 @@ import styles from '../../style/personalinformation';
 import {AuthContext} from '../../../App';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-export default function PersonalInformation({route, params}) {
+export default function PersonalInformation({route, navigation}) {
     const {userId, authorization} = route.params;
     const [user, setUser] = useState({});
     const [accountImg, setAccountImg] = useState(require('../../image/personalinformation/account.png'));

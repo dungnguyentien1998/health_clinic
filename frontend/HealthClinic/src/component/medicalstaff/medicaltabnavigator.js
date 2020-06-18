@@ -53,7 +53,7 @@ export default function MedicalTabNavigator({route, navigation}) {
                     if (route.name === 'Trang chủ') {
                         iconName = 'home';
                     } else if (route.name === 'Lịch làm việc') {
-                        iconName = 'cogs';
+                        iconName = 'calendar';
                     } else if (route.name === 'Tài khoản') {
                         iconName = 'user-circle';
                     }

@@ -28,10 +28,10 @@ export default function ViewAppointment({route, navigation}) {
         }), []);
 
     getAppt = async () => {
-        var d = await date;
+        var d = await changeDateFormat(date, 0);
         setLoading(true);
-        fetch('http://' + ip + ':8080/getMedicalStaffAppointments/' + userId, {
-            method: 'GET',
+        fetch('http://' + ip + ':8080/getMedicalStaffAppointmentsByDate/' + userId + "?date=" + d, {
+            method: 'POST',
             headers: {
                 Accept: '*/*',
                 'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ export default function ViewAppointment({route, navigation}) {
                                         </View>
                                         <View style={styles.itemRow}>
                                             <FontAwesome5 name={'clinic-medical'} color='#191970' size={25} solid/>
-                                            <Text style={styles.txtList}>{item.calendarRoom}</Text>
+                                            <Text style={styles.txtList}>{item.room}</Text>
                                         </View>
                                     </View>
 

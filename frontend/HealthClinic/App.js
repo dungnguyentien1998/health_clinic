@@ -215,17 +215,13 @@ function SignUp({navigation}) {
     }
 
     function checkEmailFormat() {
-        if (email.length === 0)
-            return false;
-        else 
-            return true;
+        const regex = RegExp(/^[a-z][a-z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/);
+        return regex.test(email); 
     }
 
     function checkPhoneFormat() {
-        if (phone.length === 0)
-            return false;
-        else
-            return true;
+        const regex = RegExp(/(0[0-9])+([0-9]{8})\b/);
+        return regex.test(phone);
     }
 
     function checkPasswordFormat() {
@@ -251,8 +247,8 @@ function SignUp({navigation}) {
     }
 
     function errorNotice() {
-        if ((name.length === 0) && (email.length === 0) && (phone.length === 0) 
-            && (password.length === 0) && (submitPwd.length === 0)) {
+        if ((name.length === 0) || (email.length === 0) || (phone.length === 0) 
+            || (password.length === 0) || (submitPwd.length === 0)) {
                 Alert.alert(
                     "Thông báo",
                     "Bạn phải nhập đầy đủ các thông tin!",
@@ -263,7 +259,29 @@ function SignUp({navigation}) {
                         }
                     ]
                 );
-        } else if (!checkPasswordFormat()) {
+        } else if (!checkPhoneFormat()) {
+            Alert.alert(
+                "Thông báo",
+                "Số điện thoại không hợp lệ!",
+                [
+                    {
+                        text: "OK",
+                        style: "cancel"
+                    }
+                ]
+            );
+        }else if (!checkEmailFormat()) {
+            Alert.alert(
+                "Thông báo",
+                "Email không hợp lệ!",
+                [
+                    {
+                        text: "OK",
+                        style: "cancel"
+                    }
+                ]
+            );
+        }else if (!checkPasswordFormat()) {
             Alert.alert(
                 "Thông báo",
                 "Mật khẩu không đúng định dạng!",
@@ -312,7 +330,7 @@ function SignUp({navigation}) {
             <TextInput
                 onChangeText={(text) => {
                     setCheckEmail(true);
-                    setEmail(text);
+                    setEmail(text.toLocaleLowerCase());
                 }}
                 underlineColorAndroid={(checkEmail && !checkEmailFormat()) ? 'red' : '#191970'}
                 style={signupstyles.textInput}

@@ -38,7 +38,10 @@ export default function Controller({route, navigation}) {
                     <Text style={styles.title}>Quản lý lịch hẹn</Text>
                 </TouchableOpacity>
                 
-                <TouchableOpacity style={[styles.item, {backgroundColor: '#e6e6fa'}]}>
+                <TouchableOpacity 
+                    onPress={() => navigation.navigate('AccountController', {userId: userId, authorization: authorization})} 
+                    style={[styles.item, {backgroundColor: '#e6e6fa'}]}
+                >
                     <FontAwesome5 style={styles.icon} name='user-cog' size={60} color='#191970' solid/>
                     <Text style={styles.title}>Quản lý tài khoản</Text>
                 </TouchableOpacity>

@@ -57,7 +57,7 @@ export default function CalendarDetail({route, navigation}) {
                 if (response.ok) {
                     Alert.alert(
                         "Thông báo",
-                        "Cập nhật thành công!",
+                        "Cập nhật lịch hoạt động thành công!",
                         [
                             {
                                 text: "OK",
@@ -68,16 +68,29 @@ export default function CalendarDetail({route, navigation}) {
                         ]
                     );
                 } else {
-                    Alert.alert(
-                        "Thông báo",
-                        "Đã xảy ra lỗi!",
-                        [
-                            {
-                                text: "OK",
-                                style: 'cancel'
-                            }
-                        ]
-                    );
+                    if (response.status === 500) {
+                        Alert.alert(
+                            "Thông báo",
+                            "Thời gian bị trùng với lịch hoạt động khác!",
+                            [
+                                {
+                                    text: "OK",
+                                    style: 'cancel'
+                                }
+                            ]
+                        );
+                    } else {
+                        Alert.alert(
+                            "Thông báo",
+                            "Đã xảy ra lỗi!",
+                            [
+                                {
+                                    text: "OK",
+                                    style: 'cancel'
+                                }
+                            ]
+                        );
+                    }
                 }
             })
             .catch((error) => {
