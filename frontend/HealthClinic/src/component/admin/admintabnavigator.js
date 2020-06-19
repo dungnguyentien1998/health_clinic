@@ -7,7 +7,7 @@ import Controller from './controller';
 import ServiceController from './servicecontroller';
 import AppointmentController from './appointmentcontroller';
 import AppointmentDetail from './appointmentdetail';
-import PersonalInformation from './personalinformation';
+import PersonalInformation from '../client/personalinformation';
 import ServiceDetail from './servicedetail';
 import AddService from './addservice';
 import CalendarController from './calendarcontroller';

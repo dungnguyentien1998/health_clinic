@@ -209,7 +209,21 @@ export default function ServiceDetail({route, navigation}) {
 
                 <TouchableOpacity 
                     style={[styles.button, {backgroundColor: 'green'}]}
-                    onPress={() => updateService()} 
+                    onPress={() => {
+                        if (name.length === 0) {
+                            Alert.alert(
+                                "Thông báo",
+                                "Bạn phải nhập tên dịch vụ!",
+                                [
+                                    {
+                                        text: "OK",
+                                        style: 'cancel'
+                                    }
+                                ]
+                            )
+                        } else
+                            updateService();
+                    }} 
                 >
                     <Text style={styles.btnText}>Lưu</Text>
                 </TouchableOpacity>

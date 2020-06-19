@@ -21,12 +21,14 @@ export default function PersonalInformation({route, navigation}) {
     const [accountImg, setAccountImg] = useState(require('../../image/personalinformation/account.png'));
     const [editableInfo, setEditableInfo] = useState(false);
     const [name, setName] = useState("");
+    const [checkName, setCheckName] = useState(false);
     const [gender, setGender] = useState("Nam");
     const [dateOfBirth, setDateOfBirth] = useState("yyyy-mm-dd");
     const [address, setAddress] = useState("");
     const [country, setCountry] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
+    const [checkEmail, setCheckEmail] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const [datetime, setDatetime] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -162,6 +164,69 @@ export default function PersonalInformation({route, navigation}) {
         await setDateOfBirth(tmp);
     };
 
+    function checkNameFormat () {
+        if (name.length === 0) 
+            return false;
+        else 
+            return true;
+    }
+
+    function checkEmailFormat() {
+        const regex = RegExp(/^[a-z][a-z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/);
+        return regex.test(email); 
+    }
+
+    function checkInput() {
+        if (checkNameFormat() && checkEmailFormat())
+            return true;
+        else {
+            setCheckName(true);
+            setCheckEmail(true);
+            return false;
+        }
+    }
+
+    function errorNotice() {
+        if ((name.length === 0)) {
+                Alert.alert(
+                    "Thông báo",
+                    "Bạn phải nhập họ tên!",
+                    [
+                        {
+                            text: "OK",
+                            onPress: () => {
+                                this.nameInput.focus();
+                            }
+                        }
+                    ]
+                );
+        } else if ((email.length === 0)) {
+            Alert.alert(
+                "Thông báo",
+                "Bạn phải nhập email!",
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {
+                            this.emailInput.focus();
+                        }
+                    }
+                ]
+            );
+        } else if (!checkEmailFormat()) {
+            Alert.alert(
+                "Thông báo",
+                "Email không hợp lệ!",
+                [
+                    {
+                        text: "OK",
+                        onPress: () => this.emailInput.focus()
+                    }
+                ]
+            );
+        }
+    }
+
     return (
         isLoading ? <ActivityIndicator style={styles.loading} size={100} color='#191970'/> :
         <ScrollView style={styles.container}>
@@ -186,8 +251,10 @@ export default function PersonalInformation({route, navigation}) {
             <View style={styles.infoContainer}>
 
                 <Text style={styles.label}>Họ tên</Text>
-                <TextInput style={styles.txtInfo} value={name} editable={editableInfo} onChangeText={(text) => setName(text)}/>
-                <View style={styles.line}></View>
+                <TextInput style={styles.txtInfo} value={name} editable={editableInfo} 
+                    onChangeText={(text) => setName(text)}
+                    ref={(input) => this.nameInput = input}/>
+                <View style={[styles.line, {backgroundColor: (checkName && !checkNameFormat()) ? 'red' : '#dcdcdc'}]}></View>
                 
                 <Text style={styles.label}>Giới tính</Text>
                 <View style={{flexDirection: 'row'}}>
@@ -234,8 +301,10 @@ export default function PersonalInformation({route, navigation}) {
                 <View style={styles.line}></View>
 
                 <Text style={styles.label}>Email</Text>
-                <TextInput style={styles.txtInfo} value={email} editable={editableInfo} onChangeText={(text) => setEmail(text)}/>
-                <View style={styles.line}></View>
+                <TextInput style={styles.txtInfo} value={email} editable={editableInfo} 
+                    onChangeText={(text) => setEmail(text)}
+                    ref={(input) => this.emailInput = input}/>
+                <View style={[styles.line, {backgroundColor: (checkEmail && !checkEmailFormat()) ? 'red' : '#dcdcdc'}]}></View>
             </View>
             {!editableInfo ?
             <>
@@ -251,8 +320,13 @@ export default function PersonalInformation({route, navigation}) {
             <>
             <TouchableOpacity style={[styles.btnContainer, {backgroundColor: '#98fb98'}]} 
                 onPress={() => {
-                    setEditableInfo(false);
-                    updateInfo();
+                    if (checkInput()) {
+                        setEditableInfo(false);
+                        updateInfo();
+                    }
+                    else
+                        errorNotice();
+                    
                 }}>
                     <Text style={styles.btnText}>Lưu</Text>
             </TouchableOpacity>

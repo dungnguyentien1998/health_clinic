@@ -69,7 +69,9 @@ export default function AddAccount({route, navigation}) {
                         [
                             {
                                 text: "OK",
-                                style: "cancel"
+                                onPress: () => {
+                                    this.phoneInput.focus()
+                                }
                             }
                         ]
                     );
@@ -139,7 +141,19 @@ export default function AddAccount({route, navigation}) {
                     [
                         {
                             text: "OK",
-                            style: "cancel"
+                            onPress: () => {
+                                if (name.length === 0) {
+                                    this.nameInput.focus();
+                                } else if (email.length === 0) {
+                                    this.emailInput.focus();
+                                } else if (phone.length === 0) {
+                                    this.phoneInput.focus();
+                                } else if (password.length === 0) {
+                                    this.pwdInput.focus();
+                                } else {
+                                    this.submitPwdInput.focus();
+                                }
+                            }
                         }
                     ]
                 );
@@ -150,7 +164,7 @@ export default function AddAccount({route, navigation}) {
                 [
                     {
                         text: "OK",
-                        style: "cancel"
+                        onPress: () => this.phoneInput.focus()
                     }
                 ]
             );
@@ -161,7 +175,7 @@ export default function AddAccount({route, navigation}) {
                 [
                     {
                         text: "OK",
-                        style: "cancel"
+                        onPress: () => this.emailInput.focus()
                     }
                 ]
             );
@@ -172,7 +186,7 @@ export default function AddAccount({route, navigation}) {
                 [
                     {
                         text: "OK",
-                        style: "cancel"
+                        onPress: () => this.pwdInput.focus()
                     }
                 ]
             );
@@ -183,7 +197,7 @@ export default function AddAccount({route, navigation}) {
                 [
                     {
                         text: "OK",
-                        style: "cancel"
+                        onPress: () => this.submitPwdInput.focus()
                     }
                 ]
             );
@@ -210,6 +224,8 @@ export default function AddAccount({route, navigation}) {
                 underlineColorAndroid={(checkName && !checkNameFormat()) ? 'red' : '#191970'}
                 style={styles.textInput}
                 placeholder={'Họ và tên'}
+                ref={(input) => this.nameInput = input}
+                onSubmitEditing={() => this.emailInput.focus()}
             />
             <TextInput
                 onChangeText={(text) => {
@@ -220,6 +236,9 @@ export default function AddAccount({route, navigation}) {
                 style={styles.textInput}
                 style={styles.textInput}
                 placeholder={'Email'}
+                ref={(input) => this.emailInput = input}
+                onSubmitEditing={() => this.phoneInput.focus()}
+                keyboardType='email-address'
             />
             <TextInput
                 onChangeText={(text) => {
@@ -229,6 +248,9 @@ export default function AddAccount({route, navigation}) {
                 underlineColorAndroid={(checkPhone && !checkPhoneFormat()) ? 'red' : '#191970'}
                 style={styles.textInput}
                 placeholder={'Số điện thoại'}
+                ref={(input) => this.phoneInput = input}
+                onSubmitEditing={() => this.pwdInput.focus()}
+                keyboardType='number-pad'
             />
             <TextInput
                 onChangeText={(text) => {
@@ -239,6 +261,8 @@ export default function AddAccount({route, navigation}) {
                 style={[styles.textInput, {marginBottom: 5}]}
                 placeholder={'Mật khẩu'}
                 secureTextEntry={true}
+                ref={(input) => this.pwdInput = input}
+                onSubmitEditing={() => this.submitPwdInput.focus()}
             />
             <Text style={styles.require}>Mật khẩu tối thiểu 8 ký tự, ít nhất 1 chữ số và 1 chữ cái viết hoa.</Text>
             <TextInput
@@ -250,6 +274,7 @@ export default function AddAccount({route, navigation}) {
                 style={styles.textInput}
                 placeholder={'Xác nhận mật khẩu'}
                 secureTextEntry={true}
+                ref={(input) => this.submitPwdInput = input}
             />
             <TouchableOpacity
                 style={styles.btnSignup}

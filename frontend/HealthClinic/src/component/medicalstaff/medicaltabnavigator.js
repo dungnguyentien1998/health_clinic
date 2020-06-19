@@ -3,7 +3,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './home';
-import PersonalInformation from './personalinformation';
+import PersonalInformation from '../client/personalinformation';
 import ViewAppointment from './viewappointment';
 import AppointmentDetail from './appointmentdetail';
 

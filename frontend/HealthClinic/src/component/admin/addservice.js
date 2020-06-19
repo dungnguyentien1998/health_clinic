@@ -104,7 +104,21 @@ export default function AddService({route, navigation}) {
             <View style={[styles.btnContainer, {flexDirection: 'row'}]}>
                 <TouchableOpacity 
                     style={[styles.button, {marginRight: 80}]}
-                    onPress={() => createService()} 
+                    onPress={() => {
+                        if (name.length === 0) {
+                            Alert.alert(
+                                "Thông báo",
+                                "Bạn phải nhập tên dịch vụ!",
+                                [
+                                    {
+                                        text: "OK",
+                                        style: 'cancel'
+                                    }
+                                ]
+                            )
+                        } else
+                            createService();
+                    }} 
                 >
                     <Text style={styles.btnText}>Thêm</Text>
                 </TouchableOpacity>
