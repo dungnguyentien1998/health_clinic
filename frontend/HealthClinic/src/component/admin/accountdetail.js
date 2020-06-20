@@ -13,7 +13,7 @@ import styles from '../../style/accountdetail';
 import {ip as ip} from '../../../ipconfig.json';
 
 export default function AccountDetail({route, navigation}) {
-    const {user} = route.params;
+    const {selectRole, user} = route.params;
 
     function changeDateFormat(date, mode) {
         if (mode === 0) {
@@ -58,6 +58,14 @@ export default function AccountDetail({route, navigation}) {
                 <Text style={styles.label}>Email</Text>
                 <Text style={styles.txtInfo}>{user.email}</Text>
                 <View style={styles.line}></View>
+
+                {(selectRole === "MEDIC") &&
+                <>
+                <Text style={styles.label}>Phòng</Text>
+                <Text style={styles.txtInfo}>{user.room}</Text>
+                <View style={styles.line}></View>
+                </>
+                }
             </View>
         </ScrollView>
     );

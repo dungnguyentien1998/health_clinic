@@ -35,9 +35,6 @@ export default function CalendarController({route, navigation}) {
             setNoCal(true);
             setLoading(true);
             await getService();
-            const timer = setTimeout(async () => {
-                await getCal();
-            }, 1000);
         }), []);
 
     getCal = async () => {
@@ -93,6 +90,23 @@ export default function CalendarController({route, navigation}) {
                     for (var i = 0; i < json.length; i++) {
                         setServiceList(serviceList.set(json[i].id.toString(), json[i].name));
                     }
+                    return json;
+                })
+                .then(async (json) => {
+                    if (json.length === 0) {
+                        Alert.alert(
+                            "Thông báo",
+                            "Chưa có dịch vụ",
+                            [
+                                {
+                                    text: "OK",
+                                    style: "cancel"
+                                }
+                            ]
+                        );
+                    } else {
+                        await getCal();
+                    }
                 })
                 .catch((error) => 
                     Alert.alert(
@@ -141,7 +155,20 @@ export default function CalendarController({route, navigation}) {
         setDatetime(currentDate);
         tmp = await showDate(currentDate);
         await setDate(tmp);
-        getCal();
+        if (services.length === 0) {
+            Alert.alert(
+                "Thông báo",
+                "Chưa có dịch vụ",
+                [
+                    {
+                        text: "OK",
+                        style: "cancel"
+                    }
+                ]
+            );
+        } else {
+            await getCal();
+        }
     };
 
     function renderPickerItem() {
@@ -165,7 +192,20 @@ export default function CalendarController({route, navigation}) {
                     style={{width: 40, height: 30}}
                     onValueChange={async (itemValue, itemIndex) => {
                         await setSelectService(itemValue);
-                        getCal();
+                        if (services.length === 0) {
+                            Alert.alert(
+                                "Thông báo",
+                                "Chưa có dịch vụ",
+                                [
+                                    {
+                                        text: "OK",
+                                        style: "cancel"
+                                    }
+                                ]
+                            );
+                        } else {
+                            await getCal();
+                        }
                     }}
                 >
                     {renderPickerItem()}                
@@ -179,7 +219,20 @@ export default function CalendarController({route, navigation}) {
                         onPress={async () =>{
                             await datetime.setDate(datetime.getDate() - 1);
                             await setDate(showDate(datetime));
-                            getCal();
+                            if (services.length === 0) {
+                                Alert.alert(
+                                    "Thông báo",
+                                    "Chưa có dịch vụ",
+                                    [
+                                        {
+                                            text: "OK",
+                                            style: "cancel"
+                                        }
+                                    ]
+                                );
+                            } else {
+                                await getCal();
+                            }
                         }}
                     />
                 </TouchableOpacity>
@@ -196,7 +249,20 @@ export default function CalendarController({route, navigation}) {
                         onPress={async () =>{
                             await datetime.setDate(datetime.getDate() + 1);
                             await setDate(showDate(datetime));
-                            getCal();
+                            if (services.length === 0) {
+                                Alert.alert(
+                                    "Thông báo",
+                                    "Chưa có dịch vụ",
+                                    [
+                                        {
+                                            text: "OK",
+                                            style: "cancel"
+                                        }
+                                    ]
+                                );
+                            } else {
+                                await getCal();
+                            }
                         }}
                     />
                 </TouchableOpacity>
@@ -257,7 +323,8 @@ export default function CalendarController({route, navigation}) {
             <View style={styles.btnContainer}>
                 <TouchableOpacity 
                     onPress={() => {
-                        navigation.navigate('AddCalendar', {authorization: authorization, services: services});
+                        if (services.length > 0)
+                            navigation.navigate('AddCalendar', {authorization: authorization, services: services});
                     }} 
                     style={[styles.btnFind, {padding: 0}]}
                 >

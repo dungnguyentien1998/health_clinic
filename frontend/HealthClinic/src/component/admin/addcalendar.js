@@ -74,16 +74,30 @@ export default function AddCalendar({route, navigation}) {
                     );
                 } else {
                     if (response.status === 500) {
-                        Alert.alert(
-                            "Thông báo",
-                            "Thời gian bị trùng với lịch hoạt động khác!",
-                            [
-                                {
-                                    text: "OK",
-                                    style: 'cancel'
-                                }
-                            ]
-                        );
+                        if (medicStaff.length === 0) {
+                            Alert.alert(
+                                "Thông báo",
+                                "Chưa có nhân viên y tế!",
+                                [
+                                    {
+                                        text: "OK",
+                                        style: 'cancel'
+                                    }
+                                ]
+                            );
+                        }
+                        else {
+                            Alert.alert(
+                                "Thông báo",
+                                "Thời gian bị trùng với lịch hoạt động khác!",
+                                [
+                                    {
+                                        text: "OK",
+                                        style: 'cancel'
+                                    }
+                                ]
+                            );
+                        }
                     } else {
                         Alert.alert(
                             "Thông báo",

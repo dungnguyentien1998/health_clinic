@@ -24,6 +24,8 @@ export default function AddAccount({route, navigation}) {
     const [submitPwd, setSubmitPwd] = useState('');
     const [checkSubmitPwd, setCheckSubmitPwd] = useState(false);
     const [isLoading, setLoading] = useState(false);
+    const [room, setRoom] = useState('');
+    const [checkRoom, setCheckRoom] = useState(false);
 
     const roleList = new Map([
         ["USER", "Khách hàng"],
@@ -44,7 +46,8 @@ export default function AddAccount({route, navigation}) {
                 username: phone,
                 password: password,
                 email: email,
-                role: selectRole
+                role: selectRole,
+                room: room
             })
         })
             .then((response) => {
@@ -100,6 +103,13 @@ export default function AddAccount({route, navigation}) {
             return true;
     }
 
+    function checkRoomFormat () {
+        if (room.length === 0) 
+            return false;
+        else 
+            return true;
+    }
+
     function checkEmailFormat() {
         const regex = RegExp(/^[a-z][a-z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/);
         return regex.test(email); 
@@ -120,7 +130,7 @@ export default function AddAccount({route, navigation}) {
 
     function checkInput() {
         if (checkNameFormat() && checkEmailFormat() && checkPhoneFormat() && checkPasswordFormat()
-            && checkSubmitPwdFormat())
+            && checkSubmitPwdFormat() && ((!(selectRole === "MEDIC")) || checkRoomFormat()))
             return true;
         else {
             setCheckName(true);
@@ -128,13 +138,15 @@ export default function AddAccount({route, navigation}) {
             setCheckPhone(true);
             setCheckPassword(true);
             setCheckSubmitPwd(true);
+            setCheckRoom(true);
             return false;
         }
     }
 
     function errorNotice() {
         if ((name.length === 0) || (email.length === 0) || (phone.length === 0) 
-            || (password.length === 0) || (submitPwd.length === 0)) {
+            || (password.length === 0) || (submitPwd.length === 0) 
+            || ((selectRole === "MEDIC") && room.length === 0)) {
                 Alert.alert(
                     "Thông báo",
                     "Bạn phải nhập đầy đủ các thông tin!",
@@ -150,8 +162,10 @@ export default function AddAccount({route, navigation}) {
                                     this.phoneInput.focus();
                                 } else if (password.length === 0) {
                                     this.pwdInput.focus();
-                                } else {
+                                } else if (submitPwd.length === 0) {
                                     this.submitPwdInput.focus();
+                                } else if ((selectRole === "MEDIC") && room.length === 0) {
+                                    this.roomInput.focus();
                                 }
                             }
                         }
@@ -234,7 +248,6 @@ export default function AddAccount({route, navigation}) {
                 }}
                 underlineColorAndroid={(checkEmail && !checkEmailFormat()) ? 'red' : '#191970'}
                 style={styles.textInput}
-                style={styles.textInput}
                 placeholder={'Email'}
                 ref={(input) => this.emailInput = input}
                 onSubmitEditing={() => this.phoneInput.focus()}
@@ -249,9 +262,28 @@ export default function AddAccount({route, navigation}) {
                 style={styles.textInput}
                 placeholder={'Số điện thoại'}
                 ref={(input) => this.phoneInput = input}
-                onSubmitEditing={() => this.pwdInput.focus()}
+                onSubmitEditing={() => {
+                    if (selectRole === "MEDIC")
+                        this.roomInput.focus();
+                    else
+                        this.pwdInput.focus();
+                }}
                 keyboardType='number-pad'
             />
+
+            {(selectRole === "MEDIC") &&
+            <TextInput
+                onChangeText={(text) => {
+                    setCheckRoom(true);
+                    setRoom(text);
+                }}
+                underlineColorAndroid={(checkRoom && !checkRoomFormat()) ? 'red' : '#191970'}
+                style={styles.textInput}
+                placeholder={'Phòng'}
+                ref={(input) => this.roomInput = input}
+                onSubmitEditing={() => this.pwdInput.focus()}
+            />}
+
             <TextInput
                 onChangeText={(text) => {
                     setCheckPassword(true);

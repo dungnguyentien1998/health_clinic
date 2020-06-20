@@ -93,7 +93,7 @@ export default function AccountController({route, navigation}) {
                             data={users}
                             renderItem={({item}) => (
                                 <TouchableOpacity style={[styles.item,{}]}
-                                    onPress={() => navigation.navigate('AccountDetail', {user: item})}
+                                    onPress={() => navigation.navigate('AccountDetail', {selectRole: selectRole, user: item})}
                                 >
                                         <View style={[styles.itemRow, {marginBottom: 5}]}>
                                             <FontAwesome5 name={'user'} color='#191970' size={25} style={{marginRight: 10}} solid/>
